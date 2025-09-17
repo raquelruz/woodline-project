@@ -1,5 +1,7 @@
 export const Home = () => {
-    return (
-        <h1>Home</h1>
-    )
-}
+	return (
+		<div className="flex h-100">
+			<h1>Home</h1>
+		</div>
+	);
+};
