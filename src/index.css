@@ -26,6 +26,7 @@ body {
 	--color-primary-hover: #70908b;
 	--color-primary-pressed: #07484a;
 	--color-contrast: #4b351f;
+	--color-bg-gray: #FAFAFA;
 
 	--spacing-xs: 4px;
 	--spacing-sm: 12px;
