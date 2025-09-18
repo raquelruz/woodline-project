@@ -2,6 +2,7 @@ import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import logo from "../../assets/images/woodline-logo.png";
 import { Container } from "./Container";
 import { Navbar } from "./Navbar";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
 	return (
@@ -14,7 +15,11 @@ export const Header = () => {
 
 					<div className="flex items-center gap-6 text-gray-700 text-lg">
 						<FaSearch className="hover:text-primary-hover cursor-pointer" />
-						<FaUser className="hover:text-primary-hover cursor-pointer" />
+
+						<Link to="/login">
+							<FaUser className="hover:text-primary-hover cursor-pointer" />
+						</Link>
+
 						<FaShoppingCart className="hover:text-primary-hover cursor-pointer" />
 					</div>
 				</div>
