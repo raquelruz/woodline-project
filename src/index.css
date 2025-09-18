@@ -21,12 +21,12 @@ body {
 	--text-h5: 20px;
 	--text-h6: 16px;
 
-	/* 🎨 Color primario */
-	--color-primary: #70908b;
+	/* 🎨 Paleta de colores */
 	--color-primary-hover: #70908b;
 	--color-primary-pressed: #07484a;
-	--color-contrast: #4b351f;
-	--color-bg-gray: #FAFAFA;
+	--color-secondary: #4b351f;
+	--color-landing-brand-bg: #FAFAFA;
+	--color-landing-brand-darker: #C4C4C4;
 
 	--spacing-xs: 4px;
 	--spacing-sm: 12px;

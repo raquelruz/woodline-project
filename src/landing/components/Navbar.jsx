@@ -1,21 +1,19 @@
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/woodline-logo.png";
-import { FaSearch, FaUser, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 
 export const Navbar = () => {
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	return (
-		<nav className="w-full shadow-md px-6 md:px-10 py-3 flex items-center justify-between">
+		<nav className="w-full px-6 md:px-10 py-3 flex items-center justify-center" >
 
-			<div className="flex items-center">
-				<img src={logo} alt="logo" className="h-12" />
-			</div>
-
-			{/* MENÚ DESKTOP */}
+			{/* MENU DESKTOP */}
 			<div className="hidden md:flex gap-8 font-medium font-title color-contrast">
-				<NavLink to="/" className={({ isActive }) => (isActive ? "text-primary-pressed" : "hover:text-primary")}>
+				<NavLink
+					to="/"
+					className={({ isActive }) => (isActive ? "text-primary-pressed" : "hover:text-primary")}
+				>
 					Inicio
 				</NavLink>
 				<NavLink to="/products" className="hover:text-primary">
@@ -30,24 +28,18 @@ export const Navbar = () => {
 				<NavLink to="/contact" className="hover:text-primary">
 					Contacto
 				</NavLink>
-                
 			</div>
 
-				{/* MENÚ MOBILE */}
-				<div className="md:hidden ml-2">
-					<button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}>
-						{isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-					</button>
-				</div>
+			{/* MENÚ MOBILE */}
 
-			<div className="flex items-center gap-6 text-gray-700 text-lg">
-				<FaSearch className="hover:text-primary-hover cursor-pointer" />
-				<FaUser className="hover:text-primary-hover cursor-pointer" />
-				<FaShoppingCart className="hover:text-primary-hover cursor-pointer" />
+			<div className="md:hidden ml-2">
+				<button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}>
+					{isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+				</button>
 			</div>
 
 			{isMobileMenuOpen && (
-				<div className="absolute top-20 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 md:hidden z-10">
+				<div className="absolute top-10 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 md:hidden z-10">
 					<NavLink
 						to="/"
 						onClick={() => setMobileMenuOpen(false)}
@@ -55,6 +47,7 @@ export const Navbar = () => {
 					>
 						Inicio
 					</NavLink>
+
 					<NavLink
 						to="/products"
 						onClick={() => setMobileMenuOpen(false)}
@@ -62,6 +55,7 @@ export const Navbar = () => {
 					>
 						Productos
 					</NavLink>
+
 					<NavLink
 						to="/categories"
 						onClick={() => setMobileMenuOpen(false)}
@@ -69,6 +63,7 @@ export const Navbar = () => {
 					>
 						Categorías
 					</NavLink>
+
 					<NavLink
 						to="/about"
 						onClick={() => setMobileMenuOpen(false)}
@@ -76,6 +71,7 @@ export const Navbar = () => {
 					>
 						Sobre nosotros
 					</NavLink>
+
 					<NavLink
 						to="/contact"
 						onClick={() => setMobileMenuOpen(false)}
