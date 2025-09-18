@@ -1,9 +1,9 @@
 import "./App.css";
 import { Home } from "./landing/pages/Home";
 import { Header } from "./landing/components/Header";
-import { Navbar } from "./landing/components/Navbar";
 import { Hero } from "./landing/sections/Hero";
 import { Footer } from "./landing/sections/Footer";
+import { Route, Routes } from "react-router-dom";
 
 export const App = () => {
 	return (
@@ -11,9 +11,9 @@ export const App = () => {
 			<Header />
 
 			<main>
-				{/* <Home /> */}
-
-				<Hero />
+				<Routes>
+					<Route path="/" element={<Home />}/>
+				</Routes>
 			</main>
 
 			<div>

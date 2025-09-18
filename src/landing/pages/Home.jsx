@@ -1,10 +1,13 @@
 import { Container } from "../components/Container";
+import { Hero } from "../sections/Hero";
 
 export const Home = () => {
 	return (
-		<div className="flex h-100">
+		<div className="">
+			<Hero />
+
 			<Container>
-				<h1>Home</h1>
+				<h1>Hola</h1>
 			</Container>
 		</div>
 	);
