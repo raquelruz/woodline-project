@@ -19,9 +19,6 @@ export const Navbar = () => {
 				<NavLink to="/products" className="hover:text-primary">
 					Productos
 				</NavLink>
-				<NavLink to="/categories" className="hover:text-primary">
-					Categorías
-				</NavLink>
 				<NavLink to="/about" className="hover:text-primary">
 					Sobre nosotros
 				</NavLink>
@@ -54,14 +51,6 @@ export const Navbar = () => {
 						className="py-2 text-gray-700 hover:text-primary-hover"
 					>
 						Productos
-					</NavLink>
-
-					<NavLink
-						to="/categories"
-						onClick={() => setMobileMenuOpen(false)}
-						className="py-2 text-gray-700 hover:text-primary-hover"
-					>
-						Categorías
 					</NavLink>
 
 					<NavLink
