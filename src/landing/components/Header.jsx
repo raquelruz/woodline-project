@@ -20,7 +20,9 @@ export const Header = () => {
 							<FaUser className="hover:text-primary-hover cursor-pointer" />
 						</Link>
 
+						<Link to="/cart">
 						<FaShoppingCart className="hover:text-primary-hover cursor-pointer" />
+						</Link>
 					</div>
 				</div>
 			</Container>
