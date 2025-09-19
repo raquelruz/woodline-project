@@ -1,0 +1,15 @@
+import { Route, Routes } from "react-router-dom";
+import { Container } from "../components/Container";
+import { Hero } from "../sections/Hero";
+
+export const Home = () => {
+	return (
+		<div className="">
+			<Hero />
+
+			<Container>
+				<h1>HOME</h1>
+			</Container>
+		</div>
+	);
+};

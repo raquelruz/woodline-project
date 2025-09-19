@@ -1,1 +1,62 @@
 @import "tailwindcss";
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+	/* @apply bg-brand-bg; */
+}
+
+@theme {
+	--font-landing: "Open Sans", sans-serif;
+	--font-title: "Playfair Display", sans-serif;
+
+	--text-h1: 48px;
+	--text-h2: 30px;
+	--text-h3: 28px;
+	--text-h4: 24px;
+	--text-h5: 20px;
+	--text-h6: 16px;
+
+	/* 🎨 Paleta de colores */
+	--color-primary-hover: #70908b;
+	--color-primary-pressed: #07484a;
+	--color-secondary: #4b351f;
+	--color-landing-brand-bg: #FAFAFA;
+	--color-landing-brand-darker: #C4C4C4;
+
+	--spacing-xs: 4px;
+	--spacing-sm: 12px;
+	--spacing-md: 20px;
+	--spacing-lg: 32px;
+	--spacing-xl: 49px;
+	--spacing-2xl: 60px;
+	--spacing-3xl: 90px;
+}
+
+h1 {
+	@apply text-h1/[125%] font-bold;
+}
+
+h2 {
+	@apply text-h2/[125%] font-bold;
+}
+
+h3 {
+	@apply text-h3/[125%] font-bold;
+}
+
+h4 {
+	@apply text-h4/[125%] font-bold;
+}
+
+h5 {
+	@apply text-h5/[125%] font-bold;
+}
+
+h6 {
+	@apply text-h6/[125%] font-bold;
+}
