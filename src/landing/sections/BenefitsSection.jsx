@@ -23,18 +23,15 @@ const benefits = [
 
 export const BenefitsSection = () => {
 	return (
-        
 		<SectionContainer
+			bg="bg-emerald-50"
 			title={<span className="font-title text-h2 font-semibold text-primary-pressed">Nuestros Beneficios</span>}
 			childrenContainerStyle="grid grid-cols-1 md:grid-cols-3 gap-8"
 		>
 			{benefits.map((benefit, index) => (
-				<div
-					key={index}
-					className="flex flex-col items-center text-center p-6 rounded-2xl shadow-md bg-landing-brand-bg hover:shadow-lg transition-shadow duration-300"
-				>
+				<div key={index} className="flex flex-col items-center text-center p-6">
 					<img src={benefit.img} alt={benefit.title} className="w-16 h-16 mb-4" />
-					<h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
+					<h5 className="text-sm font-title font-semibold mb-2">{benefit.title}</h5>
 					<p className="text-gray-600">{benefit.description}</p>
 				</div>
 			))}
