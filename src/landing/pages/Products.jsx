@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { ProductModal } from "../components/ProductModal";
+import { LikeButton } from "../components/LikeButton";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
@@ -68,9 +69,8 @@ export const Products = () => {
 								<button className="mt-2 px-8 py-3 bg-primary-pressed text-white font-medium rounded-xl hover:bg-primary-hover transition-colors self-start">
 									Añadir al carrito
 								</button>
-								<button className="mt-2 px-8 py-3 bg-primary-pressed text-white font-medium rounded-xl hover:bg-primary-hover transition-colors self-start">
-									♥
-								</button>
+								
+                                <LikeButton />
 							</div>
 						</div>
 					</div>
