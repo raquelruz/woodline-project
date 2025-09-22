@@ -9,6 +9,7 @@ import { Footer } from "./landing/sections/Footer";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "./landing/pages/Login";
 import { Register } from "./landing/pages/Register";
+import { Users } from "./landing/pages/Users";
 
 export const App = () => {
 	return (
@@ -23,6 +24,7 @@ export const App = () => {
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login" element={<Login />}/>
 					<Route path="/register" element={<Register />}/>
+					<Route path="/users" element={<Users />}/>
 				</Routes>
 			</main>
 
