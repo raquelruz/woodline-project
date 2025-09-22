@@ -9,7 +9,7 @@ export const NewslettersSection = () => {
 				<img
 					src={banner}
 					alt="Salón"
-					className="w-full max-w-[400px] md:max-w-[600px] rounded-lg shadow-lg"
+					className="w-full max-w-[400px] md:max-w-[400px] rounded-lg shadow-lg"
 				/>
 
 				<div className="flex flex-col gap-6 md:gap-10">
@@ -20,7 +20,7 @@ export const NewslettersSection = () => {
 						Recibe descuentos exclusivos y más ofertas directamente en tu correo.
 					</p>
 
-					<div className="flex flex-col sm:flex-row gap-4">
+					<div className="flex flex-col md:flex-row gap-4">
 						<input
 							type="email"
 							placeholder="Introduce tu email"
