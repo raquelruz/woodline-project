@@ -1,50 +1,81 @@
 import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
+import { ProductModal } from "../components/ProductModal";
+import { LikeButton } from "../components/LikeButton";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
+	const [selectedProduct, setSelectedProduct] = useState(null);
 
 	useEffect(() => {
 		api.get("/products")
-			.then((response) => {
-				console.log("Products data:", response.data);
-				setProducts(response.data);
-			})
-			.catch((error) => {
-				console.log("Error fetching products:", error);
-			});
+			.then((response) => setProducts(response.data))
+			.catch((error) => console.error("Error fetching products:", error));
 	}, []);
 
 	return (
-		<div className="min-h-dvh font-title px-6 py-12">
+		<div className="min-h-dvh font-title px-6 py-12 bg-gray-50">
 			<h1 className="text-4xl font-bold text-center mb-12 text-primary-pressed">Productos</h1>
 
-			<div className="font-landing grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-					{products.map((product) => (
-						<div
-							key={product.id}
-							className="rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
-						>
-							<img
-								src={product.images}
-								alt={product.name}
-								className="w-full h-56 object-cover hover:scale-105 transition-transform duration-300"
-							/>
-							<div className="p-6">
+			<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				{products.map((product) => (
+					<div
+						key={product.id || product.sku}
+						className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+					>
+						<img
+							src={product.images}
+							alt={product.name}
+							className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+						/>
+						<div className="p-6 flex flex-col justify-between flex-1">
+							<div>
 								<h2 className="text-xl font-bold text-primary-pressed mb-2">{product.name}</h2>
-								<p className="text-gray-600 text-sm mb-4">{product.description}</p>
-								<div className="flex justify-between items-center">
-									<span className="text-lg font-semibold text-primary-pressed">
-										{product.price} €
-									</span>
-									<button className="px-4 py-2 text-sm font-medium text-white bg-primary-pressed rounded-lg hover:bg-primary-hover transition-colors">
-										Ver más
-									</button>
-								</div>
+								<p className="text-gray-600 text-sm mb-4 line-clamp-3">{product.description}</p>
+							</div>
+							<div className="flex justify-between items-center mt-4">
+								<span className="text-lg font-semibold text-primary-pressed">{product.price} €</span>
+								<button
+									onClick={() => setSelectedProduct(product)}
+									className="px-4 py-2 text-sm font-medium text-white bg-primary-pressed rounded-lg hover:bg-primary-hover transition-colors"
+								>
+									Ver más
+								</button>
 							</div>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
+			</div>
+
+			{/* Modal para Productos */}
+			<ProductModal isOpen={!!selectedProduct} onClose={() => setSelectedProduct(null)}>
+				{selectedProduct && (
+					<div className="flex flex-col md:flex-row w-full gap-6">
+						<img
+							src={selectedProduct.images}
+							alt={selectedProduct.name}
+							className="w-full md:w-1/2 h-80 object-cover rounded-2xl shadow-md"
+						/>
+						<div className="flex flex-col justify-between md:w-1/2">
+							<div>
+								<h2 className="text-3xl font-bold text-gray-800 mb-3">{selectedProduct.name}</h2>
+								<p className="text-gray-700 mb-4">{selectedProduct.description}</p>
+								<p className="text-2xl font-semibold text-primary-pressed mb-4">
+									Precio: {selectedProduct.price} €
+								</p>
+							</div>
+
+							<div className="flex flex-row justify-between">
+								<button className="mt-2 px-8 py-3 bg-primary-pressed text-white font-medium rounded-xl hover:bg-primary-hover transition-colors self-start">
+									Añadir al carrito
+								</button>
+								
+                                <LikeButton />
+							</div>
+						</div>
+					</div>
+				)}
+			</ProductModal>
 		</div>
 	);
 };
