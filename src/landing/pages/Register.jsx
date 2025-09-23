@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
+import { Link } from "react-router-dom";
 
 const INITIAL_FORM = { name: "", email: "", adress: "", password: "", role: "" };
 
@@ -122,6 +123,13 @@ export const Register = () => {
 
 					<button type="submit" className="mt-4 bg-primary-hover text-white font-semibold py-2 rounded-md shadow hover:bg-primary-pressed transition-all">Crear cuenta</button>
 				</form>
+
+								<p className="mt-4 text-center text-gray-600 text-sm">
+					¿Ya tienes una cuenta?{" "}
+					<Link to="/login" className="text-primary-hover hover:underline">
+						Inicia sesión
+					</Link>
+				</p>
 			</div>
 		</Container>
 	);
