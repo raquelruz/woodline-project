@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../core/auth/useAuth";
 
 const INITIAL_FORM = { name: "", email: "", adress: "", password: "", role: "" };
 
@@ -80,6 +81,7 @@ const REGISTER_FORM_FIELDS = [
 
 export const Register = () => {
 	const [form, setForm] = useState(INITIAL_FORM);
+	const { register } = useAuth();
 
 	const onInputChange = (event) => {
 		const { name, value } = event.target;
@@ -87,12 +89,13 @@ export const Register = () => {
 		setForm({ ...form, [name]: value });
 	};
 
-	const onRegisterSubmit = (event) => {
+	const onRegisterSubmit = async (event) => {
 		event.preventDefault();
 
 		alert(
 			`Name: ${form.name} Email: ${form.email}\nPassword: ${form.password}, role: ${form.role} nombre: ${form.name}`
 		);
+		register(form);
 		setForm(INITIAL_FORM);
 	};
 
