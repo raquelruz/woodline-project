@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../core/auth/useAuth";
 
 const INITIAL_FORM = { email: "", password: "" };
 
@@ -37,6 +38,7 @@ const LOGIN_FIELDS = [
 
 export const Login = () => {
 	const [form, setForm] = useState(INITIAL_FORM);
+	const { login } = useAuth();
 
 	const onInputChange = (event) => {
 		const { name, value } = event.target;
