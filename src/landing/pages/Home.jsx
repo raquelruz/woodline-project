@@ -4,6 +4,7 @@ import { Hero } from "../sections/Hero";
 import { BenefitsSection } from "../sections/BenefitsSection";
 import { TestimonialsSection } from "../sections/TestimonialsSection";
 import { NewslettersSection } from "../sections/NewslettersSection";
+import { CategoriesSection } from "../sections/CategoriesSection";
 
 export const Home = () => {
 	return (
@@ -11,6 +12,7 @@ export const Home = () => {
 			<Hero />
 
 			<Container>
+				<CategoriesSection />
 				<BenefitsSection />
 				<TestimonialsSection />
 				<NewslettersSection />

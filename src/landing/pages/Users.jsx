@@ -12,7 +12,7 @@ export const Users = () => {
 				console.log("Users data:", response.data);
 				setUsers(response.data);
 			})
-			.catch((error) => {
+			.catch((error) => { 
 				console.error("Error fetching users:", error);
 				setError("Hubo un problema al cargar los usuarios.");
 			})
