@@ -10,6 +10,8 @@ import { Route, Routes } from "react-router-dom";
 import { Login } from "./landing/pages/Login";
 import { Register } from "./landing/pages/Register";
 import { Users } from "./landing/pages/Users";
+import { PrivateRoute } from "./landing/components/PrivateRoute";
+import { Profile } from "./landing/pages/Profile";
 
 export const App = () => {
 	return (
@@ -18,6 +20,7 @@ export const App = () => {
 
 			<main>
 				<Routes>
+					{/* Rutas públicas */}
 					<Route path="/" element={<Home />} />
 					<Route path="/products" element={<Products />} />
 					<Route path="/about" element={<About />} />
@@ -25,6 +28,13 @@ export const App = () => {
 					<Route path="/login" element={<Login />}/>
 					<Route path="/register" element={<Register />}/>
 					<Route path="/users" element={<Users />}/>
+
+					{/* Rutas privadas */}
+					<Route path="/profile" element={
+						<PrivateRoute>
+							<Profile />
+						</PrivateRoute>
+					}/>
 				</Routes>
 			</main>
 
