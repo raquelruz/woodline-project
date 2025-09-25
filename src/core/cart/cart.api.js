@@ -14,7 +14,7 @@ export const getCartApi = async () => {
 // Añadir producto al carrito
 export const addToCartApi = async (productId, quantity = 1) => {
 	try {
-		const response = await api.post("/cart/add", { productId, quantity });
+		const response = await api.post("/carts", { productId, quantity });
 		return response.data;
 	} catch (error) {
 		console.error("Error al añadir producto al carrito", error);
@@ -25,7 +25,7 @@ export const addToCartApi = async (productId, quantity = 1) => {
 // Actualizar cantidad de un producto
 export const updateCartItemApi = async (productId, quantity) => {
 	try {
-		const response = await api.patch(`/cart/update/${productId}`, { quantity });
+		const response = await api.patch(`/carts/${cartItemId}`, { quantity });
 		return response.data;
 	} catch (error) {
 		console.error("Error al actualizar cantidad de producto", error);
@@ -36,7 +36,7 @@ export const updateCartItemApi = async (productId, quantity) => {
 // Eliminar producto del carrito
 export const removeFromCartApi = async (productId) => {
 	try {
-		const response = await api.delete(`/cart/remove/${productId}`);
+		const response = await api.delete(`/carts/${cartItemId}`);
 		return response.data;
 	} catch (error) {
 		console.error("Error al eliminar producto del carrito", error);

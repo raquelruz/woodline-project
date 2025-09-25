@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { ProductModal } from "../components/ProductModal";
 import { LikeButton } from "../components/LikeButton";
+import { CartButton } from "../components/CartButton";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
@@ -66,9 +67,7 @@ export const Products = () => {
 							</div>
 
 							<div className="flex flex-row justify-between">
-								<button className="mt-2 px-8 py-3 bg-primary-pressed text-white font-medium rounded-xl hover:bg-primary-hover transition-colors self-start">
-									Añadir al carrito
-								</button>
+								<CartButton product={selectedProduct} quantity={1} />
 								
                                 <LikeButton />
 							</div>

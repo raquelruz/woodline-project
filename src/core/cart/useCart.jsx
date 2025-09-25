@@ -8,7 +8,7 @@ export const useCart = () => {
 
 	// Obtener carrito del usuario
 	const getCart = async () => {
-		console.log("useCart → getCart");
+		console.log("Carrito obtenido");
 		const data = await getCartApi();
 		setCart(data);
 		saveCartInLocalStorage(data);
@@ -16,7 +16,7 @@ export const useCart = () => {
 
 	// Añadir un producto
 	const addToCart = async (productId, quantity = 1) => {
-		console.log(`useCart → addToCart: ${productId}, cantidad: ${quantity}`);
+		console.log(`Producto añadido: ${productId}, cantidad: ${quantity}`);
 		const data = await addToCartApi(productId, quantity);
 		setCart(data);
 		saveCartInLocalStorage(data);
@@ -24,7 +24,7 @@ export const useCart = () => {
 
 	// Actualizar cantidad de productos
 	const updateCartItem = async (productId, quantity) => {
-		console.log(`useCart → updateCartItem: ${productId}, cantidad: ${quantity}`);
+		console.log(`Cantidad actualizada: ${productId}, cantidad: ${quantity}`);
 		const data = await updateCartItemApi(productId, quantity);
 		setCart(data);
 		saveCartInLocalStorage(data);
@@ -32,7 +32,7 @@ export const useCart = () => {
 
 	// Eliminar un producto
 	const removeFromCart = async (productId) => {
-		console.log(`useCart → removeFromCart: ${productId}`);
+		console.log(`Producto eliminado: ${productId}`);
 		const data = await removeFromCartApi(productId);
 		setCart(data);
 		saveCartInLocalStorage(data);
