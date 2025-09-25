@@ -58,7 +58,7 @@ export const CategoriesSection = () => {
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 				{categories.map((category) => (
 					<Link
-						to={`/categories/${category.slug}`} // 👈 redirige a /categories/slug
+						to={`/categories/${category.slug}`} 
 						key={category.id}
 						className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer"
 					>

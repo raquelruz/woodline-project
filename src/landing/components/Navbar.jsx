@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { LogoutButton } from "./LogoutButton";
 
 export const Navbar = () => {
+	const { user } = useContext(AuthContext);
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	return (
@@ -25,6 +28,8 @@ export const Navbar = () => {
 				<NavLink to="/contact" className="hover:text-primary">
 					Contacto
 				</NavLink>
+				
+				{!isMobileMenuOpen && <LogoutButton />}
 			</div>
 
 			{/* MENÚ MOBILE */}
@@ -68,6 +73,12 @@ export const Navbar = () => {
 					>
 						Contacto
 					</NavLink>
+
+					{user && (
+						<div className="mt-4">
+							<LogoutButton />
+						</div>
+					)}
 				</div>
 			)}
 		</nav>
