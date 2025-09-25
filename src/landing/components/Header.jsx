@@ -8,7 +8,7 @@ export const Header = () => {
 	return (
 		<header className="shadow-md">
 			<Container>
-				<div className="h-16 flex items-center justify-between">
+				<div className="h-16 pr-4 pl-4 flex items-center justify-between">
 					<img src={logo} alt="logo" className="h-12" />
 
 					<Navbar />
