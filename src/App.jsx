@@ -12,6 +12,7 @@ import { Register } from "./landing/pages/Register";
 import { Users } from "./landing/pages/Users";
 import { PrivateRoute } from "./landing/components/PrivateRoute";
 import { Profile } from "./landing/pages/Profile";
+import { CartPage } from "./landing/pages/CartPage";
 
 export const App = () => {
 	return (
@@ -23,11 +24,13 @@ export const App = () => {
 					{/* Rutas públicas */}
 					<Route path="/" element={<Home />} />
 					<Route path="/products" element={<Products />} />
+					<Route path="/cart" element={<CartPage />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login" element={<Login />}/>
 					<Route path="/register" element={<Register />}/>
 					<Route path="/users" element={<Users />}/>
+
 
 					{/* Rutas privadas */}
 					<Route path="/profile" element={
