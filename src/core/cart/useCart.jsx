@@ -31,5 +31,20 @@ export const useCart = () => {
 		clearCartFromLocalStorage();
 	};
 
-	return { items, loading, addToCart, removeFromCart, clearCart };
+	const incrementQty = (id) => {
+		setItems((prev) => prev.map((p) => ((p._id || p.id) === id ? { ...p, quantity: (p.quantity || 1) + 1 } : p)));
+	};
+
+	const decrementQty = (id) => {
+		setItems((prev) =>
+			prev.map((p) => ((p._id || p.id) === id ? { ...p, quantity: Math.max(1, (p.quantity || 1) - 1) } : p))
+		);
+	};
+
+	const setItemQty = (id, qty) => {
+		const q = Math.max(1, Number(qty) || 1);
+		setItems((prev) => prev.map((p) => ((p._id || p.id) === id ? { ...p, quantity: q } : p)));
+	};
+
+	return { items, loading, addToCart, removeFromCart, clearCart, incrementQty, decrementQty, setItemQty };
 };
