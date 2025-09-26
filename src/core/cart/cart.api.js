@@ -1,126 +1,90 @@
 import { api } from "../http/axios";
 import { getCartFromLocalStorage, saveCartInLocalStorage, clearCartFromLocalStorage } from "./cart.service.js";
-import { getTokenFromLocalStorage } from "../auth/auth.service.js";
 
-// Obtener carrito
+// Obtener carrito (si la API falla, usa localStorage)
 export const getCartApi = async () => {
 	try {
-		// console.log("getCartApi");
-		const token = getTokenFromLocalStorage();
-		const response = await api.get("/carts", {
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		// console.log("Carrito obtenido:", response.data);
-
-		return Array.isArray(response.data) ? { items: response.data } : response.data;
+		const response = await api.get("/carts");
+		// console.log("Respuesta de la API:", response.data);
+		return response.data;
 	} catch (error) {
-		console.error("Error al obtener carrito:", error);
-		return { items: [] };
+		console.error("Error al obtener carrito de la API:", error);
+		return getCartFromLocalStorage() || { items: [] };
 	}
 };
 
 // Añadir producto
-export const addToCartApi = async (productId, quantity = 1) => {
+export const addToCartApi = async (product, quantity = 1) => {
 	try {
-		// console.log("addToCartApi");
-		const token = getTokenFromLocalStorage();
-		const response = await api.post(
-			"/carts",
-			{ productId, quantity },
-			{ headers: { Authorization: `Bearer ${token}` } }
-		);
+		const cart = getCartFromLocalStorage() || {
+			status: "active",
+			items: [],
+			id: Date.now().toString(),
+		};
 
-		// console.log("Añadido al carrito:", response.data);
+		const existing = cart.items.find((item) => item.productId === product._id);
 
-		saveCartInLocalStorage(response.data);
-		return response.data;
+		if (existing) {
+			existing.quantity += quantity;
+		} else {
+			cart.items.push({
+				productId: product._id,
+				name: product.name,
+				price: product.price,
+				images: product.images || [],
+				quantity,
+			});
+		}
+
+		saveCartInLocalStorage(cart);
+		// console.log("Carrito actualizado en localStorage:", cart);
+		return cart;
 	} catch (error) {
 		console.error("Error al añadir al carrito:", error);
+		throw error;
+	}
+};
 
-		let cart = getCartFromLocalStorage() || { items: [] };
-
+// Actualizar cantidad de un producto
+export const updateCartItemApi = async (productId, quantity) => {
+	try {
+		const cart = getCartFromLocalStorage() || { items: [] };
 		const item = cart.items.find((i) => i.productId === productId);
 
-		if (item) item.quantity += quantity;
-		else cart.items.push({ productId, quantity });
+		if (item) item.quantity = quantity;
 
 		saveCartInLocalStorage(cart);
-
+		// console.log("Producto actualizado en localStorage:", cart);
 		return cart;
+	} catch (error) {
+		console.error("Error al actualizar producto:", error);
+		throw error;
 	}
 };
 
-// Actualizar cantidad
-export const updateCartItemApi = async (itemId, quantity) => {
+// Eliminar un producto del carrito
+export const removeCartItemApi = async (productId) => {
 	try {
-		// console.log("updateCartItemApi");
-		const token = getTokenFromLocalStorage();
-		const response = await api.patch(
-			`/carts/${itemId}`,
-			{ quantity },
-			{ headers: { Authorization: `Bearer ${token}` } }
-		);
-
-		// console.log("Carrito actualizado:", response.data);
-
-		saveCartInLocalStorage(response.data);
-
-		return response.data;
-	} catch (error) {
-		console.error("Error al actualizar carrito:", error);
-
 		let cart = getCartFromLocalStorage() || { items: [] };
-		cart.items = cart.items.map((i) => (i.productId === itemId ? { ...i, quantity } : i));
+		cart.items = cart.items.filter((i) => i.productId !== productId);
 
 		saveCartInLocalStorage(cart);
-
+		// console.log("Producto eliminado en localStorage:", cart);
 		return cart;
-	}
-};
-
-// Eliminar producto
-export const removeCartItemApi = async (itemId) => {
-	try {
-		// console.log("removeCartItemApi");
-		const token = getTokenFromLocalStorage();
-		const response = await api.delete(`/carts/${itemId}`, {
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		// console.log("Eliminado del carrito:", response.data);
-
-		saveCartInLocalStorage(response.data);
-
-		return response.data;
 	} catch (error) {
-		console.error("Error al eliminar del carrito", error);
-
-		let cart = getCartFromLocalStorage() || { items: [] };
-		cart.items = cart.items.filter((i) => i.productId !== itemId);
-
-		saveCartInLocalStorage(cart);
-
-		return cart;
+		console.error("Error al eliminar producto:", error);
+		throw error;
 	}
 };
 
 // Vaciar carrito
 export const clearCartApi = async () => {
 	try {
-		// console.log("clearCartApi");
-		const token = getTokenFromLocalStorage();
-		const response = await api.delete("/carts", {
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		// console.log("Carrito eliminado:", response);
-
 		clearCartFromLocalStorage();
-
-		return response.data;
+		// console.log("Carrito vaciado en localStorage");
+		return { items: [] };
 	} catch (error) {
 		console.error("Error al vaciar carrito:", error);
-
-		clearCartFromLocalStorage();
-
-		return { items: [] };
+		throw error;
 	}
 };
