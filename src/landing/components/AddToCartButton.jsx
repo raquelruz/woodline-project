@@ -9,7 +9,7 @@ export const AddToCartButton = ({ product }) => {
 			return;
 		}
 
-		console.log("Producto recibido en AddToCartButton:", product);
+		// console.log("Producto recibido en AddToCartButton:", product);
 		addToCart(product);
 	};
 

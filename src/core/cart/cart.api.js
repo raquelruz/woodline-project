@@ -5,12 +5,12 @@ import { getTokenFromLocalStorage } from "../auth/auth.service.js";
 // Obtener carrito
 export const getCartApi = async () => {
 	try {
-		console.log("getCartApi");
+		// console.log("getCartApi");
 		const token = getTokenFromLocalStorage();
 		const response = await api.get("/carts", {
 			headers: { Authorization: `Bearer ${token}` },
 		});
-		console.log("Carrito obtenido:", response.data);
+		// console.log("Carrito obtenido:", response.data);
 
 		return Array.isArray(response.data) ? { items: response.data } : response.data;
 	} catch (error) {
@@ -22,7 +22,7 @@ export const getCartApi = async () => {
 // Añadir producto
 export const addToCartApi = async (productId, quantity = 1) => {
 	try {
-		console.log("addToCartApi");
+		// console.log("addToCartApi");
 		const token = getTokenFromLocalStorage();
 		const response = await api.post(
 			"/carts",
@@ -30,7 +30,7 @@ export const addToCartApi = async (productId, quantity = 1) => {
 			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 
-		console.log("Añadido al carrito:", response.data);
+		// console.log("Añadido al carrito:", response.data);
 
 		saveCartInLocalStorage(response.data);
 		return response.data;
@@ -53,7 +53,7 @@ export const addToCartApi = async (productId, quantity = 1) => {
 // Actualizar cantidad
 export const updateCartItemApi = async (itemId, quantity) => {
 	try {
-		console.log("updateCartItemApi");
+		// console.log("updateCartItemApi");
 		const token = getTokenFromLocalStorage();
 		const response = await api.patch(
 			`/carts/${itemId}`,
@@ -61,7 +61,7 @@ export const updateCartItemApi = async (itemId, quantity) => {
 			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 
-		console.log("Carrito actualizado:", response.data);
+		// console.log("Carrito actualizado:", response.data);
 
 		saveCartInLocalStorage(response.data);
 
@@ -81,12 +81,12 @@ export const updateCartItemApi = async (itemId, quantity) => {
 // Eliminar producto
 export const removeCartItemApi = async (itemId) => {
 	try {
-		console.log("removeCartItemApi");
+		// console.log("removeCartItemApi");
 		const token = getTokenFromLocalStorage();
 		const response = await api.delete(`/carts/${itemId}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		});
-		console.log("Eliminado del carrito:", response.data);
+		// console.log("Eliminado del carrito:", response.data);
 
 		saveCartInLocalStorage(response.data);
 
@@ -106,12 +106,12 @@ export const removeCartItemApi = async (itemId) => {
 // Vaciar carrito
 export const clearCartApi = async () => {
 	try {
-		console.log("clearCartApi");
+		// console.log("clearCartApi");
 		const token = getTokenFromLocalStorage();
 		const response = await api.delete("/carts", {
 			headers: { Authorization: `Bearer ${token}` },
 		});
-		console.log("Carrito eliminado:", response);
+		// console.log("Carrito eliminado:", response);
 
 		clearCartFromLocalStorage();
 

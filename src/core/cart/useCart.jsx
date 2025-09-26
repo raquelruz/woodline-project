@@ -19,9 +19,9 @@ export const useCart = () => {
 	};
 
 	const removeFromCart = (id) => {
-		console.log("Intentando eliminar producto con id:", id);
+		// console.log("Intentando eliminar producto con id:", id);
 		setItems((prev) => {
-			console.log("Estado antes de eliminar:", prev);
+			// console.log("Estado antes de eliminar:", prev);
 			return prev.filter((p) => (p._id === id || p.id === id ? false : true));
 		});
 	};
