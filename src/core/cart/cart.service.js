@@ -3,14 +3,13 @@ export const saveCartInLocalStorage = (cart) => {
 	localStorage.setItem("cart", JSON.stringify(cart));
 };
 
-// Obtener carrito (si no existe, devuelve { items: [] })
+// Obtener carrito
 export const getCartFromLocalStorage = () => {
 	const cart = localStorage.getItem("cart");
 	if (!cart) return { items: [] };
 
 	const parsed = JSON.parse(cart);
 
-	// Si por error se guardó como array, lo adaptamos
 	if (Array.isArray(parsed)) {
 		return { items: parsed };
 	}
