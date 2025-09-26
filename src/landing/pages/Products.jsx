@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { ProductModal } from "../components/ProductModal";
 import { LikeButton } from "../components/LikeButton";
-import { CartButton } from "../components/CartButton";
+import { AddToCartButton } from "../components/AddToCartButton";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
-	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [product, setProduct] = useState(null);
 
 	useEffect(() => {
 		api.get("/products")
@@ -37,7 +37,7 @@ export const Products = () => {
 							<div className="flex justify-between items-center mt-4">
 								<span className="text-lg font-semibold text-primary-pressed">{product.price} €</span>
 								<button
-									onClick={() => setSelectedProduct(product)}
+									onClick={() => setProduct(product)}
 									className="px-4 py-2 text-sm font-medium text-white bg-primary-pressed rounded-lg hover:bg-primary-hover transition-colors"
 								>
 									Ver más
@@ -49,25 +49,25 @@ export const Products = () => {
 			</div>
 
 			{/* Modal para Productos */}
-			<ProductModal isOpen={!!selectedProduct} onClose={() => setSelectedProduct(null)}>
-				{selectedProduct && (
+			<ProductModal isOpen={!!product} onClose={() => setProduct(null)}>
+				{product && (
 					<div className="flex flex-col md:flex-row w-full gap-6">
 						<img
-							src={selectedProduct.images}
-							alt={selectedProduct.name}
+							src={product.images}
+							alt={product.name}
 							className="w-full md:w-1/2 h-80 object-cover rounded-2xl shadow-md"
 						/>
 						<div className="flex flex-col justify-between md:w-1/2">
 							<div>
-								<h2 className="text-3xl font-bold text-gray-800 mb-3">{selectedProduct.name}</h2>
-								<p className="text-gray-700 mb-4">{selectedProduct.description}</p>
+								<h2 className="text-3xl font-bold text-gray-800 mb-3">{product.name}</h2>
+								<p className="text-gray-700 mb-4">{product.description}</p>
 								<p className="text-2xl font-semibold text-primary-pressed mb-4">
-									Precio: {selectedProduct.price} €
+									Precio: {product.price} €
 								</p>
 							</div>
 
 							<div className="flex flex-row justify-between">
-								<CartButton product={selectedProduct} quantity={1} />
+								<AddToCartButton product={product} /> 
 								
                                 <LikeButton />
 							</div>

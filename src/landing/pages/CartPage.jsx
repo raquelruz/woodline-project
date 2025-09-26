@@ -1,66 +1,45 @@
-import { useEffect } from "react";
-import { useCart } from "../../core/cart/useCart";
+import { useCart } from "../../core/cart/useCart.jsx";
 
 export const CartPage = () => {
-	const { cart, getCart, updateCartItem, removeFromCart } = useCart();
+	const { items, removeFromCart } = useCart();
 
-	useEffect(() => {
-		getCart();
-	}, []);
+	console.log("Items en CartPage:", items);
 
-	const total = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 0), 0);
+	const total = items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
 	return (
 		<div className="max-w-4xl mx-auto p-6">
-			<h1 className="text-3xl font-bold mb-6">🛒 Carrito de compras</h1>
+			<h1 className="text-2xl font-bold mb-4">🛒 Carrito</h1>
 
-			{cart.length === 0 ? (
-				<p className="text-gray-600">Tu carrito está vacío.</p>
+			{items.length === 0 ? (
+				<p>Tu carrito está vacío</p>
 			) : (
-				<>
-					<ul className="space-y-4">
-						{cart.map((item) => (
-							<li
-								key={item.id || item._id || item.sku}
-								className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-sm"
+				<ul className="space-y-4">
+					{items.map((item) => (
+						<li
+							key={item._id || item.id} 
+							className="flex items-center gap-4 bg-white shadow p-4 rounded-lg"
+						>
+							{item.image && (
+								<img src={item.images[0]} alt={item.name} className="w-20 h-20 object-cover rounded" />
+							)}
+							<div className="flex-1">
+								<h2 className="font-bold">{item.name}</h2>
+								<p>{item.price} €</p>
+								<p>Cantidad: {item.quantity}</p>
+							</div>
+							<button
+								onClick={() => removeFromCart(item._id || item.id)}
+								className="bg-red-500 text-white px-3 py-1 rounded"
 							>
-								<div>
-									<h2 className="font-bold text-lg">{item.name}</h2>
-									<p className="text-gray-700">
-										{item.price} € x {item.quantity} ={" "}
-										<span className="font-semibold">
-											{(item.price || 0) * (item.quantity || 0)} €
-										</span>
-									</p>
-								</div>
-
-								<div className="flex items-center gap-2">
-									<input
-										type="number"
-										min={1}
-										value={item.quantity}
-										onChange={(e) =>
-											updateCartItem(item.id || item._id || item.sku, parseInt(e.target.value))
-										}
-										className="w-16 p-1 border rounded text-center"
-									/>
-
-									<button
-										onClick={() => removeFromCart(item.id || item._id || item.sku)}
-										className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-									>
-										Eliminar
-									</button>
-								</div>
-							</li>
-						))}
-					</ul>
-
-					<div className="mt-6 flex justify-end items-center">
-						<h2 className="text-xl font-bold">Total: {total} €</h2>
-					</div>
-				</>
+								Eliminar
+							</button>
+						</li>
+					))}
+				</ul>
 			)}
+
+			<h2 className="text-xl font-bold mt-6">Total: {total} €</h2>
 		</div>
 	);
 };

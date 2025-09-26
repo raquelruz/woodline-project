@@ -1,48 +1,35 @@
+// src/core/cart/useCart.jsx
 import { useContext } from "react";
-import { CartContext } from "../../contexts/CartContext";
-import { getCartApi, addToCartApi, updateCartItemApi, removeFromCartApi } from "./cart.api";
-import { saveCartInLocalStorage } from "./cart.service";
+import { CartContext } from "../../contexts/CartContext.jsx";
+import { clearCartFromLocalStorage } from "./cart.service";
 
 export const useCart = () => {
-	const { cart, setCart } = useContext(CartContext);
+	const { items, setItems, loading } = useContext(CartContext);
 
-	// Obtener carrito del usuario
-	const getCart = async () => {
-		console.log("Carrito obtenido");
-		const data = await getCartApi();
-		setCart(data);
-		saveCartInLocalStorage(data);
+	const addToCart = (product) => {
+		if (!product || !product._id) return;
+
+		setItems((prev) => {
+			const existing = prev.find((p) => p._id === product._id);
+			if (existing) {
+				return prev.map((p) => (p._id === product._id ? { ...p, quantity: p.quantity + 1 } : p));
+			}
+			return [...prev, { ...product, quantity: 1 }];
+		});
 	};
 
-	// Añadir un producto
-	const addToCart = async (productId, quantity = 1) => {
-		console.log(`Producto añadido: ${productId}, cantidad: ${quantity}`);
-		const data = await addToCartApi(productId, quantity);
-		setCart(data);
-		saveCartInLocalStorage(data);
+	const removeFromCart = (id) => {
+		console.log("Intentando eliminar producto con id:", id);
+		setItems((prev) => {
+			console.log("Estado antes de eliminar:", prev);
+			return prev.filter((p) => (p._id === id || p.id === id ? false : true));
+		});
 	};
 
-	// Actualizar cantidad de productos
-	const updateCartItem = async (productId, quantity) => {
-		console.log(`Cantidad actualizada: ${productId}, cantidad: ${quantity}`);
-		const data = await updateCartItemApi(productId, quantity);
-		setCart(data);
-		saveCartInLocalStorage(data);
+	const clearCart = () => {
+		setItems([]);
+		clearCartFromLocalStorage();
 	};
 
-	// Eliminar un producto
-	const removeFromCart = async (productId) => {
-		console.log(`Producto eliminado: ${productId}`);
-		const data = await removeFromCartApi(productId);
-		setCart(data);
-		saveCartInLocalStorage(data);
-	};
-
-	return {
-		cart,
-		getCart,
-		addToCart,
-		updateCartItem,
-		removeFromCart,
-	};
+	return { items, loading, addToCart, removeFromCart, clearCart };
 };
