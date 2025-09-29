@@ -1,28 +1,44 @@
 import { createContext, useEffect, useState } from "react";
-import { saveCartInLocalStorage, getCartFromLocalStorage } from "../core/cart/cart.service.js";
+import { createCartApi } from "../core/cart/cart.api.js";
+import { getCartFromLocalStorage, saveCartInLocalStorage } from "../core/cart/cart.service.js";
+import { normalizeCart } from "../helpers/normalizeCart.js";
 
-export const CartContext = createContext();
+export const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
-	const [items, setItems] = useState([]);
-	const [loading, setLoading] = useState(true); 
-	const [initialized, setInitialized] = useState(false); 
+	const [cart, setCart] = useState({ id: null, items: [] });
 
-	// Cargar carrito desde localStorage al inicio
 	useEffect(() => {
-		const stored = getCartFromLocalStorage();
-		// console.log("Carrito cargado desde localStorage:", stored);
-		setItems(stored.items || []);
-		setLoading(false);
-		setInitialized(true); 
+		const initCart = async () => {
+			let storedCart = getCartFromLocalStorage();
+
+			if (!storedCart || !storedCart.id) {
+				try {
+					console.log("🆕 No hay carrito en localStorage, creando uno nuevo...");
+					const response = await createCartApi();
+					console.log("🟢 Response POST /carts:", response);
+
+					const newCart = normalizeCart(response);
+
+					saveCartInLocalStorage(newCart);
+					setCart(newCart);
+
+					console.log("✅ Carrito creado y guardado:", newCart);
+				} catch (err) {
+					console.error("❌ Error creando carrito:", err);
+				}
+			} else {
+				console.log("♻️ Carrito cargado de localStorage:", storedCart);
+				setCart(normalizeCart(storedCart));
+			}
+		};
+
+		initCart();
 	}, []);
 
-	// Guardar carrito en localStorage cada vez que cambien los items
 	useEffect(() => {
-		if (!initialized) return; 
-		saveCartInLocalStorage({ items });
-		// console.log("Carrito guardado en localStorage:", { items });
-	}, [items, initialized]);
+		console.log("🧺 Cart actualizado:", cart);
+	}, [cart]);
 
-	return <CartContext.Provider value={{ items, setItems, loading }}>{children}</CartContext.Provider>;
+	return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
 };

@@ -1,28 +1,15 @@
-// Guardar carrito completo
+// Guarda carrito en localStorage
 export const saveCartInLocalStorage = (cart) => {
 	localStorage.setItem("cart", JSON.stringify(cart));
 };
 
-// Obtener carrito (si no existe, devuelve { items: [] })
+// Recupera carrito de localStorage
 export const getCartFromLocalStorage = () => {
 	const cart = localStorage.getItem("cart");
-	if (!cart) return { items: [] };
-
-	const parsed = JSON.parse(cart);
-
-	// Si por error se guardó como array, lo adaptamos
-	if (Array.isArray(parsed)) {
-		return { items: parsed };
-	}
-
-	if (!parsed.items) {
-		return { items: [] };
-	}
-
-	return parsed;
+	return cart ? JSON.parse(cart) : null;
 };
 
-// Eliminar carrito
-export const clearCartFromLocalStorage = () => {
+// Elimina carrito de localStorage
+export const removeCartFromLocalStorage = () => {
 	localStorage.removeItem("cart");
 };
