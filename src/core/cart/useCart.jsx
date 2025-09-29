@@ -1,132 +1,92 @@
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext.jsx";
 import { saveCartInLocalStorage } from "./cart.service.js";
-import { updateCartApi, createCartApi } from "./cart.api.js";
 import { normalizeCart } from "../../helpers/normalizeCart.js";
+import { getTokenFromLocalStorage } from "../auth/auth.service.js";
+import { createOrderApi } from "../orders/orders.api.js";
 
 export const useCart = () => {
 	const { cart, setCart } = useContext(CartContext);
 
-	const addToCart = async (product, qty = 1) => {
-		try {
-			if (!cart?.id) {
-				console.warn("⚠️ No hay carrito, creando uno nuevo...");
-				const newCart = await createCartApi();
-				const normalized = normalizeCart(newCart);
-				setCart(normalized);
-				saveCartInLocalStorage(normalized);
+	/** Añadir producto al carrito (frontend only) */
+	const addToCart = (product, qty = 1) => {
+		console.log("➕ addToCart()", { product, qty });
 
-				const updatedItems = [
-					{
-						productId: product._id || product.id,
-						name: product.name,
-						images: product.images,
-						quantity: qty,
-						price: product.price,
-					},
-				];
+		const updatedItems = [
+			...(cart.items || []),
+			{
+				productId: product._id || product.id,
+				name: product.name,
+				images: product.images,
+				quantity: qty,
+				price: product.price,
+			},
+		];
 
-				const response = await updateCartApi(normalized.id, updatedItems);
-				const finalCart = normalizeCart(response);
-				setCart(finalCart);
-				saveCartInLocalStorage(finalCart);
-				console.log("✅ Producto añadido en carrito nuevo:", finalCart);
-				return;
-			}
+		const newCart = normalizeCart({ ...cart, items: updatedItems });
+		setCart(newCart);
+		saveCartInLocalStorage(newCart);
 
-			console.log("➕ addToCart()", { product, qty });
-			console.log("🟡 cart.id que voy a usar en PATCH:", cart.id);
-
-			const updatedItems = [
-				...(cart.items || []),
-				{
-					productId: product._id || product.id,
-					name: product.name,
-					images: product.images,
-					quantity: qty,
-					price: product.price,
-				},
-			];
-
-			const response = await updateCartApi(cart.id, updatedItems);
-			const normalized = normalizeCart(response);
-			setCart(normalized);
-			saveCartInLocalStorage(normalized);
-			console.log("✅ Producto añadido:", normalized);
-		} catch (err) {
-			if (err.response?.status === 404) {
-				console.warn("⚠️ Carrito no encontrado en backend. Creando uno nuevo...");
-
-				const newCart = await createCartApi();
-				const normalized = normalizeCart(newCart);
-				setCart(normalized);
-				saveCartInLocalStorage(normalized);
-
-				const updatedItems = [
-					{
-						productId: product._id || product.id,
-						name: product.name,
-						images: product.images,
-						quantity: qty,
-						price: product.price,
-					},
-				];
-
-				const response = await updateCartApi(normalized.id, updatedItems);
-				const finalCart = normalizeCart(response);
-				setCart(finalCart);
-				saveCartInLocalStorage(finalCart);
-				console.log("✅ Producto añadido tras recrear carrito:", finalCart);
-			} else {
-				console.error("❌ Error añadiendo producto:", err);
-			}
-		}
+		console.log("✅ Producto añadido:", newCart);
 	};
 
-	const removeFromCart = async (productId) => {
-		if (!cart?.id) return;
-
+	/** Quitar producto */
+	const removeFromCart = (productId) => {
 		const updatedItems = cart.items.filter((p) => p.productId !== productId);
+		const newCart = normalizeCart({ ...cart, items: updatedItems });
 
-		const response = await updateCartApi(cart.id, updatedItems);
-		const normalized = normalizeCart(response);
-		setCart(normalized);
-		saveCartInLocalStorage(normalized);
+		setCart(newCart);
+		saveCartInLocalStorage(newCart);
 	};
 
-	const incrementQty = async (productId) => {
-		if (!cart?.id) return;
-
+	/** Incrementar cantidad */
+	const incrementQty = (productId) => {
 		const updatedItems = cart.items.map((p) =>
 			p.productId === productId ? { ...p, quantity: (p.quantity || 1) + 1 } : p
 		);
 
-		const response = await updateCartApi(cart.id, updatedItems);
-		const normalized = normalizeCart(response);
-		setCart(normalized);
-		saveCartInLocalStorage(normalized);
+		const newCart = normalizeCart({ ...cart, items: updatedItems });
+		setCart(newCart);
+		saveCartInLocalStorage(newCart);
 	};
 
-	const decrementQty = async (productId) => {
-		if (!cart?.id) return;
-
+	/** Decrementar cantidad */
+	const decrementQty = (productId) => {
 		const updatedItems = cart.items.map((p) =>
 			p.productId === productId ? { ...p, quantity: Math.max((p.quantity || 1) - 1, 1) } : p
 		);
 
-		const response = await updateCartApi(cart.id, updatedItems);
-		const normalized = normalizeCart(response);
-		setCart(normalized);
-		saveCartInLocalStorage(normalized);
+		const newCart = normalizeCart({ ...cart, items: updatedItems });
+		setCart(newCart);
+		saveCartInLocalStorage(newCart);
 	};
 
-	const clearCart = async () => {
-		if (!cart?.id) return;
+	/** Vaciar carrito */
+	const clearCart = () => {
+		const newCart = normalizeCart({ ...cart, items: [] });
+		setCart(newCart);
+		saveCartInLocalStorage(newCart);
+	};
 
-		const response = await updateCartApi(cart.id, []);
-		const normalized = normalizeCart(response);
-		setCart(normalized);
-		saveCartInLocalStorage(normalized);
+	/** Checkout → crear pedido en backend */
+	const checkout = async (userId) => {
+		try {
+			const token = getTokenFromLocalStorage();
+			if (!token) throw new Error("No estás logueado");
+
+			const order = await createOrderApi({
+				userId,
+				items: cart.items,
+				status: "pending",
+			});
+
+			console.log("✅ Pedido creado:", order);
+			clearCart(); // opcional: limpiar después de pedido
+			return order;
+		} catch (err) {
+			console.error("❌ Error en checkout:", err);
+			throw err;
+		}
 	};
 
 	return {
@@ -136,5 +96,6 @@ export const useCart = () => {
 		incrementQty,
 		decrementQty,
 		clearCart,
+		checkout,
 	};
 };
