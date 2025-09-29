@@ -1,12 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart/useCart.jsx";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 export const CartPage = () => {
 	const { items, removeFromCart, incrementQty, decrementQty, clearCart } = useCart();
+	const navigate = useNavigate();
+	const { user } = useContext(AuthContext);
 
 	const subtotal = items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 	const deliveryFee = 4.9;
 	const discount = 0.2;
 	const total = subtotal + deliveryFee - subtotal * discount;
+
+	const handleCheckout = () => {
+		if (!user) {
+			navigate("/login");
+		} else {
+			navigate("/checkout");
+		}
+	}
 
 	return (
 		<div className="min-h-screen p-8 bg-gray-50">
@@ -98,7 +111,7 @@ export const CartPage = () => {
 						<span>{total.toFixed(2)} €</span>
 					</div>
 					<button
-						onClick={clearCart}
+					onClick={handleCheckout}
 						className="w-full mt-6 bg-primary-hover text-white font-semibold py-3 rounded-xl hover:bg-primary-pressed transition"
 					>
 						Comprar ahora →
