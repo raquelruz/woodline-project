@@ -11,6 +11,8 @@ export const api = axios.create({
     },
 });
 
+export default api;
+
 // Cómo hacer una petición
 // api.get("/products")
 // api.post

@@ -1,6 +1,4 @@
 import { useCart } from "../../core/cart/useCart.jsx";
-import { CartItem } from "../components/CartItem.jsx";
-import { CartSummary } from "../components/CartSummary.jsx";
 
 export const CartPage = () => {
 	const { items, removeFromCart, incrementQty, decrementQty, clearCart } = useCart();
@@ -21,7 +19,7 @@ export const CartPage = () => {
 						<p className="text-gray-500 text-lg">Tu carrito está vacío.</p>
 					) : (
 						items.map((item) => {
-							const id = item._id || item.id;
+							const id = item.productId || item.id;
 							return (
 								<div
 									key={id}
@@ -37,7 +35,9 @@ export const CartPage = () => {
 											/>
 										)}
 										<div>
-											<h2 className="font-semibold font-title text-lg text-primary-pressed">{item.name}</h2>
+											<h2 className="font-semibold font-title text-lg text-primary-pressed">
+												{item.name}
+											</h2>
 											<p className="text-primary-pressed text-lg mt-1">
 												{(item.price || 0).toFixed(2)} €
 											</p>
@@ -97,7 +97,10 @@ export const CartPage = () => {
 						<span>Total</span>
 						<span>{total.toFixed(2)} €</span>
 					</div>
-					<button className="w-full mt-6 bg-primary-hover text-white font-semibold py-3 rounded-xl hover:bg-primary-pressed transition">
+					<button
+						onClick={clearCart}
+						className="w-full mt-6 bg-primary-hover text-white font-semibold py-3 rounded-xl hover:bg-primary-pressed transition"
+					>
 						Comprar ahora →
 					</button>
 				</div>
