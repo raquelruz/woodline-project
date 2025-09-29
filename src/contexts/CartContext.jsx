@@ -10,26 +10,24 @@ export const CartProvider = ({ children }) => {
 
 	useEffect(() => {
 		const initCart = async () => {
-			let storedCart = getCartFromLocalStorage();
+			const storedCart = getCartFromLocalStorage();
 
-			if (!storedCart || !storedCart.id) {
+			if (storedCart?.id) {
+				setCart(normalizeCart(storedCart));
+				console.log("Carrito cargado de localStorage:", storedCart);
+			} else {
 				try {
-					console.log("🆕 No hay carrito en localStorage, creando uno nuevo...");
+					console.log("Creando carrito nuevo...");
 					const response = await createCartApi();
-					console.log("🟢 Response POST /carts:", response);
-
 					const newCart = normalizeCart(response);
 
 					saveCartInLocalStorage(newCart);
 					setCart(newCart);
 
-					console.log("✅ Carrito creado y guardado:", newCart);
-				} catch (err) {
-					console.error("❌ Error creando carrito:", err);
+					console.log("Carrito creado y guardado:", newCart);
+				} catch (error) {
+					console.error("Error creando carrito:", err);
 				}
-			} else {
-				console.log("♻️ Carrito cargado de localStorage:", storedCart);
-				setCart(normalizeCart(storedCart));
 			}
 		};
 
@@ -37,7 +35,7 @@ export const CartProvider = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log("🧺 Cart actualizado:", cart);
+		console.log("Cart actualizado:", cart);
 	}, [cart]);
 
 	return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;

@@ -2,91 +2,95 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext.jsx";
 import { saveCartInLocalStorage } from "./cart.service.js";
 import { normalizeCart } from "../../helpers/normalizeCart.js";
-import { getTokenFromLocalStorage } from "../auth/auth.service.js";
 import { createOrderApi } from "../orders/orders.api.js";
 
 export const useCart = () => {
 	const { cart, setCart } = useContext(CartContext);
 
-	/** Añadir producto al carrito (frontend only) */
-	const addToCart = (product, qty = 1) => {
-		console.log("➕ addToCart()", { product, qty });
-
-		const updatedItems = [
-			...(cart.items || []),
-			{
-				productId: product._id || product.id,
-				name: product.name,
-				images: product.images,
-				quantity: qty,
-				price: product.price,
-			},
-		];
-
-		const newCart = normalizeCart({ ...cart, items: updatedItems });
+	const updateCart = (items) => {
+		const newCart = normalizeCart({ ...cart, items });
 		setCart(newCart);
 		saveCartInLocalStorage(newCart);
-
-		console.log("✅ Producto añadido:", newCart);
+		return newCart;
 	};
 
-	/** Quitar producto */
+	const addToCart = (product, qty = 1) => {
+		const productId = product._id || product.id;
+		const existingItem = cart.items.find((p) => p.productId === productId);
+
+		let updatedItems;
+		if (existingItem) {
+			updatedItems = cart.items.map((p) =>
+				p.productId === productId ? { ...p, quantity: (p.quantity || 1) + qty } : p
+			);
+		} else {
+			updatedItems = [
+				...cart.items,
+				{
+					productId,
+					name: product.name,
+					images: product.images,
+					price: product.price,
+					quantity: qty,
+				},
+			];
+		}
+
+		return updateCart(updatedItems);
+	};
+
 	const removeFromCart = (productId) => {
 		const updatedItems = cart.items.filter((p) => p.productId !== productId);
-		const newCart = normalizeCart({ ...cart, items: updatedItems });
-
-		setCart(newCart);
-		saveCartInLocalStorage(newCart);
+		return updateCart(updatedItems);
 	};
 
-	/** Incrementar cantidad */
 	const incrementQty = (productId) => {
 		const updatedItems = cart.items.map((p) =>
 			p.productId === productId ? { ...p, quantity: (p.quantity || 1) + 1 } : p
 		);
-
-		const newCart = normalizeCart({ ...cart, items: updatedItems });
-		setCart(newCart);
-		saveCartInLocalStorage(newCart);
+		return updateCart(updatedItems);
 	};
 
-	/** Decrementar cantidad */
 	const decrementQty = (productId) => {
 		const updatedItems = cart.items.map((p) =>
 			p.productId === productId ? { ...p, quantity: Math.max((p.quantity || 1) - 1, 1) } : p
 		);
-
-		const newCart = normalizeCart({ ...cart, items: updatedItems });
-		setCart(newCart);
-		saveCartInLocalStorage(newCart);
+		return updateCart(updatedItems);
 	};
 
-	/** Vaciar carrito */
 	const clearCart = () => {
-		const newCart = normalizeCart({ ...cart, items: [] });
-		setCart(newCart);
-		saveCartInLocalStorage(newCart);
+		return updateCart([]);
 	};
 
 	/** Checkout → crear pedido en backend */
-	const checkout = async (userId) => {
-		try {
-			const token = getTokenFromLocalStorage();
-			if (!token) throw new Error("No estás logueado");
+	const checkout = async (userId, { shippingAddress, billingAddress, paymentMethod }) => {
+		if (!cart?.id) throw new Error("No hay carrito activo");
 
-			const order = await createOrderApi({
-				userId,
-				items: cart.items,
-				status: "pending",
-			});
+		const subtotal = cart.items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
-			console.log("✅ Pedido creado:", order);
-			clearCart(); // opcional: limpiar después de pedido
-			return order;
-		} catch (err) {
-			console.error("❌ Error en checkout:", err);
-			throw err;
-		}
+		const tax = subtotal * 0.21;
+		const total = subtotal + tax;
+
+		const orderPayload = {
+			userId,
+			products: cart.items.map((item) => ({
+				productId: item.productId || item.id,
+				quantity: item.quantity || 1,
+				price: Number(item.price.toFixed(2)),
+				name: item.name,
+			})),
+			subtotal: Number(subtotal.toFixed(2)),
+			tax: Number(tax.toFixed(2)),
+			total: Number(total.toFixed(2)),
+			status: "pending",
+			shippingAddress: shippingAddress || "Dirección no especificada",
+			billingAddress: billingAddress || shippingAddress || "Dirección no especificada",
+			paymentMethod: paymentMethod || "credit_card",
+		};
+
+		console.log("📦 Payload enviado a /orders:", orderPayload);
+
+		return await createOrderApi(orderPayload);
 	};
 
 	return {
