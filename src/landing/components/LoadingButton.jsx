@@ -43,7 +43,7 @@ export const LoadingButton = ({
 		<button
 			onClick={onClick}
 			disabled={loading || disabled}
-			className={`w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50 flex justify-center items-center ${className}`}
+			className={`w-full bg-primary-hover text-white py-3 rounded-lg font-semibold hover:bg-primary-pressed transition disabled:opacity-50 flex justify-center items-center ${className}`}
 		>
 			{buttonContent}
 		</button>
