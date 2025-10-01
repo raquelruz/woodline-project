@@ -21,7 +21,7 @@ export const Products = () => {
 			<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{products.map((product) => (
 					<div
-						key={product.id || product.sku}
+						key={product._id || product.id || `${product.sku}-${index}`}
 						className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
 					>
 						<img
@@ -67,9 +67,9 @@ export const Products = () => {
 							</div>
 
 							<div className="flex flex-row justify-between">
-								<AddToCartButton product={product} /> 
-								
-                                <LikeButton />
+								<AddToCartButton product={product} />
+
+								<LikeButton />
 							</div>
 						</div>
 					</div>
