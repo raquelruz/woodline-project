@@ -14,6 +14,7 @@ import { PrivateRoute } from "./landing/components/PrivateRoute";
 import { Profile } from "./landing/pages/Profile";
 import { CartPage } from "./landing/pages/CartPage";
 import { Checkout } from "./landing/pages/Checkout";
+import { OrderSuccessPage } from "./landing/pages/OrderSuccessPage";
 
 export const App = () => {
 	return (
@@ -56,6 +57,15 @@ export const App = () => {
 						element={
 							<PrivateRoute>
 								<Checkout />
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path="/order-success"
+						element={
+							<PrivateRoute>
+								<OrderSuccessPage />
 							</PrivateRoute>
 						}
 					/>

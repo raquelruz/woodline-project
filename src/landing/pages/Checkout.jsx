@@ -1,6 +1,7 @@
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart/useCart.jsx";
 import { useOrders } from "../../core/orders/useOrders.jsx";
-import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 import { calculateSubtotal, calculateTax, toCurrency } from "../../helpers/orders.helpers.js";
 import { LoadingButton } from "../components/LoadingButton.jsx";
@@ -10,6 +11,7 @@ export const Checkout = () => {
 	const { items, clearCart } = useCart();
 	const { createOrder } = useOrders();
 	const { user } = useContext(AuthContext);
+	const navigate = useNavigate();
 
 	const [shippingAddress, setShippingAddress] = useState("");
 	const [billingAddress, setBillingAddress] = useState("");
@@ -18,6 +20,7 @@ export const Checkout = () => {
 	const [showPayment, setShowPayment] = useState(false);
 	const [loading, setLoading] = useState(false);
 
+	// Cálculos del pedido
 	const subtotal = calculateSubtotal(items);
 	const tax = calculateTax(subtotal);
 	const total = subtotal + tax;
@@ -38,10 +41,10 @@ export const Checkout = () => {
 				paymentMethod,
 			});
 
-			alert("✅ Pedido confirmado con éxito");
-			console.log("Pedido creado:", order);
+			console.log("✅ Pedido creado:", order);
 
 			clearCart();
+			navigate("/order-success"); // redirige a página de éxito
 		} catch (error) {
 			console.error("❌ Error al crear pedido:", error);
 			console.error("📡 Backend:", error.response?.data);
@@ -56,7 +59,6 @@ export const Checkout = () => {
 			alert("Debes iniciar sesión para confirmar tu pedido");
 			return;
 		}
-
 		setShowPayment(true);
 	};
 
@@ -74,9 +76,10 @@ export const Checkout = () => {
 				{/* Resumen de productos */}
 				<div className="md:col-span-2 bg-white shadow-md rounded-xl p-6 space-y-4">
 					<h2 className="text-2xl font-bold text-primary-pressed mb-4">Resumen del pedido</h2>
-					{items.length === 0 ? (
-						<p className="text-gray-500">Tu carrito está vacío.</p>
-					) : (
+
+					{items.length === 0 && <p className="text-gray-500">Tu carrito está vacío.</p>}
+
+					{items.length > 0 &&
 						items.map((item) => (
 							<div key={item.productId || item.id} className="flex justify-between border-b pb-2">
 								<span>
@@ -84,11 +87,10 @@ export const Checkout = () => {
 								</span>
 								<span>{(item.price * item.quantity).toFixed(2)} €</span>
 							</div>
-						))
-					)}
+						))}
 				</div>
 
-				{/* Formulario */}
+				{/* Formulario de envío/pago */}
 				<div className="bg-white shadow-md rounded-xl p-6 space-y-4">
 					<h2 className="font-title text-xl font-bold text-primary-pressed">Datos de envío</h2>
 
@@ -98,26 +100,28 @@ export const Checkout = () => {
 							<input
 								type="text"
 								value={shippingAddress}
-								onChange={(event) => setShippingAddress(event.target.value)}
+								onChange={(e) => setShippingAddress(e.target.value)}
 								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>
+
 						<div>
 							<label className="block text-sm font-medium">Dirección de facturación</label>
 							<input
 								type="text"
 								value={billingAddress}
-								onChange={(event) => setBillingAddress(event.target.value)}
+								onChange={(e) => setBillingAddress(e.target.value)}
 								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>
+
 						<div>
 							<label className="block text-sm font-medium">Método de pago</label>
 							<select
 								value={paymentMethod}
-								onChange={(event) => setPaymentMethod(event.target.value)}
+								onChange={(e) => setPaymentMethod(e.target.value)}
 								className="w-full px-3 py-2 border rounded-lg"
 							>
 								<option value="credit_card">Tarjeta de crédito</option>
