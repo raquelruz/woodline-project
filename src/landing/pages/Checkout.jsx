@@ -1,40 +1,42 @@
 import { useCart } from "../../core/cart/useCart.jsx";
+import { useOrders } from "../../core/orders/useOrders.jsx";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { calculateSubtotal, calculateTax, toCurrency } from "../../helpers/orders.helpers.js";
+import { LoadingButton } from "../components/LoadingButton.jsx";
 
 export const Checkout = () => {
-	const { items, checkout, clearCart } = useCart();
+	const { items, clearCart } = useCart();
+	const { createOrder } = useOrders();
 	const { user } = useContext(AuthContext);
 
 	const [shippingAddress, setShippingAddress] = useState("");
 	const [billingAddress, setBillingAddress] = useState("");
 	const [paymentMethod, setPaymentMethod] = useState("credit_card");
+	const [loading, setLoading] = useState(false);
 
-	const subtotal = items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
-	const tax = subtotal * 0.21;
+	const subtotal = calculateSubtotal(items);
+	const tax = calculateTax(subtotal);
 	const total = subtotal + tax;
 
 	const handleConfirm = async () => {
 		try {
-			const order = await checkout(user.id, {
+			setLoading(true);
+			const order = await createOrder(user.id, items, {
 				shippingAddress,
-				billingAddress: billingAddress || shippingAddress,
+				billingAddress,
 				paymentMethod,
 			});
 
-			alert("Pedido confirmado con éxito");
+			// alert("Pedido confirmado con éxito");
 			console.log("Pedido creado:", order);
 
 			clearCart();
 		} catch (error) {
 			console.error("Error al crear pedido:", error);
-
-			if (error.response) {
-				console.error("📡 Detalle del backend:", error.response.data);
-				alert(`Error del servidor: ${JSON.stringify(error.response.data)}`);
-			} else {
-				console.error("No hubo respuesta del servidor");
-			}
+			console.error("Detalle backend:", error.response?.data);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -100,25 +102,26 @@ export const Checkout = () => {
 					<div className="pt-4 border-t text-gray-600 space-y-2">
 						<div className="flex justify-between">
 							<span>Subtotal</span>
-							<span>{subtotal.toFixed(2)} €</span>
+							<span>{toCurrency(subtotal)} €</span>
 						</div>
 						<div className="flex justify-between">
 							<span>IVA (21%)</span>
-							<span>{tax.toFixed(2)} €</span>
+							<span>{toCurrency(tax)} €</span>
 						</div>
 						<div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-2">
 							<span>Total</span>
-							<span>{total.toFixed(2)} €</span>
+							<span>{toCurrency(total)} €</span>
 						</div>
 					</div>
 
-					<button
+					<LoadingButton
 						onClick={handleConfirm}
+						loading={loading}
 						disabled={!shippingAddress || !billingAddress}
-						className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50"
+						loadingText="Confirmando..."
 					>
 						Confirmar pedido
-					</button>
+					</LoadingButton>
 				</div>
 			</div>
 		</div>
