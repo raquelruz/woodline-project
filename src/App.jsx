@@ -15,6 +15,7 @@ import { Profile } from "./landing/pages/Profile";
 import { CartPage } from "./landing/pages/CartPage";
 import { Checkout } from "./landing/pages/Checkout";
 import { OrderSuccessPage } from "./landing/pages/OrderSuccessPage";
+import { OrderDetail } from "./landing/components/Orders/OrderDetail";
 
 export const App = () => {
 	return (
@@ -26,13 +27,11 @@ export const App = () => {
 					{/* Rutas públicas */}
 					<Route path="/" element={<Home />} />
 					<Route path="/products" element={<Products />} />
-
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/users" element={<Users />} />
-
 					{/* Rutas privadas */}
 					<Route
 						path="/profile"
@@ -42,7 +41,6 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
-
 					<Route
 						path="/cart"
 						element={
@@ -51,7 +49,6 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
-
 					<Route
 						path="/checkout"
 						element={
@@ -60,7 +57,6 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
-
 					<Route
 						path="/order-success"
 						element={
@@ -69,6 +65,7 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
+					<Route path="/orders/:id" element={<OrderDetail />} /> 
 				</Routes>
 			</main>
 
