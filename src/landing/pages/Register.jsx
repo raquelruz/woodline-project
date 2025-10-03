@@ -102,7 +102,7 @@ export const Register = () => {
 	return (
 		<Container className="flex items-center justify-center min-h-screen bg-gray-100 px-4 pt-20">
 			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[350px]">
-				<h2 className="font-title text-primary-pressed text-center pb-10">Crear cuenta</h2>
+				<h2 className="font-title text-primary text-center pb-10">Crear cuenta</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
 					{REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
@@ -124,12 +124,12 @@ export const Register = () => {
 						/>
 					))}
 
-					<button type="submit" className="mt-4 bg-primary-hover text-white font-semibold py-2 rounded-md shadow hover:bg-primary-pressed transition-all">Crear cuenta</button>
+					<button type="submit" className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all">Crear cuenta</button>
 				</form>
 
 								<p className="mt-4 text-center text-gray-600 text-sm">
 					¿Ya tienes una cuenta?{" "}
-					<Link to="/login" className="text-primary-hover hover:underline">
+					<Link to="/login" className="text-primary hover:underline">
 						Inicia sesión
 					</Link>
 				</p>

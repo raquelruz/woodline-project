@@ -56,7 +56,7 @@ export const Login = () => {
 	return (
 		<Container className="flex items-center justify-center min-h-screen bg-gray-100 px-4 pt-20">
 			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[350px]">
-				<h2 className="font-title text-primary-pressed text-center pb-10">Iniciar sesión</h2>
+				<h2 className="font-title text-primary text-center pb-10">Iniciar sesión</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onLoginSubmit}>
 					{LOGIN_FIELDS.map(({ label, input, containerClass }) => (
@@ -80,7 +80,7 @@ export const Login = () => {
 
 					<button
 						type="submit"
-						className="mt-4 bg-primary-hover text-white font-semibold py-2 rounded-md shadow hover:bg-primary-pressed transition-all"
+						className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all"
 					>
 						Iniciar sesión
 					</button>
@@ -88,7 +88,7 @@ export const Login = () => {
 
 				<p className="mt-4 text-center text-gray-600 text-sm">
 					¿No tienes cuenta?{" "}
-					<Link to="/register" className="text-primary-hover hover:underline">
+					<Link to="/register" className="text-primary hover:underline">
 						Regístrate
 					</Link>
 				</p>

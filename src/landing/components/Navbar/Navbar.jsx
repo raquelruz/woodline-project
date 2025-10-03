@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
-import { LogoutButton } from "./LogoutButton";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { LogoutButton } from "../Buttons/LogoutButton"
+
+const linkClass = "text-primary hover:text-primary-light"
 
 export const Navbar = () => {
 	const { user } = useContext(AuthContext);
@@ -12,20 +14,20 @@ export const Navbar = () => {
 		<nav className="w-full px-6 md:px-10 py-3 flex items-center justify-center" >
 
 			{/* MENU DESKTOP */}
-			<div className="hidden md:flex gap-8 font-medium font-title color-contrast">
+			<div className="hidden md:flex gap-8 items-center font-medium font-title text-primary">
 				<NavLink
 					to="/"
-					className={({ isActive }) => (isActive ? "text-primary-pressed" : "hover:text-primary")}
+					className={({ isActive }) => (isActive ? "text-primary" : "hover:text-primary-light")}
 				>
 					Inicio
 				</NavLink>
-				<NavLink to="/products" className="hover:text-primary">
+				<NavLink to="/products" className={linkClass}>
 					Productos
 				</NavLink>
-				<NavLink to="/about" className="hover:text-primary">
+				<NavLink to="/about" className={linkClass}>
 					Sobre nosotros
 				</NavLink>
-				<NavLink to="/contact" className="hover:text-primary">
+				<NavLink to="/contact" className={linkClass}>
 					Contacto
 				</NavLink>
 				
@@ -45,7 +47,7 @@ export const Navbar = () => {
 					<NavLink
 						to="/"
 						onClick={() => setMobileMenuOpen(false)}
-						className="py-2 text-gray-700 hover:text-primary-hover"
+						className="py-2 text-gray-700 hover:text-primary"
 					>
 						Inicio
 					</NavLink>
@@ -53,7 +55,7 @@ export const Navbar = () => {
 					<NavLink
 						to="/products"
 						onClick={() => setMobileMenuOpen(false)}
-						className="py-2 text-gray-700 hover:text-primary-hover"
+						className="py-2 text-gray-700 hover:text-primary"
 					>
 						Productos
 					</NavLink>
@@ -61,7 +63,7 @@ export const Navbar = () => {
 					<NavLink
 						to="/about"
 						onClick={() => setMobileMenuOpen(false)}
-						className="py-2 text-gray-700 hover:text-primary-hover"
+						className="py-2 text-gray-700 hover:text-primary"
 					>
 						Sobre nosotros
 					</NavLink>
@@ -69,7 +71,7 @@ export const Navbar = () => {
 					<NavLink
 						to="/contact"
 						onClick={() => setMobileMenuOpen(false)}
-						className="py-2 text-gray-700 hover:text-primary-hover"
+						className="py-2 text-gray-700 hover:text-primary"
 					>
 						Contacto
 					</NavLink>

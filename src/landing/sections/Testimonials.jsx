@@ -35,7 +35,7 @@ const testimonials = [
 ];
 
 
-export const TestimonialsSection = () => {
+export const Testimonials = () => {
 	const [current, setCurrent] = useState(0);
 
 	const nextTestimonial = () => {
@@ -48,10 +48,10 @@ export const TestimonialsSection = () => {
 
 	return (
 		<SectionContainer
-			title={<span className="font-poppins text-3xl font-bold text-primary-pressed">Lo que opinan nuestros clientes</span>}
-			childrenContainerStyle="flex flex-col gap-12"
+			title={<span className="font-title font-bold text-primary">Lo que opinan nuestros clientes</span>}
+			childrenContainerStyle="flex flex-col gap-2"
 		>
-			<p className="text-center text-primary-pressed text-lg">Más de 15.000 clientes satisfechos</p>
+			<p className="text-center text-primary text-lg">Más de 15.000 clientes satisfechos</p>
 
 			<div className="relative w-full overflow-hidden">
 				<div
@@ -64,11 +64,11 @@ export const TestimonialsSection = () => {
 							className="min-w-full flex flex-col md:flex-row items-start gap-10 p-6"
 						>
 							<div className="relative flex-shrink-0">
-								<span className="absolute -top-6 -left-6 text-8xl text-primary-hover">“</span>
+								<span className="absolute -top-2 -left-3 text-8xl text-primary-light">“</span>
 								<img
 									src={testimonial.img}
 									alt={testimonial.name}
-									className="w-32 h-32 rounded-md object-cover bg-landing-brand-darker"
+									className="w-32 h-32 rounded-full object-cover bg-landing-brand-darker"
 								/>
 							</div>
 
@@ -84,13 +84,13 @@ export const TestimonialsSection = () => {
 				<div className="absolute right-8 top-1/2 flex flex-col gap-2 -translate-y-1/2">
 					<button
 						onClick={nextTestimonial}
-						className="w-8 h-8 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+						className="w-8 h-8 flex items-center justify-center rounded-full bg-primary-ultralight text-primary cursor-pointer"
 					>
 						→
 					</button>
 					<button
 						onClick={prevTestimonial}
-						className="w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-600 hover:bg-red-200"
+						className="w-8 h-8 flex items-center justify-center rounded-full bg-error-light text-error cursor-pointer"
 					>
 						←
 					</button>
@@ -98,8 +98,8 @@ export const TestimonialsSection = () => {
 			</div>
 
 
-			<div className="relative w-full flex justify-end items-center border-t border-emerald-900 pt-2">
-				<a href="#" className="text-sm text-emerald-900 hover:underline">
+			<div className="relative w-full flex justify-end items-center border-t border-bg-dark pt-2">
+				<a href="#" className="text-md font-title text-primary hover:underline">
 					Ver todas las reseñas →
 				</a>
 			</div>

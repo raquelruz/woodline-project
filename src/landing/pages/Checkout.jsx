@@ -4,8 +4,8 @@ import { useCart } from "../../core/cart/useCart.jsx";
 import { useOrders } from "../../core/orders/useOrders.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 import { calculateSubtotal, calculateTax, toCurrency } from "../../helpers/orders.helpers.js";
-import { LoadingButton } from "../components/LoadingButton.jsx";
-import { PaymentModal } from "../components/PaymentModal.jsx";
+import { LoadingButton } from "../components/Buttons/LoadingButton.jsx";
+import { PaymentModal } from "../components/Modals/PaymentModal.jsx";
 
 export const Checkout = () => {
 	const { items, clearCart } = useCart();
@@ -41,13 +41,13 @@ export const Checkout = () => {
 				paymentMethod,
 			});
 
-			console.log("✅ Pedido creado:", order);
+			console.log("Pedido creado:", order);
 
 			clearCart();
 			navigate("/order-success"); // redirige a página de éxito
 		} catch (error) {
-			console.error("❌ Error al crear pedido:", error);
-			console.error("📡 Backend:", error.response?.data);
+			console.error("Error al crear pedido:", error);
+			console.error("Backend:", error.response?.data);
 			alert("Hubo un error al confirmar el pedido.");
 		} finally {
 			setLoading(false);
@@ -75,7 +75,7 @@ export const Checkout = () => {
 			<div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 				{/* Resumen de productos */}
 				<div className="md:col-span-2 bg-white shadow-md rounded-xl p-6 space-y-4">
-					<h2 className="text-2xl font-bold text-primary-pressed mb-4">Resumen del pedido</h2>
+					<h2 className="text-2xl font-title font-bold text-primary mb-4">Resumen del pedido</h2>
 
 					{items.length === 0 && <p className="text-gray-500">Tu carrito está vacío.</p>}
 
@@ -92,36 +92,36 @@ export const Checkout = () => {
 
 				{/* Formulario de envío/pago */}
 				<div className="bg-white shadow-md rounded-xl p-6 space-y-4">
-					<h2 className="font-title text-xl font-bold text-primary-pressed">Datos de envío</h2>
+					<h2 className="font-title font-bold text-primary">Datos de envío</h2>
 
 					<div className="space-y-3">
 						<div>
-							<label className="block text-sm font-medium">Dirección de envío</label>
+							<label className="block text-sm font-medium py-2">Dirección de envío</label>
 							<input
 								type="text"
 								value={shippingAddress}
-								onChange={(e) => setShippingAddress(e.target.value)}
+								onChange={(event) => setShippingAddress(event.target.value)}
 								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium">Dirección de facturación</label>
+							<label className="block text-sm font-medium py-2">Dirección de facturación</label>
 							<input
 								type="text"
 								value={billingAddress}
-								onChange={(e) => setBillingAddress(e.target.value)}
+								onChange={(event) => setBillingAddress(event.target.value)}
 								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium">Método de pago</label>
+							<label className="block text-sm font-medium py-2">Método de pago</label>
 							<select
 								value={paymentMethod}
-								onChange={(e) => setPaymentMethod(e.target.value)}
+								onChange={(event) => setPaymentMethod(event.target.value)}
 								className="w-full px-3 py-2 border rounded-lg"
 							>
 								<option value="credit_card">Tarjeta de crédito</option>
@@ -131,7 +131,7 @@ export const Checkout = () => {
 					</div>
 
 					{/* Totales */}
-					<div className="pt-4 border-t text-gray-600 space-y-2">
+					<div className="pt-4 border-t border-primary text-gray-600 space-y-2">
 						<div className="flex justify-between">
 							<span>Subtotal</span>
 							<span>{toCurrency(subtotal)} €</span>
@@ -140,7 +140,7 @@ export const Checkout = () => {
 							<span>IVA (21%)</span>
 							<span>{toCurrency(tax)} €</span>
 						</div>
-						<div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-2">
+						<div className="flex justify-between font-bold text-lg text-primary border-t pt-2">
 							<span>Total</span>
 							<span>{toCurrency(total)} €</span>
 						</div>

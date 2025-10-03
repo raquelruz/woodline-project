@@ -18,12 +18,12 @@ export const ProfileOrders = ({ orders, handleViewOrder }) => {
 								</p>
 							</div>
 							<div className="text-right flex flex-col gap-2">
-								<p className="font-semibold text-primary-hover">{order.total} €</p>
+								<p className="font-semibold text-primary">{order.total} €</p>
 								<button
 									onClick={() => handleViewOrder(order._id || order.id)}
-									className="text-sm text-blue-600 hover:underline"
+									className="text-sm bg-primary py-2 px-4 text-white rounded-md hover:underline"
 								>
-									Ver detalle
+									Ver detalles
 								</button>
 							</div>
 						</li>

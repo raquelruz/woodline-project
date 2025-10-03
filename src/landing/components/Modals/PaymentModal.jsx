@@ -5,10 +5,10 @@ import {
 	isValidCVV,
 	isValidHolder,
 	isValidEmail,
-} from "../../helpers/paymentValidators.helpers";
+} from "../../../helpers/paymentValidators.helpers";
 
-const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300"
-const buttonClass = "px-4 py-2 bg-primary-hover text-white rounded-lg hover:bg-primary-pressed";
+const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring-primary"
+const buttonClass = "px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary";
 
 export const PaymentModal = ({ isOpen, onClose, onSuccess, paymentMethod }) => {
 	const [processing, setProcessing] = useState(false);
@@ -59,7 +59,7 @@ export const PaymentModal = ({ isOpen, onClose, onSuccess, paymentMethod }) => {
 			if (Math.random() > 0.2) {
 				onSuccess();
 			} else {
-				alert("❌ Error en el pago simulado. Intenta de nuevo.");
+				alert("Error en el pago simulado. Intenta de nuevo.");
 				onClose();
 			}
 		}, 2000);
@@ -71,7 +71,7 @@ export const PaymentModal = ({ isOpen, onClose, onSuccess, paymentMethod }) => {
 	if (processing) {
 		content = (
 			<div className="flex flex-col items-center justify-center py-6">
-				<div className="animate-spin h-10 w-10 border-4 border-primary-pressed border-t-transparent rounded-full mb-4"></div>
+				<div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
 				<p className="text-gray-600">Procesando pago...</p>
 			</div>
 		);
@@ -144,7 +144,7 @@ export const PaymentModal = ({ isOpen, onClose, onSuccess, paymentMethod }) => {
 						className={inputClass}
 					/>
 
-					{error && <p className="text-red-600 text-sm">{error}</p>}
+					{error && <p className="text-error text-sm">{error}</p>}
 
 					<div className="flex justify-end gap-3 mt-4">
 						<button

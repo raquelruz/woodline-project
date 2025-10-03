@@ -26,7 +26,7 @@ export const CartPage = () => {
 			<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 				{/* Columna izquierda → lista de productos */}
 				<div className="md:col-span-2 space-y-6">
-					<h2 className="font-title font-bold text-primary-pressed mb-4">Carrito de compra</h2>
+					<h2 className="font-title font-bold text-primary mb-4">Carrito de compra</h2>
 
 					{items.length === 0 ? (
 						<p className="text-gray-500 text-lg">Tu carrito está vacío.</p>
@@ -36,7 +36,7 @@ export const CartPage = () => {
 							return (
 								<div
 									key={id}
-									className="flex flex-col md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition"
+									className="flex flex-col bg-white md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition"
 								>
 									{/* Imagen + info */}
 									<div className="flex items-center gap-4 w-full md:w-auto">
@@ -44,11 +44,11 @@ export const CartPage = () => {
 											<img
 												src={item.images[0]}
 												alt={item.name}
-												className="w-28 h-28 rounded-lg object-cover border"
+												className="w-28 h-28 rounded-lg object-cover"
 											/>
 										)}
 										<div>
-											<h2 className="font-semibold font-title text-lg text-primary-pressed">
+											<h2 className="font-semibold font-title text-lg text-primary">
 												{item.name}
 											</h2>
 											<p className="text-primary-pressed text-lg mt-1">
@@ -61,7 +61,7 @@ export const CartPage = () => {
 									<div className="flex items-center gap-3 mt-4 md:mt-0">
 										<button
 											onClick={() => decrementQty(id)}
-											className="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200 disabled:opacity-40"
+											className="px-3 py-1 border border-gray-300 rounded-full text-primary hover:text-primary-light disabled:opacity-40"
 											disabled={(item.quantity || 1) <= 1}
 										>
 											−
@@ -69,13 +69,13 @@ export const CartPage = () => {
 										<span className="w-8 text-center font-semibold">{item.quantity || 1}</span>
 										<button
 											onClick={() => incrementQty(id)}
-											className="px-3 py-1 border border-gray-300 rounded-lg bg-primary-hover text-white hover:bg-primary-pressed"
+											className="px-3 py-1 border border-gray-300 rounded-full bg-primary-hover text-primary hover:bg-primary-light"
 										>
 											+
 										</button>
 										<button
 											onClick={() => removeFromCart(id)}
-											className="font-bold ml-3 text-red-500 hover:text-red-700"
+											className="font-bold ml-3 text-error"
 											title="Remove"
 										>
 											✕
@@ -100,7 +100,7 @@ export const CartPage = () => {
 							<span>Gastos de envío</span>
 							<span>{deliveryFee.toFixed(2)} €</span>
 						</div>
-						<div className="flex justify-between text-green-600">
+						<div className="flex justify-between text-success">
 							<span>Descuento</span>
 							<span>-{Math.round(discount * 100)}%</span>
 						</div>
@@ -112,7 +112,7 @@ export const CartPage = () => {
 					</div>
 					<button
 					onClick={handleCheckout}
-						className="w-full mt-6 bg-primary-hover text-white font-semibold py-3 rounded-xl hover:bg-primary-pressed transition"
+						className={"w-full mt-6 bg-primary-light text-white font-semibold py-3 rounded-xl hover:bg-primary transition"}
 					>
 						Comprar ahora →
 					</button>

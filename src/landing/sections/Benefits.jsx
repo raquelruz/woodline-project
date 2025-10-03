@@ -21,17 +21,17 @@ const benefits = [
 	},
 ];
 
-export const BenefitsSection = () => {
+export const Benefits = () => {
 	return (
 		<SectionContainer
-			bg="bg-emerald-50"
-			title={<span className="font-title text-h2 font-semibold text-primary-pressed">Nuestros Beneficios</span>}
+			bg="bg-primary-ultralight"
+			title={<span className="font-title font-semibold text-primary">Nuestros Beneficios</span>}
 			childrenContainerStyle="grid grid-cols-1 md:grid-cols-3 gap-8"
 		>
 			{benefits.map((benefit, index) => (
 				<div key={index} className="flex flex-col items-center text-center p-6">
 					<img src={benefit.img} alt={benefit.title} className="w-16 h-16 mb-4" />
-					<h5 className="text-sm font-title font-semibold mb-2">{benefit.title}</h5>
+					<h5 className="font-title font-semibold text-primary mb-2">{benefit.title}</h5>
 					<p className="text-gray-600">{benefit.description}</p>
 				</div>
 			))}

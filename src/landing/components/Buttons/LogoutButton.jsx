@@ -1,11 +1,12 @@
-import { useAuth } from "../../core/auth/useAuth.jsx"
+import { useAuth } from "../../../core/auth/useAuth";
+
 export const LogoutButton = () => {
 	const { logout } = useAuth();
 
 	return (
 		<button
 			onClick={logout}
-			className="bg-primary-hover text-white px-4 py-2 rounded-lg hover:bg-primary-pressed transition-colors"
+			className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition-colors"
 		>
             Cerrar sesión
         </button>

@@ -3,7 +3,7 @@ import { Input } from "./Input";
 export const FormInput = ({ containerClass, input, label }) => {
     return (
         <div className={containerClass}>
-            <label htmlFor={input.name} className={`font-medium text- text-primary-pressed ${label.className}`}>
+            <label htmlFor={input.name} className={`font-medium text- text-primary ${label.className}`}>
                 {label.text}
             </label>
             <Input
