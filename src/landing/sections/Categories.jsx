@@ -43,12 +43,12 @@ const categories = [
 	},
 ];
 
-export const CategoriesSection = () => {
+export const Categories = () => {
 	return (
 		<section className="py-16 px-6 bg-gray-50">
 			<div className="text-center mb-12">
-				<h2 className="text-3xl font-extrabold text-gray-800">
-					Explora por <span className="text-primary-pressed">Categorías</span>
+				<h2 className="text-3xl font-title font-extrabold text-gray-800">
+					Explora por <span className="text-primary font-title">Categorías</span>
 				</h2>
 				<p className="text-gray-500 mt-2">
 					Encuentra inspiración para cada rincón de tu hogar

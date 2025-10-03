@@ -1,10 +1,12 @@
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
-import logo from "../../assets/images/woodline-logo.png";
-import { Container } from "./Container";
-import { Navbar } from "./Navbar";
+import logo from "../../../assets/images/woodline-logo.png";
+import { Container } from "../Container.jsx";
+import { Navbar } from "./Navbar.jsx";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext.jsx";
+
+const iconClass = "text-primary hover:text-primary-light cursor-pointer";
 
 export const Header = () => {
 	const { user } = useContext(AuthContext);
@@ -18,14 +20,14 @@ export const Header = () => {
 					<Navbar />
 
 					<div className="flex items-center gap-6 text-gray-700 text-lg">
-						<FaSearch className="hover:text-primary-hover cursor-pointer" />
+						<FaSearch className={iconClass} />
 
 						<Link to={user ? "/profile" : "/login"}>
-							<FaUser className="hover:text-primary-hover cursor-pointer" />
+							<FaUser className={iconClass} />
 						</Link>
 
 						<Link to="/cart">
-						<FaShoppingCart className="hover:text-primary-hover cursor-pointer" />
+						<FaShoppingCart className={iconClass}  />
 						</Link>
 					</div>
 				</div>

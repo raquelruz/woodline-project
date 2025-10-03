@@ -1,10 +1,9 @@
-import { Route, Routes } from "react-router-dom";
 import { Container } from "../components/Container";
 import { Hero } from "../sections/Hero";
-import { BenefitsSection } from "../sections/BenefitsSection";
-import { TestimonialsSection } from "../sections/TestimonialsSection";
-import { NewslettersSection } from "../sections/NewslettersSection";
-import { CategoriesSection } from "../sections/CategoriesSection";
+import { Benefits } from "../sections/Benefits";
+import { Testimonials } from "../sections/Testimonials";
+import { Newsletters } from "../sections/Newsletters";
+import { Categories } from "../sections/Categories";
 
 export const Home = () => {
 	return (
@@ -12,10 +11,10 @@ export const Home = () => {
 			<Hero />
 
 			<Container>
-				<CategoriesSection />
-				<BenefitsSection />
-				<TestimonialsSection />
-				<NewslettersSection />
+				<Categories />
+				<Benefits />
+				<Testimonials />
+				<Newsletters />
 			</Container>
 		</div>
 	);

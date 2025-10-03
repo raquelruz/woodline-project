@@ -7,8 +7,8 @@ import { ProfileHeader } from "../components/Profile/ProfileHeader";
 import { ProfileForm } from "../components/Profile/ProfileForm";
 import { ProfileOrders } from "../components/Profile/ProfileOrders";
 
-const inputClass = "w-full p-2 rounded border border-primary-hover text-primary-hover";
-const saveButton = "bg-primary-hover px-6 py-2 rounded text-white font-medium hover:bg-primary-hover transition";
+const inputClass = "w-full p-2 rounded border border-primary-light text-primary-light focus:ring-primary";
+const saveButton = "bg-primary px-6 py-2 rounded text-white font-medium hover:bg-primary-light transition";
 
 export const Profile = () => {
 	const { user, setUser } = useContext(AuthContext);
@@ -77,9 +77,9 @@ export const Profile = () => {
 
 	return (
 		<div className="max-w-4xl mx-auto p-6">
-			<h1 className="font-title text-center text-primary-pressed font-bold mb-6">Mi Perfil</h1>
+			<h1 className="font-title text-center text-primary font-bold mb-6">Mi Perfil</h1>
 
-			<div className="text-primary-pressed rounded-xl shadow-lg p-6 space-y-6">
+			<div className="text-primary rounded-xl shadow-lg p-6 space-y-6">
 				<ProfileHeader user={user} />
 				<ProfileForm
 					formData={formData}

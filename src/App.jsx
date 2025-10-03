@@ -1,7 +1,6 @@
 import "./App.css";
 import { Home } from "./landing/pages/Home";
-import { Header } from "./landing/components/Header";
-import { Hero } from "./landing/sections/Hero";
+import { Header } from "./landing/components/Navbar/Header";
 import { Products } from "./landing/pages/Products";
 import { About } from "./landing/pages/About";
 import { Contact } from "./landing/pages/Contact";

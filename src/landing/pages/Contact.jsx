@@ -18,7 +18,7 @@ export const Contact = () => {
 			...prev,
 			[name]: type === "checkbox" ? checked : value,
 		}));
-		setError(""); // limpia errores al escribir
+		setError(""); 
 	};
 
 	const handleSubmit = (event) => {
@@ -31,7 +31,7 @@ export const Contact = () => {
 		if (!message) return setError("Rellena el mensaje");
 		if (!privacy) return setError("Debes aceptar la política de privacidad");
 
-		const recipientEmail = "tuemail@dominio.com"; // ← Cambia por tu email real
+		const recipientEmail = "woodline@info.com";
 		const subject = `${name} (${email}) - [${reason}]`;
 		const body = message;
 
@@ -60,10 +60,10 @@ export const Contact = () => {
 		<section className="py-12 px-12 bg-bg-gray">
 			<div className="flex flex-col md:flex-row justify-center items-center gap-20">
 				<div className="flex flex-col">
-					<h2 className="text-3xl font-bold mb-2">Contacto</h2>
+					<h2 className="font-title font-bold mb-2 text-primary">Contacto</h2>
 					<p className="mb-2">
 						En
-						<span className="font-semibold"> Woodline Living</span> nos encanta conectar con nuestros
+						<span className="font-semibold text-primary font-title"> Woodline Living</span> nos encanta conectar con nuestros
 						clientes.
 					</p>
 					<p className="">
@@ -80,7 +80,7 @@ export const Contact = () => {
 					</p>
 				</div>
 
-				{error && <p className="mb-4 text-red-600 font-medium text-center">{error}</p>}
+				{error && <p className="mb-4 text-error font-medium text-center">{error}</p>}
 
 				{!submitted ? (
 					<form

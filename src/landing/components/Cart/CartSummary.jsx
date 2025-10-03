@@ -12,7 +12,7 @@ export const CartSummary = ({ subtotal, deliveryFee, discount, total }) => {
 					<span>Gastos de envío</span>
 					<span>{deliveryFee.toFixed(2)} €</span>
 				</div>
-				<div className="flex justify-between text-green-600">
+				<div className="flex justify-between text-success">
 					<span>Descuento</span>
 					<span>-{Math.round(discount * 100)}%</span>
 				</div>

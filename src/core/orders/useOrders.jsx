@@ -34,25 +34,25 @@ export const useOrders = () => {
 
 	/** Obtener todos los pedidos */
 	const getOrders = async () => {
-		console.log("🔍 Llamando a getOrdersApi()");
+		console.log("Llamando a getOrdersApi()");
 		const res = await getOrdersApi();
-		console.log("📥 Respuesta completa de getOrdersApi:", res);
+		console.log("Respuesta completa de getOrdersApi:", res);
 		return res;
 	};
 
 	/** Obtener pedidos de un usuario específico */
 	const getUserOrders = async (userId) => {
-		console.log("👤 Buscando pedidos del usuario:", userId);
+		console.log("Buscando pedidos del usuario:", userId);
 		const allOrders = await getOrdersApi();
-		console.log("📥 Pedidos obtenidos de la API:", allOrders);
+		console.log("Pedidos obtenidos de la API:", allOrders);
 
 		const pedidos = Array.isArray(allOrders) ? allOrders : allOrders.data || [];
 
-		console.log("📋 Array normalizado de pedidos:", pedidos);
+		console.log("Array normalizado de pedidos:", pedidos);
 
 		const userOrders = pedidos.filter((order) => order.userId === userId || order.user?._id === userId);
 
-		console.log("✅ Pedidos filtrados del usuario:", userOrders);
+		console.log("Pedidos filtrados del usuario:", userOrders);
 
 		return userOrders;
 	};

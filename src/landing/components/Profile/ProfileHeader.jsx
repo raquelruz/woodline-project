@@ -1,7 +1,7 @@
 export const ProfileHeader = ({ user }) => {
 	return (
 		<div className="flex items-center gap-4">
-			<div className="w-16 h-16 rounded-full bg-primary-hover flex items-center justify-center text-2xl font-bold">
+			<div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold">
 				{user.name?.[0] || "U"}
 			</div>
 

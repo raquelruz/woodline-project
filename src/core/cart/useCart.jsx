@@ -88,7 +88,7 @@ export const useCart = () => {
 			paymentMethod: paymentMethod || "credit_card",
 		};
 
-		console.log("📦 Payload enviado a /orders:", orderPayload);
+		console.log("Payload enviado a /orders:", orderPayload);
 
 		return await createOrderApi(orderPayload);
 	};
