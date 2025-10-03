@@ -1,65 +1,29 @@
-import kitchenCategory from "../../assets/images/products/kitchen-category.jpg";
-import livingCategory from "../../assets/images/products/livingroom-category.jpg";
-import bedroomCategory from "../../assets/images/products/bedroom-category.jpg";
-import bathroomCategory from "../../assets/images/products/bathroom-category.jpg";
-import wallCategory from "../../assets/images/products/wall-category.jpg";
 import { Link } from "react-router-dom";
-
-const categories = [
-	{
-		id: 1,
-		slug: "kitchen",
-		name: "Cocina",
-		description: "Muebles y accesorios para cocina",
-		image: kitchenCategory,
-	},
-	{
-		id: 2,
-		slug: "livingroom",
-		name: "Salón",
-		description: "Muebles y decoración para tu salón",
-		image: livingCategory,
-	},
-	{
-		id: 3,
-		slug: "bedroom",
-		name: "Dormitorio",
-		description: "Camas, armarios y decoración para tu descanso",
-		image: bedroomCategory,
-	},
-	{
-		id: 4,
-		slug: "bathroom",
-		name: "Baño",
-		description: "Todo para un baño moderno y funcional",
-		image: bathroomCategory,
-	},
-	{
-		id: 5,
-		slug: "wall",
-		name: "Decoración de pared",
-		description: "Accesorios para embellecer tus espacios con estilos únicos",
-		image: wallCategory,
-	},
-];
+import { useCategories } from "../../core/categories/useCategories";
+import { SectionContainer } from "../components/SectionContainer";
+import { Loader } from "../components/Loader";
 
 export const Categories = () => {
+	const { categories, loading } = useCategories();
+
+	if (loading) {
+		return <Loader text="Cargando categorías..." />;
+	}
+
 	return (
-		<section className="py-16 px-6 bg-gray-50">
+		<SectionContainer>
 			<div className="text-center mb-12">
 				<h2 className="text-3xl font-title font-extrabold text-gray-800">
-					Explora por <span className="text-primary font-title">Categorías</span>
+					Explora por <span className="font-title text-primary">Categorías</span>
 				</h2>
-				<p className="text-gray-500 mt-2">
-					Encuentra inspiración para cada rincón de tu hogar
-				</p>
+				<p className="text-gray-500 mt-2">Encuentra inspiración para cada rincón de tu hogar</p>
 			</div>
 
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-				{categories.map((category) => (
+				{categories.map((category, index) => (
 					<Link
-						to={`/categories/${category.slug}`} 
-						key={category.id}
+						to={`/categories/${category.slug}`}
+						key={index}
 						className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer"
 					>
 						<img
@@ -75,6 +39,6 @@ export const Categories = () => {
 					</Link>
 				))}
 			</div>
-		</section>
+		</SectionContainer>
 	);
 };
