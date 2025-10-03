@@ -14,7 +14,7 @@ export const Navbar = () => {
 		<nav className="w-full px-6 md:px-10 py-3 flex items-center justify-center" >
 
 			{/* MENU DESKTOP */}
-			<div className="hidden md:flex gap-8 font-medium font-title text-primary">
+			<div className="hidden md:flex gap-8 items-center font-medium font-title text-primary">
 				<NavLink
 					to="/"
 					className={({ isActive }) => (isActive ? "text-primary" : "hover:text-primary-light")}
