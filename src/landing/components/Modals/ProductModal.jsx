@@ -1,10 +1,8 @@
 export const ProductModal = ({ isOpen, onClose, children }) => {
 	if (!isOpen) return null;
-
 	const handleOverlayClick = (event) => {
 		if (event.target === event.currentTarget) onClose();
 	};
-
 	return (
 		<div
 			className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4"

@@ -13,7 +13,9 @@ export const ProductModalContent = ({ product }) => {
 				<div>
 					<h2 className="text-3xl font-bold text-primary mb-3">{product.name}</h2>
 					<p className="text-gray-700 font-landing mb-4">{product.longDescription}</p>
-					<p className="font-landing font-semibold text-primary mb-4">Precio: {product.price} €</p>
+					<p className="font-landing font-semibold text-primary mb-4">
+						Precio: {product.price} €
+					</p>
 					<p className="font-landing text-primary mb-4">SKU: {product.sku}</p>
 
 					<div className="flex flex-wrap gap-2 mb-4">

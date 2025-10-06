@@ -5,8 +5,7 @@ import { ProductModal } from "../components/Modals/ProductModal";
 
 import { ProductFilters } from "../components/Products/ProductFilters";
 import { ProductGrid } from "../components/Products/ProductsGrid";
-import { ProductModalContent } from "../components/Products/ProductModalContent";
-import { Loader } from "../components/Loader";
+import { ProductModalContent } from "../components/Modals/ProductModalContent";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
@@ -29,10 +28,11 @@ export const Products = () => {
 				];
 				setCategories(uniqueCategories);
 			})
-			.catch((error) => console.error("Error fetching products:", error))
+			.catch((error) => console.error("❌ Error fetching products:", error))
 			.finally(() => setLoading(false));
 	}, []);
 
+	// Filtro combinado
 	const filteredProducts = products.filter((p) => {
 		const matchesCategory =
 			selectedCategory === "all" || p.category?.includes(selectedCategory);
@@ -55,8 +55,30 @@ export const Products = () => {
 				setSelectedCategory={setSelectedCategory}
 			/>
 
+			{/* Loading spinner */}
 			{loading ? (
-				<Loader text="Cargando productos..." />
+				<div className="flex justify-center items-center min-h-[300px]">
+					<svg
+						className="animate-spin h-10 w-10 text-primary"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<circle
+							className="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							strokeWidth="4"
+						></circle>
+						<path
+							className="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8v4l3-3-3-3v4a12 12 0 00-12 12h4z"
+						></path>
+					</svg>
+				</div>
 			) : (
 				<ProductGrid
 					products={filteredProducts}
