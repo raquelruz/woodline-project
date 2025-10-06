@@ -1,108 +1,137 @@
 import { useState } from "react";
-import { SectionContainer } from "../components/SectionContainer";
+import { FaChevronLeft, FaChevronRight, FaQuoteLeft } from "react-icons/fa";
 
 const testimonials = [
-    {
-        quote: "Mi experiencia en esta tienda ha sido excelente. El servicio al cliente es muy atento y los muebles de gran calidad. ¡Recomendado!",
-        name: "Laura Martínez",
-        role: "Diseñadora de interiores",
-        img: "https://i.pinimg.com/736x/51/3f/63/513f63a00960b3c71cca5b20ad84d80d.jpg",
-    },
-    {
-        quote: "Me encantó la variedad de productos y la rapidez en la entrega. Sin duda volveré a comprar aquí.",
-        name: "Carlos Gómez",
-        role: "Arquitecto",
-        img: "https://i.pinimg.com/736x/dd/53/43/dd5343b1af6862a015633ff7338880e7.jpg",
-    },
-    {
-        quote: "El equipo de atención al cliente resolvió todas mis dudas y me ayudó a elegir los muebles perfectos para mi casa.",
-        name: "Ana Torres",
-        role: "Emprendedora",
-        img: "https://i.pinimg.com/736x/14/76/1b/14761bb5947cc8e68cff2be1ad77c3f4.jpg",
-    },
-    {
-        quote: "Los muebles llegaron en perfecto estado y la experiencia de compra fue muy sencilla y agradable.",
-        name: "Javier Fernández",
-        role: "Consultor",
-        img: "https://i.pinimg.com/736x/25/33/8f/25338f488af2c45912c15ebab325e363.jpg",
-    },
-    {
-        quote: "Calidad, diseño y excelente trato al cliente. Estoy muy satisfecha con mi compra y recomiendo esta tienda.",
-        name: "María López",
-        role: "Decoradora",
-        img: "https://i.pinimg.com/736x/a8/e9/d2/a8e9d2b3d136df556dff6ffbe579cbb7.jpg",
-    },
+	{
+		quote: "Mi experiencia en esta tienda ha sido excelente. El servicio al cliente es muy atento y los muebles de gran calidad. ¡Recomendado!",
+		name: "Laura Martínez",
+		role: "Diseñadora de interiores",
+		img: "https://i.pinimg.com/736x/51/3f/63/513f63a00960b3c71cca5b20ad84d80d.jpg",
+	},
+	{
+		quote: "Me encantó la variedad de productos y la rapidez en la entrega. Sin duda volveré a comprar aquí.",
+		name: "Carlos Gómez",
+		role: "Arquitecto",
+		img: "https://i.pinimg.com/736x/dd/53/43/dd5343b1af6862a015633ff7338880e7.jpg",
+	},
+	{
+		quote: "El equipo de atención al cliente resolvió todas mis dudas y me ayudó a elegir los muebles perfectos para mi casa.",
+		name: "Ana Torres",
+		role: "Emprendedora",
+		img: "https://i.pinimg.com/736x/14/76/1b/14761bb5947cc8e68cff2be1ad77c3f4.jpg",
+	},
+	{
+		quote: "Los muebles llegaron en perfecto estado y la experiencia de compra fue muy sencilla y agradable.",
+		name: "Javier Fernández",
+		role: "Consultor",
+		img: "https://i.pinimg.com/736x/25/33/8f/25338f488af2c45912c15ebab325e363.jpg",
+	},
+	{
+		quote: "Calidad, diseño y excelente trato al cliente. Estoy muy satisfecha con mi compra y recomiendo esta tienda.",
+		name: "María López",
+		role: "Decoradora",
+		img: "https://i.pinimg.com/736x/a8/e9/d2/a8e9d2b3d136df556dff6ffbe579cbb7.jpg",
+	},
 ];
-
 
 export const Testimonials = () => {
 	const [current, setCurrent] = useState(0);
 
-	const nextTestimonial = () => {
+	function nextTestimonial() {
 		setCurrent((prev) => (prev + 1) % testimonials.length);
-	};
+	}
 
-	const prevTestimonial = () => {
+	function prevTestimonial() {
 		setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-	};
+	}
 
 	return (
-		<SectionContainer
-			title={<span className="font-title font-bold text-primary">Lo que opinan nuestros clientes</span>}
-			childrenContainerStyle="flex flex-col gap-2"
-		>
-			<p className="text-center text-primary text-lg">Más de 15.000 clientes satisfechos</p>
+		<section className="relative py-24 bg-gradient-to-b from-bg-light via-white to-bg-light overflow-hidden">
+			<div className="text-center mb-16">
+				<h2 className="text-4xl font-title font-extrabold text-gray-800">
+					Lo que opinan <span className="text-primary">nuestros clientes</span>
+				</h2>
+				<p className="text-gray-500 mt-3">
+					Más de <span className="font-semibold text-primary">15.000 clientes satisfechos</span>
+				</p>
+			</div>
 
-			<div className="relative w-full overflow-hidden">
+			<div className="relative max-w-5xl mx-auto overflow-hidden">
 				<div
-					className="flex transition-transform duration-500 ease-in-out"
+					className="flex transition-transform duration-700 ease-in-out"
 					style={{ transform: `translateX(-${current * 100}%)` }}
 				>
 					{testimonials.map((testimonial, index) => (
 						<div
 							key={index}
-							className="min-w-full flex flex-col md:flex-row items-start gap-10 p-6"
+							className="min-w-full flex flex-col items-center justify-center text-center px-8 md:px-20"
 						>
-							<div className="relative flex-shrink-0">
-								<span className="absolute -top-2 -left-3 text-8xl text-primary-light">“</span>
-								<img
-									src={testimonial.img}
-									alt={testimonial.name}
-									className="w-32 h-32 rounded-full object-cover bg-landing-brand-darker"
-								/>
-							</div>
+							<div className="relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-10 md:p-14 border border-primary/10 transition-transform duration-500 hover:-translate-y-2">
+								<FaQuoteLeft className="absolute top-6 left-8 text-primary-light text-5xl opacity-30" />
 
-							<div className="flex flex-col max-w-[400px] md:max-w-[800px] text-primary-pressed">
-								<p className="text-lg mb-4">“{testimonial.quote}”</p>
-								<p className="font-bold">{testimonial.name}</p>
-								<p className="text-sm text-primary-hover">{testimonial.role}</p>
+								<p className="text-lg text-gray-700 leading-relaxed italic mb-10">
+									“{testimonial.quote}”
+								</p>
+
+								<div className="flex flex-col items-center">
+									<div className="relative">
+										<img
+											src={testimonial.img}
+											alt={testimonial.name}
+											className="w-24 h-24 rounded-full object-cover border-4 border-primary-light shadow-md"
+										/>
+										<span className="absolute bottom-1 right-1 w-3 h-3 bg-primary rounded-full border-2 border-white"></span>
+									</div>
+									<p className="mt-4 text-lg font-semibold text-primary">
+										{testimonial.name}
+									</p>
+									<p className="text-sm text-gray-500">{testimonial.role}</p>
+								</div>
 							</div>
 						</div>
 					))}
 				</div>
 
-				<div className="absolute right-8 top-1/2 flex flex-col gap-2 -translate-y-1/2">
-					<button
-						onClick={nextTestimonial}
-						className="w-8 h-8 flex items-center justify-center rounded-full bg-primary-ultralight text-primary cursor-pointer"
-					>
-						→
-					</button>
+				{/* Botones de navegación */}
+				<div className="absolute inset-0 flex items-center justify-between px-6 md:px-10">
 					<button
 						onClick={prevTestimonial}
-						className="w-8 h-8 flex items-center justify-center rounded-full bg-error-light text-error cursor-pointer"
+						className="w-10 h-10 flex items-center justify-center bg-white text-primary rounded-full shadow-md hover:bg-primary hover:text-white transition-all duration-300"
+						aria-label="Anterior"
 					>
-						←
+						<FaChevronLeft />
+					</button>
+					<button
+						onClick={nextTestimonial}
+						className="w-10 h-10 flex items-center justify-center bg-white text-primary rounded-full shadow-md hover:bg-primary hover:text-white transition-all duration-300"
+						aria-label="Siguiente"
+					>
+						<FaChevronRight />
 					</button>
 				</div>
 			</div>
 
+			{/* Indicadores */}
+			<div className="flex justify-center mt-8 gap-2">
+				{testimonials.map((_, index) => (
+					<span
+						key={index}
+						className={`w-3 h-3 rounded-full transition-all duration-300 ${
+							index === current ? "bg-primary" : "bg-gray-300"
+						}`}
+					></span>
+				))}
+			</div>
 
-			<div className="relative w-full flex justify-end items-center border-t border-bg-dark pt-2">
-				<a href="#" className="text-md font-title text-primary hover:underline">
+			{/* Ver todas las reseñas */}
+			<div className="flex justify-center mt-12">
+				<a
+					href="#"
+					className="text-md font-title text-primary hover:text-primary-light transition-all"
+				>
 					Ver todas las reseñas →
 				</a>
 			</div>
-		</SectionContainer>
+		</section>
 	);
 };

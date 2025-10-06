@@ -1,37 +1,69 @@
-import { SectionContainer } from "../components/SectionContainer";
-import banner from "../../assets/images/living-room-home.jpg";
+import { useState } from "react";
+import { FaEnvelope } from "react-icons/fa";
 
 export const Newsletters = () => {
+	const [email, setEmail] = useState("");
+
+	function handleSubmit(e) {
+		e.preventDefault();
+
+		if (!email) {
+			alert("Por favor, introduce un correo electrónico válido.");
+			return;
+		}
+
+		// Construir mailto con asunto y cuerpo personalizados
+		const subject = encodeURIComponent("Suscripción a la newsletter");
+		const body = encodeURIComponent(
+			`Hola, me gustaría suscribirme a la newsletter con este correo: ${email}`
+		);
+
+		window.location.href = `mailto:info@tutienda.com?subject=${subject}&body=${body}`;
+		setEmail("");
+	}
+
 	return (
-		<SectionContainer>
-			<div className="flex flex-col md:flex-row items-center gap-12 md:gap-20 bg-primary-ultralight">
-
-				<img
-					src={banner}
-					alt="Salón"
-					className="w-full max-w-[400px] md:max-w-[400px] rounded-lg shadow-lg"
-				/>
-
-				<div className="flex flex-col gap-6 md:gap-3">
-					<h2 className="font-title text-2xl md:text-3xl font-bold text-primary">
-						Suscríbete a nuestra newsletter
+		<section className="py-16 px-6 bg-primary-ultralight">
+			<div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 bg-white rounded-2xl shadow-sm p-6 md:p-10">
+				
+				{/* Texto */}
+				<div className="flex flex-col items-center md:items-start text-center md:text-left">
+					<h2 className="font-title text-2xl md:text-3xl font-bold text-primary mb-2">
+						¿Quieres recibir ofertas exclusivas?
 					</h2>
-					<p className="text-primary-pressed text-base md:text-lg">
-						Recibe descuentos exclusivos y más ofertas directamente en tu correo.
+					<p className="text-gray-600 text-sm md:text-base max-w-full">
+						Suscríbete a nuestra newsletter y sé el primero en conocer descuentos,
+						nuevas colecciones y consejos de decoración.
 					</p>
+				</div>
 
-					<div className="flex flex-col md:flex-row gap-4">
+				{/* Formulario */}
+				<form
+					onSubmit={handleSubmit}
+					className="flex w-full md:w-auto max-w-full bg-gray-50 border border-gray-200 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary"
+				>
+					<div className="flex items-center gap-3 px-4 flex-1">
+						<FaEnvelope className="text-primary text-base" />
 						<input
 							type="email"
-							placeholder="Introduce tu email"
-							className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							placeholder="Introduce tu correo"
+							className="w-full py-2.5 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none text-sm md:text-base"
 						/>
-						<button className="text-sm px-6 py-2 bg-primary text-white font-semibold rounded-md shadow-md hover:bg-primary-light transition-all duration-300">
-							Suscribirse
-						</button>
 					</div>
-				</div>
+					<button
+						type="submit"
+						className="bg-primary text-white text-sm md:text-base font-semibold px-6 md:px-8 py-2.5 hover:bg-primary-light transition-all duration-300 rounded-r-full"
+					>
+						Suscribirme
+					</button>
+				</form>
 			</div>
-		</SectionContainer>
+
+			<p className="text-center text-xs text-gray-500 mt-4">
+				✨ Prometemos enviarte solo contenido útil y ofertas reales. Sin spam.
+			</p>
+		</section>
 	);
 };
