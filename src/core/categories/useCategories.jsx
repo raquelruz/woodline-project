@@ -6,33 +6,38 @@ export const useCategories = () => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchCategories = async () => {
+		async function fetchCategories() {
 			try {
 				const { data: products } = await api.get("/products");
 
+				// Mapa de categorías únicas
 				const categoryMap = {};
 
-				products.forEach((product) => {
-					product.category?.forEach((cat) => {
-						if (!categoryMap[cat]) {
-							categoryMap[cat] = {
+				for (const product of products) {
+					if (!product.category) continue;
+
+					for (const cat of product.category) {
+						const slug = cat.toLowerCase().trim();
+
+						if (!categoryMap[slug]) {
+							categoryMap[slug] = {
 								name: cat.charAt(0).toUpperCase() + cat.slice(1),
-								slug: cat.toLowerCase(),
-								description: `Explora productos de la categoría ${cat}`,
+								slug,
+								description: `Explora los mejores productos de ${cat}`,
 								image: product.images?.[0] || "/fallback-category.jpg",
 							};
 						}
-					});
-				});
+					}
+				}
 
 				setCategories(Object.values(categoryMap));
 			} catch (error) {
-				console.error("Error fetching categories:", error);
+				console.error("❌ Error al obtener categorías:", error);
 				setCategories([]);
 			} finally {
 				setLoading(false);
 			}
-		};
+		}
 
 		fetchCategories();
 	}, []);
