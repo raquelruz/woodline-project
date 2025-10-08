@@ -5,8 +5,9 @@ import { Navbar } from "./Navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthContext.jsx";
+import { LogoutButton } from "../Buttons/LogoutButton.jsx";
 
-const iconClass = "text-primary hover:text-primary-light cursor-pointer";
+const iconClass = "text-primary hover:text-primary-light cursor-pointer transition-all";
 
 export const Header = () => {
 	const { user } = useContext(AuthContext);
@@ -15,34 +16,44 @@ export const Header = () => {
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [query, setQuery] = useState("");
 
-	const handleSearch = (event) => {
+	function handleSearch(event) {
 		event.preventDefault();
 		if (query.trim()) {
 			navigate(`/products?search=${encodeURIComponent(query)}`);
 			setSearchOpen(false);
 			setQuery("");
 		}
-	};
+	}
 
 	return (
-		<header className="shadow-md relative">
+		<header className="shadow-md relative bg-white">
 			<Container>
 				<div className="h-16 px-4 flex items-center justify-between">
-					<img src={logo} alt="logo" className="h-12" />
+					<img
+						src={logo}
+						alt="logo"
+						className="h-12 cursor-pointer"
+						onClick={() => navigate("/")}
+					/>
 
 					<Navbar />
 
-					{/* Iconos */}
 					<div className="flex items-center gap-6 text-gray-700 text-lg">
-						<FaSearch className={iconClass} onClick={() => setSearchOpen((prev) => !prev)} />
+						<FaSearch
+							className={iconClass}
+							onClick={() => setSearchOpen((prev) => !prev)}
+							title="Buscar productos"
+						/>
 
-						<Link to={user ? "/profile" : "/login"}>
+						<Link to={user ? "/profile" : "/login"} title="Mi cuenta">
 							<FaUser className={iconClass} />
 						</Link>
 
-						<Link to="/cart">
+						<Link to="/cart" title="Mi carrito">
 							<FaShoppingCart className={iconClass} />
 						</Link>
+
+						{user && <LogoutButton variant="icon" />}
 					</div>
 				</div>
 
