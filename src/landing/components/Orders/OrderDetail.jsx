@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getOrdersApi } from "../../../core/orders/orders.api";
+import { Loader } from "../Loader";
 
 const containerClass = "p-4 bg-dark rounded-lg shadow-sm";
 const descriptionClass = "text-black text-sm";
@@ -12,35 +13,56 @@ export const OrderDetail = () => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// console.log("Buscando pedido con id:", id);
+		async function fetchOrder() {
+			try {
+				const response = await getOrdersApi();
+				const pedidos = Array.isArray(response) ? response : response.data || [];
+				const found = pedidos.find((pedido) => pedido._id === id || pedido.id === id);
 
-		getOrdersApi().then((response) => {
-			const pedidos = Array.isArray(response) ? response : response.data || [];
-			const found = pedidos.find((pedido) => pedido._id === id || pedido.id === id);
+				setOrder(found || null);
+			} catch (error) {
+				console.error("Error al obtener pedido:", error);
+			} finally {
+				setLoading(false);
+			}
+		}
 
-			// console.log("Pedido encontrado:", found);
-			setOrder(found || null);
-			setLoading(false);
-		});
+		fetchOrder();
 	}, [id]);
 
-	if (loading) return <p>Cargando pedido...</p>;
-	if (!order) return <p className="text-error">Pedido no encontrado.</p>;
+	if (loading) {
+		return <Loader text="Cargando pedido..." />;
+	}
 
-	// console.log("Pedido completo:", order);
+	if (!order) {
+		return <p className="text-error text-center mt-10">Pedido no encontrado.</p>;
+	}
+
+	function formatOrderId(orderId) {
+		if (!orderId) return "Desconocido";
+		const idString = String(orderId);
+		return idString.slice(-5);
+	}
+
+	function translateStatus(status) {
+		if (status === "pending") return "Pendiente";
+		if (status === "completed") return "Completado";
+		if (status === "cancelled") return "Cancelado";
+		return "Desconocido";
+	}
+
+	const formattedDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "Fecha desconocida";
 
 	return (
 		<div className="max-w-4xl mx-auto p-8">
-			{/* Encabezado */}
 			<h4 className="font-title font-bold text-primary-pressed mb-6 text-center">
-				Pedido #{order._id || order.id}
+				Pedido #{formatOrderId(order._id || order.id)}
 			</h4>
 
-			{/* Info del pedido */}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 				<div className={containerClass}>
 					<p className={descriptionClass}>Fecha</p>
-					<p className={detailsClass}>{new Date(order.createdAt).toLocaleDateString()}</p>
+					<p className={detailsClass}>{formattedDate}</p>
 				</div>
 
 				<div className={containerClass}>
@@ -52,16 +74,15 @@ export const OrderDetail = () => {
 					<p className={descriptionClass}>Estado</p>
 					<span
 						className={`px-3 py-1 text-sm rounded-full font-medium 
-            ${order.status === "pending" ? "bg-warning text-warning-light" : ""} 
-            ${order.status === "completed" ? "bg-success text-success-light" : ""} 
-            ${order.status === "cancelled" ? "bg-error text-error-light" : ""}`}
+						${order.status === "pending" ? "bg-yellow-100 text-yellow-700" : ""}
+						${order.status === "completed" ? "bg-green-100 text-green-700" : ""}
+						${order.status === "cancelled" ? "bg-red-100 text-red-700" : ""}`}
 					>
-						{order.status}
+						{translateStatus(order.status)}
 					</span>
 				</div>
 			</div>
 
-			{/* Lista de productos */}
 			<h2 className="font-title font-semibold mb-4 border-b pb-2">Productos</h2>
 			<ul className="divide-y divide-bg-dark">
 				{order.items?.map((item, index) => (
@@ -75,7 +96,6 @@ export const OrderDetail = () => {
 				))}
 			</ul>
 
-			{/* Botón volver */}
 			<div className="mt-8 text-center">
 				<Link
 					to="/profile"
