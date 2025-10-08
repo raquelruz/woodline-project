@@ -15,7 +15,7 @@ export const Categories = () => {
 	}
 
 	return (
-		<section className="py-24 bg-bg-light text-center">
+		<section className="py-12 bg-bg-light text-center">
 			<div className="mb-16">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
 					Explora nuestras <span className="text-primary">Categorías</span>
@@ -25,7 +25,7 @@ export const Categories = () => {
 				</p>
 			</div>
 
-			<div className="flex flex-wrap justify-center gap-10 px-6">
+			<div className="flex flex-wrap justify-center gap-10 px-4">
 				{categories.map((category, index) => (
 					<div
 						key={index}
@@ -41,9 +41,9 @@ export const Categories = () => {
 							<div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-40 transition-opacity duration-500 rounded-full"></div>
 						</div>
 
-						<h3 className="mt-4 text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300">
+						<h5 className="mt-4 font-title font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300">
 							{category.name}
-						</h3>
+						</h5>
 					</div>
 				))}
 			</div>
