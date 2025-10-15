@@ -54,8 +54,8 @@ export const Login = () => {
 	};
 
 	return (
-		<Container className="flex items-center justify-center min-h-screen bg-gray-100 px-4 pt-20">
-			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[350px]">
+		<Container className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[450px]">
 				<h2 className="font-title text-primary text-center pb-10">Iniciar sesión</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onLoginSubmit}>
