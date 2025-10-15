@@ -1,5 +1,7 @@
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { LikeButton } from "../Buttons/LikeButton";
+import { ReviewsList } from "../Reviews/ReviewList";
+import { ReviewForm } from "../Reviews/ReviewForm";
 
 export const ProductModalContent = ({ product }) => {
 	return (
@@ -13,9 +15,7 @@ export const ProductModalContent = ({ product }) => {
 				<div>
 					<h2 className="text-3xl font-bold text-primary mb-3">{product.name}</h2>
 					<p className="text-gray-700 font-landing mb-4">{product.longDescription}</p>
-					<p className="font-landing font-semibold text-primary mb-4">
-						Precio: {product.price} €
-					</p>
+					<p className="font-landing font-semibold text-primary mb-4">Precio: {product.price} €</p>
 					<p className="font-landing text-primary mb-4">SKU: {product.sku}</p>
 
 					<div className="flex flex-wrap gap-2 mb-4">
@@ -33,6 +33,14 @@ export const ProductModalContent = ({ product }) => {
 				<div className="flex flex-row justify-between mt-4">
 					<AddToCartButton product={product} />
 					<LikeButton />
+				</div>
+
+				<div className="mt-10 border-t pt-6">
+					<ReviewsList productId={product._id || product.id} />
+					<ReviewForm
+						productId={product._id || product.id}
+						onNewReview={(newReview) => console.log("Nueva reseña añadida:", newReview)}
+					/>
 				</div>
 			</div>
 		</div>
