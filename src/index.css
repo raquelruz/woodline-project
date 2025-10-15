@@ -22,11 +22,30 @@ body {
 	--text-h6: 16px;
 
 	/* 🎨 Paleta de colores */
-	--color-primary-hover: #70908b;
-	--color-primary-pressed: #07484a;
+	--color-primary: #07484a;
+	--color-primary-light: #70908b;
+	--color-primary-ultralight: #E9F2EF;
 	--color-secondary: #4b351f;
-	--color-landing-brand-bg: #FAFAFA;
-	--color-landing-brand-darker: #C4C4C4;
+
+	--color-bg-light: #FAFAFA;
+	--color-bg-muted: #F5F5F5;
+	--color-bg-dark: #C4C4C4;
+
+	/* 🎨 Colores de estado */
+	--color-accent: #d4a373;
+	--color-accent-dark: #8c5a2f;
+
+	--color-success: #3a7d3a;
+	--color-success-light: #d9f2e6;
+
+	--color-warning: #e9a178;
+	--color-warning-light: #ffe6d5;
+
+	--color-error: #a23e48;
+	--color-error-light: #fbd5d5;
+
+	--color-info: #4a6fa5;
+	--color-info-light: #d6e4f0;
 
 	--spacing-xs: 4px;
 	--spacing-sm: 12px;

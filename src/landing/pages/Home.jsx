@@ -1,6 +1,10 @@
-import { Route, Routes } from "react-router-dom";
 import { Container } from "../components/Container";
 import { Hero } from "../sections/Hero";
+import { Benefits } from "../sections/Benefits";
+import { Testimonials } from "../sections/Testimonials";
+import { Newsletters } from "../sections/Newsletters";
+import { Categories } from "../sections/Categories";
+import { FeaturedProducts } from "../sections/FeaturedProducts";
 
 export const Home = () => {
 	return (
@@ -8,7 +12,11 @@ export const Home = () => {
 			<Hero />
 
 			<Container>
-				<h1>HOME</h1>
+				<Categories />
+				<FeaturedProducts />
+				<Benefits />
+				<Testimonials />
+				<Newsletters />
 			</Container>
 		</div>
 	);

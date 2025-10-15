@@ -1,19 +1,39 @@
+import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
+
 export const Hero = () => {
 	return (
-		<section className="flex flex-col justify-center max-h-[1080px] min-h-[600px] w-full bg-landing-brand-darker px-6 rounded-b-4xl">
-			<div className="max-w-[500px]">
-				<h1 className="text-xl md:text-xl font-bold text-primary-pressed leading-tight drop-shadow-lg">
-					Ofertas exclusivas en Colección de <span className="text-primary-hover">Muebles</span>
-				</h1>
-				<p className="mt-6 text-sm md:text-sm text-primary-pressed/90">
-					Explora diferentes categorías y encuentra las mejores ofertas para tu hogar.
-				</p>
+		<section className="flex flex-col justify-center items-start max-h-[1080px] min-h-[600px] w-full bg-gradient-to-br from-primary/10 to-white px-6 rounded-b-4xl">
+			<div className="max-w-[600px]">
+				<motion.h1
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6 }}
+					className="font-bold text-5xl text-primary leading-tight drop-shadow-md"
+				>
+					Ofertas exclusivas en nuestra <span className="text-primary-light">Colección de Muebles</span>
+				</motion.h1>
 
-				<div className="mt-10">
-					<button className="text-sm px-8 py-sm bg-primary-hover text-white font-semibold rounded-md shadow-md hover:bg-primary-pressed transition-all duration-300">
-						Compra ahora
+				<motion.p
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 0.3 }}
+					className="mt-6 text-lg text-gray-600"
+				>
+					Explora diferentes categorías y encuentra las mejores ofertas para tu hogar.  
+					Diseños modernos, materiales de alta calidad y precios irresistibles.
+				</motion.p>
+
+				<motion.div
+					initial={{ opacity: 0, scale: 0.95 }}
+					animate={{ opacity: 1, scale: 1 }}
+					transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
+					className="mt-10"
+				>
+					<button className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary-light hover:translate-x-1 transition-all duration-300">
+						Compra ahora <FaArrowRight className="text-white text-sm" />
 					</button>
-				</div>
+				</motion.div>
 			</div>
 		</section>
 	);
