@@ -5,37 +5,56 @@ import { MdEdit, MdDelete } from "react-icons/md";
 export const ProductTable = ({ onEdit }) => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				const { data } = await api.get("/products");
-				setProducts(data);
-			} catch (err) {
-				console.error(err);
-				setError("Error al cargar productos.");
-			} finally {
-				setLoading(false);
-			}
-		};
 		fetchProducts();
 	}, []);
 
-	async function handleDelete(id) {
-		if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+	const fetchProducts = async () => {
 		try {
-			await api.delete(`/products/${id}`);
-			setProducts((prev) => prev.filter((product) => product._id !== id));
+			setLoading(true);
+			const response = await api.get("/products");
+			if (Array.isArray(response.data)) {
+				setProducts(response.data);
+			} else {
+				console.warn("La API no devolvió un array de productos:", response.data);
+				setProducts([]);
+			}
 		} catch (error) {
-			console.error(error);
-			alert("Error al eliminar producto.");
+			console.error("Error al cargar productos:", error);
+		} finally {
+			setLoading(false);
 		}
-	}
+	};
 
-	if (loading) return <p className="text-gray-500">Cargando productos...</p>;
-	if (error) return <p className="text-red-500">{error}</p>;
-	if (!products.length) return <p className="text-gray-400 italic">No hay productos disponibles.</p>;
+	const handleDelete = async (productId) => {
+		if (!productId) {
+			console.error("No se ha pasado un ID de producto válido:", productId);
+			alert("Error: no se pudo identificar el producto.");
+			return;
+		}
+
+		const confirmDelete = window.confirm("¿Seguro que deseas eliminar este producto?");
+		if (!confirmDelete) return;
+
+		try {
+			console.log(`Eliminando producto con ID: ${productId}`);
+			const response = await api.delete(`/products/${productId}`);
+
+			if (response.status === 200) {
+				setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
+				console.log(`Producto ${productId} eliminado correctamente`);
+			} else {
+				console.warn("La API no devolvió estado 200:", response);
+				alert("No se pudo eliminar el producto. Intenta de nuevo.");
+			}
+		} catch (error) {
+			console.error("Error al eliminar producto:", error);
+			alert("No se pudo eliminar el producto. Intenta de nuevo.");
+		}
+	};
+
+	if (loading) return <p className="text-center mt-4">Cargando productos...</p>;
 
 	return (
 		<div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-100">
@@ -49,31 +68,36 @@ export const ProductTable = ({ onEdit }) => {
 					</tr>
 				</thead>
 				<tbody className="divide-y divide-gray-100">
-					{products.map((product) => (
-						<tr key={product._id} className="hover:bg-gray-50 transition">
-							<td className="px-4 py-3 font-semibold text-gray-700">{product.name}</td>
-							<td className="px-4 py-3 text-gray-500">{product.category?.join(", ")}</td>
-							<td className="px-4 py-3 text-primary font-bold">{product.price} €</td>
-							<td className="px-4 py-3 text-center">
-								<div className="flex justify-center gap-4">
-									<button
-										onClick={() => onEdit(product)}
-										className="text-blue-500 hover:text-blue-700 transition"
-										title="Editar"
-									>
-										<MdEdit size={18} />
-									</button>
-									<button
-										onClick={() => handleDelete(product._id)}
-										className="text-red-500 hover:text-red-700 transition"
-										title="Eliminar"
-									>
-										<MdDelete size={18} />
-									</button>
-								</div>
-							</td>
-						</tr>
-					))}
+					{products.map((product, index) => {
+						const productId = product._id || product.id;
+						return (
+							<tr key={productId || index} className="hover:bg-gray-50 transition">
+								<td className="px-4 py-3 font-semibold text-gray-700">{product.name}</td>
+								<td className="px-4 py-3 text-gray-500">
+									{Array.isArray(product.category) ? product.category.join(", ") : product.category}
+								</td>
+								<td className="px-4 py-3 text-primary font-bold">{product.price} €</td>
+								<td className="px-4 py-3 text-center">
+									<div className="flex justify-center gap-4">
+										<button
+											onClick={() => onEdit(product)}
+											className="text-blue-500 hover:text-blue-700 transition"
+											title="Editar"
+										>
+											<MdEdit size={18} />
+										</button>
+										<button
+											onClick={() => handleDelete(productId)}
+											className="text-red-500 hover:text-red-700 transition"
+											title="Eliminar"
+										>
+											<MdDelete size={18} />
+										</button>
+									</div>
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</div>
