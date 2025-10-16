@@ -13,8 +13,8 @@ export const ProductsPage = () => {
     
     return (
         <section>
-            <h2 className="font-title font-bold text-primary mb-4">Gestión de productos</h2>
-            <p className="text-gray-600 mb-4">
+            <h2 className="font-title text-center font-bold text-primary mb-4">Gestión de productos</h2>
+            <p className="text-gray-600 text-center mb-4">
                 Desde aquí podrás añadir, editar o eliminar productos de tu tienda.
             </p>
 
