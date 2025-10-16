@@ -14,6 +14,7 @@ export const useUserForm = (selectedUser, onSaved) => {
 	const [loading, setLoading] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 
+	// 🔄 Cargar datos de usuario seleccionado (modo edición)
 	useEffect(() => {
 		if (selectedUser && (selectedUser._id || selectedUser.id)) {
 			setShowForm(true);
@@ -54,11 +55,11 @@ export const useUserForm = (selectedUser, onSaved) => {
 
 			if (userId) {
 				console.log(`Actualizando usuario con ID: ${userId}`);
-				await api.patch(`/users/${userId}`, payload);
+				await api.put(`/users/${userId}`, payload);
 				console.log("Usuario actualizado correctamente");
 			} else {
 				console.log("Creando nuevo usuario...");
-				await api.post("/users", payload);
+				await api.post("/auth/register", payload);
 				console.log("Usuario creado correctamente");
 			}
 

@@ -18,7 +18,7 @@ export const ProductsPage = () => {
                 Desde aquí podrás añadir, editar o eliminar productos de tu tienda.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 				<ProductForm selectedProduct={selectedProduct} onSaved={handleSaved} />
 				<ProductTable onEdit={setSelectedProduct} key={refreshKey} />
 			</div>
