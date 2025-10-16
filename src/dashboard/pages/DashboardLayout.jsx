@@ -8,9 +8,10 @@ export const DashboardLayout = () => {
 				<p className="text-lg font-title md:text-xl font-bold text-primary mb-6">Woodline Admin</p>
 				<nav className="flex flex-col gap-3 text-gray-600 font-medium">
 					<a href="/dashboard">Inicio</a>
+					<a href="/dashboard/orders">Pedidos</a>
 					<a href="/dashboard/products">Productos</a>
 					<a href="/dashboard/users">Usuarios</a>
-					
+
 					<LogoutButton />
 				</nav>
 			</aside>
