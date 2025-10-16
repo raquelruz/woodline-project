@@ -19,6 +19,7 @@ import { DashboardLayout } from "./dashboard/pages/DashboardLayout";
 import { DashboardHome } from "./dashboard/pages/DashboardHome";
 import { ProductsPage } from "./dashboard/pages/ProductsPage";
 import { UsersPage } from "./dashboard/pages/UsersPage";
+import { ReviewsPage } from "./dashboard/pages/ReviewsPage";
 
 export const App = () => {
 	return (
@@ -81,6 +82,7 @@ export const App = () => {
 						<Route index element={<DashboardHome />} />
 						<Route path="products" element={<ProductsPage />} />
 						<Route path="users" element={<UsersPage />} />
+						<Route path="reviews" element={<ReviewsPage />} />
 					</Route>
 				</Routes>
 			</main>
