@@ -1,4 +1,3 @@
-import { SectionContainer } from "../components/SectionContainer";
 import handsIcon from "../../assets/icons/payment-icon.png";
 import returnIcon from "../../assets/icons/return-icon.png";
 import customerIcon from "../../assets/icons/headphone-icon.png";

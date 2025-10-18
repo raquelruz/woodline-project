@@ -14,29 +14,22 @@ export const CartProvider = ({ children }) => {
 
 			if (storedCart?.id) {
 				setCart(normalizeCart(storedCart));
-				console.log("Carrito cargado de localStorage:", storedCart);
 			} else {
 				try {
-					console.log("Creando carrito nuevo...");
 					const response = await createCartApi();
 					const newCart = normalizeCart(response);
 
 					saveCartInLocalStorage(newCart);
 					setCart(newCart);
-
-					console.log("Carrito creado y guardado:", newCart);
 				} catch (error) {
-					console.error("Error creando carrito:", err);
+					// console.error("Error creando carrito:", error);
+					throw error;
 				}
 			}
 		};
 
 		initCart();
 	}, []);
-
-	useEffect(() => {
-		console.log("Cart actualizado:", cart);
-	}, [cart]);
 
 	return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
 };

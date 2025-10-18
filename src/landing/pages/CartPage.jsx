@@ -24,7 +24,6 @@ export const CartPage = () => {
 	return (
 		<div className="min-h-screen p-8 bg-gray-50">
 			<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-				{/* Columna izquierda → lista de productos */}
 				<div className="md:col-span-2 space-y-6">
 					<h2 className="font-title font-bold text-primary mb-4">Carrito de compra</h2>
 
@@ -38,7 +37,7 @@ export const CartPage = () => {
 									key={id}
 									className="flex flex-col bg-white md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition"
 								>
-									{/* Imagen + info */}
+
 									<div className="flex items-center gap-4 w-full md:w-auto">
 										{item.images?.[0] && (
 											<img
@@ -57,7 +56,6 @@ export const CartPage = () => {
 										</div>
 									</div>
 
-									{/* Controles */}
 									<div className="flex items-center gap-3 mt-4 md:mt-0">
 										<button
 											onClick={() => decrementQty(id)}
@@ -87,7 +85,6 @@ export const CartPage = () => {
 					)}
 				</div>
 
-				{/* Columna derecha → resumen */}
 				<div className="bg-white shadow-md rounded-xl p-6 h-fit">
 					<h2 className="font-title text-xl font-bold text-primary-pressed mb-4">Resumen del pedido</h2>
 

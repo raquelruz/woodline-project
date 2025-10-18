@@ -65,7 +65,7 @@ export const Profile = () => {
 			setUser(data);
 			setSuccess(true);
 		} catch (error) {
-			setError(error.response?.data?.message || "Error al guardar cambios");
+			setError("Error al guardar cambios");
 		} finally {
 			setLoading(false);
 		}

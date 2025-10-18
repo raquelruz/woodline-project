@@ -1,8 +1,6 @@
-// Calcular subtotal
 export const calculateSubtotal = (items) =>
 	items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
-// Calcular impuestos
 export const calculateTax = (subtotal, rate = 0.21) => subtotal * rate;
 
 // Normalizar número a 2 decimales

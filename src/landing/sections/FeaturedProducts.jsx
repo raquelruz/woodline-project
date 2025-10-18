@@ -6,16 +6,17 @@ import { Loader } from "../components/Loader";
 export const FeaturedProducts = () => {
 	const [featured, setFeatured] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		async function fetchFeatured() {
 			try {
 				const { data } = await api.get("/products");
-				// Puedes filtrar los más nuevos si el backend no tiene campo "featured"
 				const sorted = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-				setFeatured(sorted.slice(0, 6)); // Mostrar solo los 6 más nuevos
+				setFeatured(sorted.slice(0, 6)); 
 			} catch (error) {
-				console.error("❌ Error fetching featured products:", error);
+				setError("Error al mostrar productos");
+				throw error;
 			} finally {
 				setLoading(false);
 			}
