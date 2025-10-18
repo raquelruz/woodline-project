@@ -15,6 +15,17 @@ import { CartPage } from "./landing/pages/CartPage";
 import { Checkout } from "./landing/pages/Checkout";
 import { OrderSuccessPage } from "./landing/pages/OrderSuccessPage";
 import { OrderDetail } from "./landing/components/Orders/OrderDetail";
+import { DashboardLayout } from "./dashboard/pages/DashboardLayout";
+import { DashboardHome } from "./dashboard/pages/DashboardHome";
+import { ProductsPage } from "./dashboard/pages/ProductsPage";
+import { UsersPage } from "./dashboard/pages/UsersPage";
+import { OrdersPage } from "./dashboard/pages/OrdersPage";
+import { ShippingPage } from "./landing/pages/Help/ShippingPage";
+import { ReturnsPage } from "./landing/pages/Help/ReturnsPage";
+import { DeliveryTimePage } from "./landing/pages/Help/DeliveryTimePage";
+import { TermsPage } from "./landing/pages/Legal/TermsPage";
+import { PrivacyPolicyPage } from "./landing/pages/Legal/PrivacyPolicyPage";
+import { CookiesPolicyPage } from "./landing/pages/Legal/CookiesPolicyPage";
 
 export const App = () => {
 	return (
@@ -28,9 +39,19 @@ export const App = () => {
 					<Route path="/products" element={<Products />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
+					
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/users" element={<Users />} />
+
+					<Route path="/shipping" element={<ShippingPage />} />
+					<Route path="/returns" element={<ReturnsPage />} />
+					<Route path="/delivery-time" element={<DeliveryTimePage />} />
+
+					<Route path="/terms" element={<TermsPage />} />
+					<Route path="/privacy" element={<PrivacyPolicyPage />} />
+					<Route path="/cookies" element={<CookiesPolicyPage />} />
+
 					{/* Rutas privadas */}
 					<Route
 						path="/profile"
@@ -64,7 +85,21 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
-					<Route path="/orders/:id" element={<OrderDetail />} /> 
+					<Route path="/orders/:id" element={<OrderDetail />} />
+
+					<Route
+						path="/dashboard"
+						element={
+							<PrivateRoute role="admin">
+								<DashboardLayout />
+							</PrivateRoute>
+						}
+					>
+						<Route index element={<DashboardHome />} />
+						<Route path="products" element={<ProductsPage />} />
+						<Route path="users" element={<UsersPage />} />
+						<Route path="orders" element={<OrdersPage />} />
+					</Route>
 				</Routes>
 			</main>
 

@@ -85,16 +85,11 @@ export const Register = () => {
 
 	const onInputChange = (event) => {
 		const { name, value } = event.target;
-
 		setForm({ ...form, [name]: value });
 	};
 
 	const onRegisterSubmit = async (event) => {
 		event.preventDefault();
-
-		alert(
-			`Name: ${form.name} Email: ${form.email}\nPassword: ${form.password}, role: ${form.role} nombre: ${form.name}`
-		);
 		register(form);
 		setForm(INITIAL_FORM);
 	};

@@ -4,13 +4,8 @@ export const AddToCartButton = ({ product }) => {
 	const { addToCart } = useCart();
 
 	const handleAdd = () => {
-		console.log("Producto recibido en AddToCartButton:", product);
-
-		if (!product || (!product._id && !product.id)) {
-			console.error("Producto inválido:", product);
-			return;
-		}
-
+		alert("Producto añadido al carrito.");
+		
 		addToCart(product);
 	};
 

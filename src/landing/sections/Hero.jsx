@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const Hero = () => {
+	const navigate = useNavigate();
+
 	return (
 		<section className="flex flex-col justify-center items-start max-h-[1080px] min-h-[600px] w-full bg-gradient-to-br from-primary/10 to-white px-6 rounded-b-4xl">
 			<div className="max-w-[600px]">
@@ -30,7 +33,9 @@ export const Hero = () => {
 					transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
 					className="mt-10"
 				>
-					<button className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary-light hover:translate-x-1 transition-all duration-300">
+					<button 
+					onClick={() => navigate("/products")}
+					className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary-light hover:translate-x-1 transition-all duration-300">
 						Compra ahora <FaArrowRight className="text-white text-sm" />
 					</button>
 				</motion.div>

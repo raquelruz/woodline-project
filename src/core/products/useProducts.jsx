@@ -16,7 +16,8 @@ export const useProducts = (searchQuery, categoryQuery, filters) => {
 				const uniqueCategories = [...new Set(data.flatMap((p) => p.category || []))];
 				setCategories(uniqueCategories);
 			} catch (error) {
-				console.error("Error al obtener productos:", error);
+				// console.error("Error al obtener productos:", error);
+				throw error;
 			} finally {
 				setLoading(false);
 			}
@@ -24,7 +25,6 @@ export const useProducts = (searchQuery, categoryQuery, filters) => {
 		fetchProducts();
 	}, []);
 
-	// Filtrado combinado
 	const filteredProducts = products
 		.filter((p) => {
 			const matchesCategory = categoryQuery === "all" || p.category?.includes(categoryQuery);
