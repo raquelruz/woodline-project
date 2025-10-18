@@ -120,15 +120,6 @@ export const Testimonials = () => {
 					></span>
 				))}
 			</div>
-
-			<div className="flex justify-center mt-12">
-				<a
-					href="#"
-					className="text-md font-title text-primary hover:text-primary-light transition-all"
-				>
-					Ver todas las reseñas →
-				</a>
-			</div>
 		</section>
 	);
 };

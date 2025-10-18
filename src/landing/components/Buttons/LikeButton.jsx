@@ -16,7 +16,7 @@ export const LikeButton = ({ initialLikes = 0 }) => {
 	return (
 		<button
 			onClick={toggleLike}
-			className={`mt-2 px-6 py-2 flex items-center gap-2 font-medium rounded-xl self-start transition-colors ${
+			className={`px-6 py-2 flex items-center gap-2 font-medium rounded-xl self-start transition-colors ${
 				liked
 					? "bg-primary-light text-white"
 					: "bg-primary text-white"

@@ -26,7 +26,7 @@ export const useOrders = () => {
 			await api.patch(`/orders/${orderId}/status`, { status: newStatus });
 			fetchOrders();
 		} catch (error) {
-			alert("Error al actualizar estado");
+			alert("Error al actualizar estado del pedido");
 		}
 	};
 
