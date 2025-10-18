@@ -1,5 +1,4 @@
 import { AddToCartButton } from "../Buttons/AddToCartButton";
-import { LikeButton } from "../Buttons/LikeButton";
 import { ReviewsList } from "../Reviews/ReviewList";
 import { ReviewForm } from "../Reviews/ReviewForm";
 
@@ -38,9 +37,8 @@ export const ProductModalContent = ({ product }) => {
 					</div>
 				</div>
 
-				<div className="flex flex-row justify-between items-center gap-4 mt-4 sticky bottom-0 bg-bg-muted w-full py-2 z-10">
+				<div className="flex flex-row justify-end items-center gap-4 mt-4 sticky bottom-0 bg-bg-muted w-full py-2 z-10">
 					<AddToCartButton product={product} />
-					<LikeButton />
 				</div>
 
 				<div className="mt-8 border-t pt-6">
