@@ -15,9 +15,9 @@ export const Footer = () => {
 		{
 			title: "Ayuda",
 			links: [
-				{ name: "Envíos", to: "/help/envios" },
-				{ name: "Devoluciones", to: "/help/devoluciones" },
-				{ name: "Tiempo de entrega", to: "/help/tiempo-entrega" },
+				{ name: "Envíos", to: "/shipping" },
+				{ name: "Devoluciones", to: "/returns" },
+				{ name: "Tiempo de entrega", to: "/delivery-time" },
 			],
 		},
 		{

@@ -20,6 +20,9 @@ import { DashboardHome } from "./dashboard/pages/DashboardHome";
 import { ProductsPage } from "./dashboard/pages/ProductsPage";
 import { UsersPage } from "./dashboard/pages/UsersPage";
 import { OrdersPage } from "./dashboard/pages/OrdersPage";
+import { ShippingPage } from "./landing/pages/Help/ShippingPage";
+import { ReturnsPage } from "./landing/pages/Help/ReturnsPage";
+import { DeliveryTimePage } from "./landing/pages/Help/DeliveryTimePage";
 
 export const App = () => {
 	return (
@@ -36,6 +39,10 @@ export const App = () => {
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/users" element={<Users />} />
+					<Route path="/shipping" element={<ShippingPage />} />
+					<Route path="/returns" element={<ReturnsPage />} />
+					<Route path="/delivery-time" element={<DeliveryTimePage />} />
+
 					{/* Rutas privadas */}
 					<Route
 						path="/profile"
