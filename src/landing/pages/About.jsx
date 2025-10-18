@@ -7,7 +7,6 @@ export const About = () => {
 	return (
 		<section className="bg-gradient-to-b from-white to-gray-50 py-20">
 			<div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-				{/* Imagen principal */}
 				<div className="md:w-1/2 relative group">
 					<img
 						src={aboutImage}
@@ -17,7 +16,6 @@ export const About = () => {
 					<div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 rounded-3xl transition-all" />
 				</div>
 
-				{/* Texto principal */}
 				<div className="md:w-1/2 flex flex-col gap-5">
 					<h2 className="text-4xl font-title font-bold text-primary mb-2">
 						Sobre <span className="text-primary-pressed">Woodline Living</span>
@@ -50,7 +48,6 @@ export const About = () => {
 				</div>
 			</div>
 
-			{/* Sección de valores */}
 			<div className="max-w-6xl mx-auto px-6 mt-20">
 				<h3 className="font-title font-semibold text-center text-primary mb-10">
 					Nuestros valores nos definen

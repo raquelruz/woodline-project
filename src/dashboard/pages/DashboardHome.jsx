@@ -29,7 +29,7 @@ export const DashboardHome = () => {
 				orders: Array.isArray(ordersRes.data) ? ordersRes.data.length : 0,
 			});
 		} catch (error) {
-			console.error("Error al cargar estadísticas:", error);
+			// console.error("Error al cargar estadísticas:", error);
 			setError("No se pudieron cargar los datos del panel. Inténtalo más tarde.");
 		} finally {
 			setLoading(false);

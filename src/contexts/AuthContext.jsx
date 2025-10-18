@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
 
 		if (storedUser && token) {
 			setUser(storedUser);
-			console.log("Usuario restaurado desde localStorage:", storedUser);
 		}
 
 		setLoading(false);

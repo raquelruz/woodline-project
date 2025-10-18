@@ -18,14 +18,13 @@ export const Products = () => {
 		maxPrice: Infinity,
 		sort: "",
 	});
-	const [searchTerm, setSearchTerm] = useState(""); // 🔎 buscador
+	const [searchTerm, setSearchTerm] = useState("");
 
 	const location = useLocation();
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(location.search);
 	const categoryQuery = searchParams.get("category") || "all";
 
-	// 🔹 Obtener productos y categorías
 	useEffect(() => {
 		async function fetchProducts() {
 			setLoading(true);
@@ -44,7 +43,8 @@ export const Products = () => {
 					setSelectedCategory(categoryQuery);
 				}
 			} catch (error) {
-				console.error("❌ Error al obtener productos:", error);
+				// console.error("Error al obtener productos:", error);
+				throw error;
 			} finally {
 				setLoading(false);
 			}
@@ -53,8 +53,7 @@ export const Products = () => {
 		fetchProducts();
 	}, [categoryQuery]);
 
-	// 🔹 Cambio de categoría (actualiza URL)
-	function handleCategoryChange(category) {
+	const handleCategoryChange = (category) => {
 		setSelectedCategory(category);
 		if (category === "all") {
 			navigate("/products");
@@ -63,18 +62,15 @@ export const Products = () => {
 		}
 	}
 
-	// 🔹 Recibe filtros desde ProductFilters
-	function handleFilterChange(newFilters) {
+	const handleFilterChange = (newFilters) => {
 		setFilters(newFilters);
 	}
 
-	// 🔹 Recibe término de búsqueda desde ProductFilters
-	function handleSearchChange(term) {
+	const handleSearchChange = (term) => {
 		setSearchTerm(term);
 	}
 
-	// 🔹 Filtrado y ordenado
-	function filterProducts() {
+	const filterProducts = () => {
 		let filtered = products.filter((p) => {
 			const matchesCategory =
 				selectedCategory === "all" || p.category?.includes(selectedCategory);
@@ -90,7 +86,6 @@ export const Products = () => {
 			return matchesCategory && matchesSearch && matchesPrice;
 		});
 
-		// 🔹 Ordenar por precio
 		if (filters.sort === "priceAsc") {
 			filtered = [...filtered].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
 		} else if (filters.sort === "priceDesc") {
@@ -111,7 +106,7 @@ export const Products = () => {
 				selectedCategory={selectedCategory}
 				setSelectedCategory={handleCategoryChange}
 				onFilterChange={handleFilterChange}
-				onSearchChange={handleSearchChange} // ✅ nuevo
+				onSearchChange={handleSearchChange} 
 			/>
 
 			{filteredProducts.length === 0 ? (

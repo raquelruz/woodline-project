@@ -9,7 +9,6 @@ export const Users = () => {
 	useEffect(() => {
 		api.get("/users")
 			.then((response) => {
-				console.log("Users data:", response.data);
 				setUsers(response.data);
 			})
 			.catch((error) => { 

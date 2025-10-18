@@ -15,24 +15,18 @@ export const useOrders = () => {
 			const response = await api.get("/orders");
 			setOrders(Array.isArray(response.data) ? response.data : []);
 		} catch (error) {
-			console.error("Error al cargar pedidos:", error);
+			throw error;
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const updateStatus = async (orderId, newStatus) => {
-		if (!orderId) {
-			console.error("orderId no válido:", orderId);
-			return;
-		}
-
 		try {
-			const response = await api.patch(`/orders/${orderId}/status`, { status: newStatus });
-			console.log("Pedido actualizado:", response.data);
+			await api.patch(`/orders/${orderId}/status`, { status: newStatus });
 			fetchOrders();
 		} catch (error) {
-			console.error("Error al actualizar estado:", error.response?.data || error.message);
+			alert("Error al actualizar estado");
 		}
 	};
 

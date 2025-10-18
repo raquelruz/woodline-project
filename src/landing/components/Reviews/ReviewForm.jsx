@@ -14,13 +14,11 @@ export const ReviewForm = ({ productId, onNewReview }) => {
 		event.preventDefault();
 		setError("");
 
-		// Validar campos
 		if (!name || !comment || rating === 0) {
 			setError("Por favor completa todos los campos y selecciona una valoración.");
 			return;
 		}
 
-		// Obtener token
 		const token = getTokenFromLocalStorage();
 		if (!token) {
 			setError("Debes iniciar sesión para dejar una reseña.");
@@ -46,13 +44,8 @@ export const ReviewForm = ({ productId, onNewReview }) => {
 				setComment("");
 				setRating(0);
 			}
-		} catch (err) {
-			console.error("❌ Error al enviar reseña:", err);
-			if (err.response?.status === 401) {
-				setError("Tu sesión ha expirado o no es válida. Inicia sesión nuevamente.");
-			} else {
-				setError("Error al enviar la reseña. Inténtalo más tarde.");
-			}
+		} catch (error) {
+			setError("Error al enviar la reseña. Inténtalo más tarde.");
 		} finally {
 			setLoading(false);
 		}

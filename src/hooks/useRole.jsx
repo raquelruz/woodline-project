@@ -1,15 +1,6 @@
 import { useCallback, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-/**
- * Hook de roles:
- * Uso:
- *   const { hasRole } = useRole();
- *   {hasRole("admin") && <AdminPanel />}
- *   {hasRole("user") && <ComponenteParaUsuario />}
- *   {hasRole(["admin", "editor"]) && <ComponenteParaAdminOEditor />}
- */
-
 export function useRole() {
     const { user } = useContext(AuthContext);
 
