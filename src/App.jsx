@@ -23,6 +23,9 @@ import { OrdersPage } from "./dashboard/pages/OrdersPage";
 import { ShippingPage } from "./landing/pages/Help/ShippingPage";
 import { ReturnsPage } from "./landing/pages/Help/ReturnsPage";
 import { DeliveryTimePage } from "./landing/pages/Help/DeliveryTimePage";
+import { TermsPage } from "./landing/pages/Legal/TermsPage";
+import { PrivacyPolicyPage } from "./landing/pages/Legal/PrivacyPolicyPage";
+import { CookiesPolicyPage } from "./landing/pages/Legal/CookiesPolicyPage";
 
 export const App = () => {
 	return (
@@ -36,12 +39,18 @@ export const App = () => {
 					<Route path="/products" element={<Products />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
+					
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/users" element={<Users />} />
+
 					<Route path="/shipping" element={<ShippingPage />} />
 					<Route path="/returns" element={<ReturnsPage />} />
 					<Route path="/delivery-time" element={<DeliveryTimePage />} />
+
+					<Route path="/terms" element={<TermsPage />} />
+					<Route path="/privacy" element={<PrivacyPolicyPage />} />
+					<Route path="/cookies" element={<CookiesPolicyPage />} />
 
 					{/* Rutas privadas */}
 					<Route
