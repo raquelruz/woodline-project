@@ -15,6 +15,9 @@ import { CartPage } from "./landing/pages/CartPage";
 import { Checkout } from "./landing/pages/Checkout";
 import { OrderSuccessPage } from "./landing/pages/OrderSuccessPage";
 import { OrderDetail } from "./landing/components/Orders/OrderDetail";
+import { DashboardLayout } from "./dashboard/pages/DashboardLayout";
+import { DashboardHome } from "./dashboard/pages/DashboardHome";
+import { ProductsPage } from "./dashboard/pages/ProductsPage";
 
 export const App = () => {
 	return (
@@ -64,7 +67,20 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					/>
-					<Route path="/orders/:id" element={<OrderDetail />} /> 
+					<Route path="/orders/:id" element={<OrderDetail />} />
+
+					<Route
+						path="/dashboard"
+						element={
+							<PrivateRoute role="admin">
+								<DashboardLayout />
+							</PrivateRoute>
+						}
+					>
+						<Route index element={<DashboardHome />} />
+						<Route path="products" element={<ProductsPage />} />
+
+					</Route>
 				</Routes>
 			</main>
 
