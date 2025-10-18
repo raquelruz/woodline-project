@@ -17,7 +17,7 @@ export const Newsletters = () => {
 			`Hola, me gustaría suscribirme a la newsletter con este correo: ${email}`
 		);
 
-		window.location.href = `mailto:info@tutienda.com?subject=${subject}&body=${body}`;
+		window.location.href = `mailto:info@woodlineliving.com?subject=${subject}&body=${body}`;
 		setEmail("");
 	}
 
@@ -35,7 +35,7 @@ export const Newsletters = () => {
 					</p>
 				</div>
 
-¡				<form
+				<form
 					onSubmit={handleSubmit}
 					className="flex w-full md:w-auto max-w-full bg-gray-50 border border-gray-200 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary"
 				>

@@ -2,6 +2,7 @@ import { api } from "../http/axios";
 import { getTokenFromLocalStorage } from "./auth.service";
 
 export const loginApi = async (user) => {
+	const [error, setError] = useState
 	try {
 		const response = await api.post("/auth/login", user);
 		return response.data;
