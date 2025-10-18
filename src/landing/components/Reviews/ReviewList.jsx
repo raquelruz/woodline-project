@@ -13,7 +13,8 @@ export const ReviewsList = ({ productId }) => {
 
 				setReviews(response.data || []);
 			} catch (error) {
-				console.error("Error al cargar reseñas:", error);
+				// console.error("Error al cargar reseñas:", error);
+				alert("Error al cargar reseñas");
 			} finally {
 				setLoading(false);
 			}

@@ -4,15 +4,14 @@ import { FaEnvelope } from "react-icons/fa";
 export const Newsletters = () => {
 	const [email, setEmail] = useState("");
 
-	function handleSubmit(e) {
-		e.preventDefault();
+	function handleSubmit(event) {
+		event.preventDefault();
 
 		if (!email) {
 			alert("Por favor, introduce un correo electrónico válido.");
 			return;
 		}
 
-		// Construir mailto con asunto y cuerpo personalizados
 		const subject = encodeURIComponent("Suscripción a la newsletter");
 		const body = encodeURIComponent(
 			`Hola, me gustaría suscribirme a la newsletter con este correo: ${email}`
@@ -26,7 +25,6 @@ export const Newsletters = () => {
 		<section className="py-16 px-6 bg-primary-ultralight">
 			<div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 bg-white rounded-2xl shadow-sm p-6 md:p-10">
 				
-				{/* Texto */}
 				<div className="flex flex-col items-center md:items-start text-center md:text-left">
 					<h2 className="font-title text-2xl md:text-3xl font-bold text-primary mb-2">
 						¿Quieres recibir ofertas exclusivas?
@@ -37,8 +35,7 @@ export const Newsletters = () => {
 					</p>
 				</div>
 
-				{/* Formulario */}
-				<form
+¡				<form
 					onSubmit={handleSubmit}
 					className="flex w-full md:w-auto max-w-full bg-gray-50 border border-gray-200 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary"
 				>
@@ -62,7 +59,7 @@ export const Newsletters = () => {
 			</div>
 
 			<p className="text-center text-xs text-gray-500 mt-4">
-				✨ Prometemos enviarte solo contenido útil y ofertas reales. Sin spam.
+				✨ Prometemos enviarte solo contenido útil y ofertas. Sin spam.
 			</p>
 		</section>
 	);

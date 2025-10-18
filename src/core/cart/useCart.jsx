@@ -62,7 +62,6 @@ export const useCart = () => {
 		return updateCart([]);
 	};
 
-	/** Checkout → crear pedido en backend */
 	const checkout = async (userId, { shippingAddress, billingAddress, paymentMethod }) => {
 		if (!cart?.id) throw new Error("No hay carrito activo");
 
@@ -87,8 +86,6 @@ export const useCart = () => {
 			billingAddress: billingAddress || shippingAddress || "Dirección no especificada",
 			paymentMethod: paymentMethod || "credit_card",
 		};
-
-		console.log("Payload enviado a /orders:", orderPayload);
 
 		return await createOrderApi(orderPayload);
 	};

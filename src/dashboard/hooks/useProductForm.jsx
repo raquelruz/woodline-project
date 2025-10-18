@@ -81,26 +81,21 @@ export const useProductForm = (selectedProduct, onSaved) => {
 				images: imageArray,
 			};
 
-			console.log("Enviando producto a la API (JSON)");
-			console.log("Payload:", JSON.stringify(payload, null, 2));
-
 			const productId = form._id || selectedProduct?._id || selectedProduct?.id;
 
 			if (productId) {
-				console.log(`Actualizando producto con ID: ${productId}`);
 				await api.patch(`/products/${productId}`, payload);
-				console.log("Producto actualizado correctamente");
+				alert("Producto actualizado correctamente");
 			} else {
-				console.log("Creando nuevo producto...");
 				await api.post("/products", payload);
-				console.log("Producto creado correctamente");
+				alert("Producto creado correctamente");
 			}
 
 			onSaved?.(); 
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			console.error("Error al guardar el producto:", error.response?.data || error);
+			// console.error("Error al guardar el producto:", error.response?.data || error);
 			alert("Error al guardar el producto. Revisa los campos o tu conexión.");
 		} finally {
 			setLoading(false);

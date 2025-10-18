@@ -17,21 +17,20 @@ export const UserTable = ({ onEdit }) => {
 			const response = await api.get("/users");
 			setUsers(Array.isArray(response.data) ? response.data : []);
 		} catch (error) {
-			console.error("Error al cargar usuarios:", error);
+			alert("Error al cargar usuarios. Intenta de nuevo.")
+			throw error;
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const handleDelete = async (userId) => {
-		if (!userId) return alert("ID de usuario inválido.");
 		if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
 
 		try {
 			await api.delete(`/users/${userId}`);
 			setUsers((prev) => prev.filter((u) => (u._id || u.id) !== userId));
 		} catch (error) {
-			console.error("Error al eliminar usuario:", error);
 			alert("No se pudo eliminar el usuario. Intenta de nuevo.");
 		}
 	};

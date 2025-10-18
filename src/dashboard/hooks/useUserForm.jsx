@@ -14,7 +14,6 @@ export const useUserForm = (selectedUser, onSaved) => {
 	const [loading, setLoading] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 
-	// 🔄 Cargar datos de usuario seleccionado (modo edición)
 	useEffect(() => {
 		if (selectedUser && (selectedUser._id || selectedUser.id)) {
 			setShowForm(true);
@@ -54,20 +53,18 @@ export const useUserForm = (selectedUser, onSaved) => {
 			const userId = form._id || selectedUser?._id || selectedUser?.id;
 
 			if (userId) {
-				console.log(`Actualizando usuario con ID: ${userId}`);
 				await api.put(`/users/${userId}`, payload);
-				console.log("Usuario actualizado correctamente");
+				alert("Usuario actualizado correctamente");
 			} else {
-				console.log("Creando nuevo usuario...");
 				await api.post("/auth/register", payload);
-				console.log("Usuario creado correctamente");
+				alert("Usuario creado correctamente");
 			}
 
 			onSaved?.();
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			console.error("Error al guardar el usuario:", error.response?.data || error);
+			// console.error("Error al guardar el usuario:", error.response?.data || error);
 			alert("Error al guardar el usuario.");
 		} finally {
 			setLoading(false);

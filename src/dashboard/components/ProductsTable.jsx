@@ -17,22 +17,21 @@ export const ProductTable = ({ onEdit }) => {
 			const response = await api.get("/products");
 			setProducts(Array.isArray(response.data) ? response.data : []);
 		} catch (error) {
-			console.error("Error al cargar productos:", error);
+			// console.error("Error al cargar productos:", error);
+			throw error;
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const handleDelete = async (productId) => {
-		if (!productId) return alert("ID de producto inválido.");
-
 		if (!window.confirm("¿Seguro que deseas eliminar este producto?")) return;
 
 		try {
 			await api.delete(`/products/${productId}`);
 			setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
 		} catch (error) {
-			console.error("Error al eliminar producto:", error);
+			// console.error("Error al eliminar producto:", error);
 			alert("No se pudo eliminar el producto. Intenta de nuevo.");
 		}
 	};

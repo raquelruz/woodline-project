@@ -23,20 +23,16 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			console.error("Error en login:", error);
+			// console.error("Error en login:", error);
 			throw error;
 		}
 	};
 
 	const logout = async () => {
-		console.log("Cerrando sesión...");
 		try {
 			const response = await logoutApi();
-			if (response?.logout) {
-				console.log("Sesión cerrada correctamente.");
-			}
 		} catch (error) {
-			console.warn("Error en logout remoto, se forzará cierre local.");
+			throw error;
 		} finally {
 			removeUserFromLocalStorage();
 			removeTokenFromLocalStorage();
@@ -55,7 +51,7 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			console.error("Error en registro:", error);
+			// console.error("Error en registro:", error);
 			throw error;
 		}
 	};
@@ -63,10 +59,9 @@ export const useAuth = () => {
 	const getProfile = async () => {
 		try {
 			const { user } = await getProfileApi();
-			if (user) console.log("Usuario actual:", user);
-			else console.log("No hay usuario autenticado.");
 		} catch (error) {
-			console.error("Error al obtener perfil:", error);
+			// console.error("Error al obtener perfil:", error);
+			throw error;
 		}
 	};
 
