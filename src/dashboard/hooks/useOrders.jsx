@@ -16,35 +16,25 @@ export const useOrders = () => {
 			setOrders(Array.isArray(response.data) ? response.data : []);
 		} catch (error) {
 			console.error("Error al cargar pedidos:", error);
-			alert("Error al obtener los pedidos.");
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const updateStatus = async (order, newStatus) => {
+	const updateStatus = async (orderId, newStatus) => {
+		if (!orderId) {
+			console.error("orderId no válido:", orderId);
+			return;
+		}
+
 		try {
-			const orderId = order._id || order.id;
-			if (!orderId) {
-				console.error("Pedido sin ID válido:", order);
-				alert("No se pudo actualizar este pedido (sin ID).");
-				return;
-			}
-
-			await api.patch(`/orders/${orderId}`, { status: newStatus });
-
-			setOrders((prev) =>
-				prev.map((order) =>
-					(order._id || order.id) === orderId ? { ...order, status: newStatus } : order
-				)
-			);
-
-			console.log(`Pedido ${orderId} actualizado a ${newStatus}`);
+			const response = await api.patch(`/orders/${orderId}/status`, { status: newStatus });
+			console.log("Pedido actualizado:", response.data);
+			fetchOrders();
 		} catch (error) {
-			console.error("Error al actualizar estado:", error);
-			alert("No se pudo actualizar el pedido.");
+			console.error("Error al actualizar estado:", error.response?.data || error.message);
 		}
 	};
 
-	return { orders, loading, updateStatus };
+	return { orders, loading, fetchOrders, updateStatus };
 };
