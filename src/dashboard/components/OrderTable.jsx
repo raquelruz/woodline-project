@@ -1,10 +1,11 @@
 import { useOrders } from "../hooks/useOrders";
+import { Loader } from "../../landing/components/Loader";
 
 export const OrderTable = () => {
 	const { orders, loading, updateStatus } = useOrders();
 
 	if (loading) {
-		return <p className="text-center mt-4 text-gray-500">Cargando pedidos...</p>;
+		return <Loader text="Cargando pedidos..." />;
 	}
 
 	if (!orders.length) {
