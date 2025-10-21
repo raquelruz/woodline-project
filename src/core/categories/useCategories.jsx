@@ -10,7 +10,6 @@ export const useCategories = () => {
 			try {
 				const { data: products } = await api.get("/products");
 
-				// Mapa de categorías únicas
 				const categoryMap = {};
 
 				for (const product of products) {
@@ -32,7 +31,7 @@ export const useCategories = () => {
 
 				setCategories(Object.values(categoryMap));
 			} catch (error) {
-				console.error("❌ Error al obtener categorías:", error);
+				// console.error("Error al obtener categorías:", error);
 				setCategories([]);
 			} finally {
 				setLoading(false);

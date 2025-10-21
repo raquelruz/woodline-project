@@ -59,13 +59,12 @@ export const PaymentModal = ({ isOpen, onClose, onSuccess, paymentMethod }) => {
 			if (Math.random() > 0.2) {
 				onSuccess();
 			} else {
-				alert("Error en el pago simulado. Intenta de nuevo.");
+				alert("Error en el pago. Intenta de nuevo.");
 				onClose();
 			}
 		}, 2000);
 	};
 
-	// --- Render contenido ---
 	let content;
 
 	if (processing) {

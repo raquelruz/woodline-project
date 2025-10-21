@@ -44,10 +44,10 @@ export const Checkout = () => {
 			console.log("Pedido creado:", order);
 
 			clearCart();
-			navigate("/order-success"); // redirige a página de éxito
+			navigate("/order-success"); 
 		} catch (error) {
-			console.error("Error al crear pedido:", error);
-			console.error("Backend:", error.response?.data);
+			// console.error("Error al crear pedido:", error);
+			// console.error("Backend:", error.response?.data);
 			alert("Hubo un error al confirmar el pedido.");
 		} finally {
 			setLoading(false);
@@ -64,7 +64,6 @@ export const Checkout = () => {
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-10 px-4">
-			{/* Modal de pago ficticio */}
 			<PaymentModal
 				isOpen={showPayment}
 				onClose={() => setShowPayment(false)}
@@ -73,7 +72,6 @@ export const Checkout = () => {
 			/>
 
 			<div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-				{/* Resumen de productos */}
 				<div className="md:col-span-2 bg-white shadow-md rounded-xl p-6 space-y-4">
 					<h2 className="text-2xl font-title font-bold text-primary mb-4">Resumen del pedido</h2>
 
@@ -90,7 +88,6 @@ export const Checkout = () => {
 						))}
 				</div>
 
-				{/* Formulario de envío/pago */}
 				<div className="bg-white shadow-md rounded-xl p-6 space-y-4">
 					<h2 className="font-title font-bold text-primary">Datos de envío</h2>
 
@@ -130,7 +127,6 @@ export const Checkout = () => {
 						</div>
 					</div>
 
-					{/* Totales */}
 					<div className="pt-4 border-t border-primary text-gray-600 space-y-2">
 						<div className="flex justify-between">
 							<span>Subtotal</span>

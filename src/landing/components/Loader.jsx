@@ -1,4 +1,4 @@
-export const Loader = ({ text = "Cargando..." }) => {
+export const Loader = ({ text }) => {
 	return (
 		<div className="flex flex-col items-center justify-center m-20">
 			<svg

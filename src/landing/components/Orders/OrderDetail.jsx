@@ -21,7 +21,8 @@ export const OrderDetail = () => {
 
 				setOrder(found || null);
 			} catch (error) {
-				console.error("Error al obtener pedido:", error);
+				// console.error("Error al obtener pedido:", error);
+				throw error;
 			} finally {
 				setLoading(false);
 			}

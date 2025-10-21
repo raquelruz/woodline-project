@@ -15,9 +15,9 @@ export const Footer = () => {
 		{
 			title: "Ayuda",
 			links: [
-				{ name: "Envíos", to: "/help/envios" },
-				{ name: "Devoluciones", to: "/help/devoluciones" },
-				{ name: "Tiempo de entrega", to: "/help/tiempo-entrega" },
+				{ name: "Envíos", to: "/shipping" },
+				{ name: "Devoluciones", to: "/returns" },
+				{ name: "Tiempo de entrega", to: "/delivery-time" },
 			],
 		},
 		{
@@ -48,7 +48,6 @@ export const Footer = () => {
 	return (
 		<footer className="bg-gray-100 py-12 px-6 border-t border-gray-200">
 			<div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-10">
-				{/* Logo y redes */}
 				<div>
 					<img src={logo} alt="logo" className="h-10 mb-4" />
 					<div className="flex gap-4 mb-4">
@@ -72,7 +71,6 @@ export const Footer = () => {
 					</div>
 				</div>
 
-				{/* Secciones con links */}
 				{sections.map((section, idx) => (
 					<div key={idx}>
 						<p className="font-semibold mb-2 text-primary-pressed">
@@ -91,7 +89,6 @@ export const Footer = () => {
 				))}
 			</div>
 
-			{/* Créditos */}
 			<div className="pt-10 text-center border-t border-gray-200 mt-10">
 				<p className="text-xs text-primary-pressed">
 					Copyright © {new Date().getFullYear()} Raquel Ruz — Inspired by Figma

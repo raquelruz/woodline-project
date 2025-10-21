@@ -92,7 +92,6 @@ export const Testimonials = () => {
 					))}
 				</div>
 
-				{/* Botones de navegación */}
 				<div className="absolute inset-0 flex items-center justify-between px-6 md:px-10">
 					<button
 						onClick={prevTestimonial}
@@ -111,7 +110,6 @@ export const Testimonials = () => {
 				</div>
 			</div>
 
-			{/* Indicadores */}
 			<div className="flex justify-center mt-8 gap-2">
 				{testimonials.map((_, index) => (
 					<span
@@ -121,16 +119,6 @@ export const Testimonials = () => {
 						}`}
 					></span>
 				))}
-			</div>
-
-			{/* Ver todas las reseñas */}
-			<div className="flex justify-center mt-12">
-				<a
-					href="#"
-					className="text-md font-title text-primary hover:text-primary-light transition-all"
-				>
-					Ver todas las reseñas →
-				</a>
 			</div>
 		</section>
 	);
