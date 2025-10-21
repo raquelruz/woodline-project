@@ -1,17 +1,17 @@
+import { useState } from "react";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { ReviewsList } from "../Reviews/ReviewList";
 import { ReviewForm } from "../Reviews/ReviewForm";
 
 export const ProductModalContent = ({ product }) => {
+	const [reviews, setReviews] = useState(product.reviews || []);
+
+	function handleNewReview(newReview) {
+		setReviews((prev) => [...prev, newReview]);
+	}
+
 	return (
-		<div
-			className="
-				flex flex-col md:flex-row w-full gap-6 
-				max-h-[90vh] overflow-y-auto 
-				scroll-smooth scrollbar-thin scrollbar-thumb-primary/40 scrollbar-track-transparent
-				pb-6
-			"
-		>
+		<div className="flex flex-col md:flex-row w-full gap-6 max-h-[90vh] overflow-y-auto pb-6">
 			<img
 				src={Array.isArray(product.images) ? product.images[0] : product.images}
 				alt={product.name}
@@ -42,8 +42,8 @@ export const ProductModalContent = ({ product }) => {
 				</div>
 
 				<div className="mt-8 border-t pt-6">
-					<ReviewsList productId={product._id || product.id} />
-					<ReviewForm productId={product._id || product.id} />
+					<ReviewsList reviews={reviews} productId={product._id || product.id} />
+					<ReviewForm productId={product._id || product.id} onNewReview={handleNewReview} />
 				</div>
 			</div>
 		</div>
