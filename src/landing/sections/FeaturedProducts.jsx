@@ -43,7 +43,7 @@ export const FeaturedProducts = () => {
 				{featured.map((product) => (
 					<Link
 						to={`/products?search=${encodeURIComponent(product.name)}`}
-						key={product._id}
+						key={product._id || product.id}
 						className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group"
 					>
 						<div className="relative overflow-hidden">

@@ -31,9 +31,9 @@ export const Footer = () => {
 		{
 			title: "Legal",
 			links: [
-				{ name: "Términos y Condiciones", to: "/legal/terminos" },
-				{ name: "Política de privacidad", to: "/legal/privacidad" },
-				{ name: "Cookies", to: "/legal/cookies" },
+				{ name: "Términos y Condiciones", to: "/terms" },
+				{ name: "Política de privacidad", to: "/privacy" },
+				{ name: "Cookies", to: "/cookies" },
 			],
 		},
 	];

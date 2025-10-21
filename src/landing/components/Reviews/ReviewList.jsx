@@ -33,7 +33,9 @@ export const ReviewsList = ({ productId }) => {
 			{reviews.map((review, index) => (
 				<div key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm">
 					<div className="flex items-center justify-between mb-2">
-						<p className="font-semibold text-gray-800">{review.name}</p>
+						<p className="font-semibold text-primary">
+							{review.userId?.displayName || review.userId?.name || review.userId?.username || "Anónimo"}
+						</p>
 						<ReviewStars rating={review.rating} />
 					</div>
 					<p className="text-gray-600 text-sm">{review.comment}</p>

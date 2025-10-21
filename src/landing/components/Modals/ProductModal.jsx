@@ -24,7 +24,7 @@ export const ProductModal = ({ isOpen, onClose, children }) => {
 					×
 				</IoCloseCircleOutline>
 
-				<div className="overflow-y-auto px-6 py-8 md:px-10 md:py-10 custom-scrollbar">
+				<div className="overflow-y-auto px-6 py-8 md:px-10 md:py-10">
 					{children}
 				</div>
 			</div>
