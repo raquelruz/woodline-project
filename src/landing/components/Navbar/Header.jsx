@@ -1,9 +1,9 @@
-import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 import logo from "../../../assets/images/woodline-logo.png";
 import { Container } from "../Container.jsx";
 import { Navbar } from "./Navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../../contexts/AuthContext.jsx";
 import { LogoutButton } from "../Buttons/LogoutButton.jsx";
 
