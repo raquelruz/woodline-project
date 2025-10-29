@@ -1,5 +1,5 @@
 import { useOrders } from "../hooks/useOrders";
-import { OrderTable } from "../components/OrderTable";
+import { OrderTable } from "../components/Orders/OrderTable";
 
 export const OrdersPage = () => {
 	const { orders, updateStatus } = useOrders();

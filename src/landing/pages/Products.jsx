@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
-import { ProductModal } from "../components/Modals/ProductModal";
 import { ProductFilters } from "../components/Products/ProductFilters";
 import { ProductGrid } from "../components/Products/ProductsGrid";
-import { ProductModalContent } from "../components/Modals/ProductModalContent";
 import { Loader } from "../components/Loader";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState("all");
-	const [product, setProduct] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [filters, setFilters] = useState({
 		minPrice: 0,
@@ -26,7 +23,7 @@ export const Products = () => {
 	const categoryQuery = searchParams.get("category") || "all";
 
 	useEffect(() => {
-		async function fetchProducts() {
+		const fetchProducts = async () => {
 			setLoading(true);
 			try {
 				const response = await api.get("/products");
@@ -34,9 +31,7 @@ export const Products = () => {
 
 				setProducts(data);
 
-				const uniqueCategories = [
-					...new Set(data.flatMap((p) => p.category || [])),
-				];
+				const uniqueCategories = [...new Set(data.flatMap((p) => p.category || []))];
 				setCategories(uniqueCategories);
 
 				if (categoryQuery && categoryQuery !== "all") {
@@ -48,7 +43,7 @@ export const Products = () => {
 			} finally {
 				setLoading(false);
 			}
-		}
+		};
 
 		fetchProducts();
 	}, [categoryQuery]);
@@ -60,28 +55,30 @@ export const Products = () => {
 		} else {
 			navigate(`/products?category=${encodeURIComponent(category)}`);
 		}
-	}
+	};
 
 	const handleFilterChange = (newFilters) => {
 		setFilters(newFilters);
-	}
+	};
 
 	const handleSearchChange = (term) => {
 		setSearchTerm(term);
-	}
+	};
+
+	const handleViewProduct = (productId) => {
+		navigate(`/products/${productId}`);
+	};
 
 	const filterProducts = () => {
 		let filtered = products.filter((p) => {
-			const matchesCategory =
-				selectedCategory === "all" || p.category?.includes(selectedCategory);
+			const matchesCategory = selectedCategory === "all" || p.category?.includes(selectedCategory);
 
 			const matchesSearch =
 				searchTerm === "" ||
 				p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				p.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-			const matchesPrice =
-				(p.price ?? 0) >= filters.minPrice && (p.price ?? 0) <= filters.maxPrice;
+			const matchesPrice = (p.price ?? 0) >= filters.minPrice && (p.price ?? 0) <= filters.maxPrice;
 
 			return matchesCategory && matchesSearch && matchesPrice;
 		});
@@ -93,7 +90,7 @@ export const Products = () => {
 		}
 
 		return filtered;
-	}
+	};
 
 	const filteredProducts = filterProducts();
 
@@ -106,24 +103,18 @@ export const Products = () => {
 				selectedCategory={selectedCategory}
 				setSelectedCategory={handleCategoryChange}
 				onFilterChange={handleFilterChange}
-				onSearchChange={handleSearchChange} 
+				onSearchChange={handleSearchChange}
 			/>
 
-			{filteredProducts.length === 0 ? (
+			{!filteredProducts.length && (
 				<div className="text-center text-gray-500 mt-20">
 					<p>No se encontraron productos que coincidan con la búsqueda.</p>
 				</div>
-			) : (
-				<ProductGrid
-					products={filteredProducts}
-					onView={setProduct}
-					searchQuery={searchTerm}
-				/>
 			)}
 
-			<ProductModal isOpen={!!product} onClose={() => setProduct(null)}>
-				{product && <ProductModalContent product={product} />}
-			</ProductModal>
+			{filteredProducts.length > 0 && (
+				<ProductGrid products={filteredProducts} onView={handleViewProduct} searchQuery={searchTerm} />
+			)}
 		</section>
 	);
 };
