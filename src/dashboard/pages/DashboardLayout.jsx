@@ -15,7 +15,7 @@ export const DashboardLayout = () => {
 
 	return (
 		<div className="flex min-h-screen bg-gray-50">
-			{/* DESKTOP */}
+			{/* Desktop */}
 			<aside
 				className={`fixed md:static top-0 left-0 h-full w-60 bg-white shadow-md p-6 z-40 transition-transform duration-300 ${
 					open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -47,7 +47,7 @@ export const DashboardLayout = () => {
 				</nav>
 			</aside>
 
-			{/* MOBILE */}
+			{/* Mobile */}
 			{open && (
 				<div
 					className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden"

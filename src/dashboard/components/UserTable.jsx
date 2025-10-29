@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
+import toast, { Toaster } from "react-hot-toast";
+import { CustomToaster } from "./CustomToaster";
 
 export const UserTable = ({ onEdit }) => {
 	const [users, setUsers] = useState([]);
@@ -14,32 +16,46 @@ export const UserTable = ({ onEdit }) => {
 	const fetchUsers = async () => {
 		try {
 			setLoading(true);
+			toast.loading("Cargando usuarios...");
 			const response = await api.get("/users");
-			setUsers(Array.isArray(response.data) ? response.data : []);
+			const data = Array.isArray(response.data) ? response.data : [];
+			setUsers(data);
+			toast.dismiss();
+			toast.success("Usuarios cargados correctamente ✅");
 		} catch (error) {
-			alert("Error al cargar usuarios. Intenta de nuevo.")
-			throw error;
+			toast.dismiss();
+			toast.error("Error al cargar usuarios ❌");
+			console.error("Error al cargar usuarios:", error);
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const handleDelete = async (userId) => {
-		if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
+		const confirmDelete = window.confirm("¿Seguro que deseas eliminar este usuario?");
+		if (!confirmDelete) return;
 
 		try {
+			toast.loading("Eliminando usuario...");
 			await api.delete(`/users/${userId}`);
 			setUsers((prev) => prev.filter((u) => (u._id || u.id) !== userId));
+			toast.dismiss();
+			toast.success("Usuario eliminado correctamente 🗑️");
 		} catch (error) {
-			alert("No se pudo eliminar el usuario. Intenta de nuevo.");
+			toast.dismiss();
+			toast.error("Error al eliminar usuario ❌");
+			console.error("Error al eliminar usuario:", error);
 		}
 	};
 
 	if (loading) return <Loader text="Cargando usuarios..." />;
-	if (!users.length) return <p className="text-center text-gray-500 mt-4">No hay usuarios registrados.</p>;
+	if (!users.length)
+		return <p className="text-center text-gray-500 mt-4">No hay usuarios registrados.</p>;
 
 	return (
 		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6">
+			<CustomToaster />
+
 			{/* DESKTOP */}
 			<div className="hidden md:block overflow-x-auto">
 				<table className="min-w-full text-sm">
@@ -66,14 +82,14 @@ export const UserTable = ({ onEdit }) => {
 											<button
 												onClick={() => onEdit(user)}
 												className="text-blue-500 hover:text-blue-700 transition"
-												title="Editar"
+												title="Editar usuario"
 											>
 												<MdEdit size={18} />
 											</button>
 											<button
 												onClick={() => handleDelete(userId)}
 												className="text-red-500 hover:text-red-700 transition"
-												title="Eliminar"
+												title="Eliminar usuario"
 											>
 												<MdDelete size={18} />
 											</button>

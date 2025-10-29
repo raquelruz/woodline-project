@@ -1,16 +1,15 @@
-import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { getUserFromLocalStorage } from "../../core/auth/auth.service";
 
-export const PrivateRoute = ({ children }) => {
-	const { user, loading } = useContext(AuthContext);
-
-	if (loading) {
-		return <div>Cargando...</div>;
-	}
+export const PrivateRoute = ({ children, role }) => {
+	const user = getUserFromLocalStorage();
 
 	if (!user) {
 		return <Navigate to="/login" replace />;
+	}
+
+	if (role && user.role !== role) {
+		return <Navigate to="/" replace />;
 	}
 
 	return children;

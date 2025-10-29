@@ -26,6 +26,9 @@ import { DeliveryTimePage } from "./landing/pages/Help/DeliveryTimePage";
 import { TermsPage } from "./landing/pages/Legal/TermsPage";
 import { PrivacyPolicyPage } from "./landing/pages/Legal/PrivacyPolicyPage";
 import { CookiesPolicyPage } from "./landing/pages/Legal/CookiesPolicyPage";
+import { IndividualProduct } from "./landing/pages/IndividualProduct";
+import { ProductDetail } from "./landing/components/Products/ProductsDetail";
+import { Toaster } from "react-hot-toast";
 
 export const App = () => {
 	return (
@@ -37,9 +40,17 @@ export const App = () => {
 					{/* Rutas públicas */}
 					<Route path="/" element={<Home />} />
 					<Route path="/products" element={<Products />} />
+					<Route
+						path="/products/:id"
+						element={
+							<IndividualProduct>
+								<ProductDetail />
+							</IndividualProduct>
+						}
+					/>
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
-					
+
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/users" element={<Users />} />
@@ -95,10 +106,46 @@ export const App = () => {
 							</PrivateRoute>
 						}
 					>
-						<Route index element={<DashboardHome />} />
-						<Route path="products" element={<ProductsPage />} />
-						<Route path="users" element={<UsersPage />} />
-						<Route path="orders" element={<OrdersPage />} />
+						<Route
+							index
+							element={
+								<PrivateRoute role="admin">
+									<DashboardHome />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="products"
+							element={
+								<PrivateRoute role="admin">
+									<ProductsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="users"
+							element={
+								<PrivateRoute role="admin">
+									<UsersPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="orders"
+							element={
+								<PrivateRoute role="admin">
+									<OrdersPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="orders/:id"
+							element={
+								<PrivateRoute role="admin">
+									<OrderDetail />
+								</PrivateRoute>
+							}
+						/>
 					</Route>
 				</Routes>
 			</main>

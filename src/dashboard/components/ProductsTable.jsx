@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
+import toast, { Toaster } from "react-hot-toast";
+import { CustomToaster } from "./CustomToaster";
 
 export const ProductTable = ({ onEdit }) => {
 	const [products, setProducts] = useState([]);
@@ -15,33 +17,43 @@ export const ProductTable = ({ onEdit }) => {
 		try {
 			setLoading(true);
 			const response = await api.get("/products");
-			setProducts(Array.isArray(response.data) ? response.data : []);
+			const data = Array.isArray(response.data) ? response.data : [];
+			setProducts(data);
 		} catch (error) {
+			toast.dismiss();
+			toast.error("Error al cargar productos");
 			// console.error("Error al cargar productos:", error);
-			throw error;
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const handleDelete = async (productId) => {
-		if (!window.confirm("¿Seguro que deseas eliminar este producto?")) return;
+		const confirmDelete = window.confirm("¿Seguro que deseas eliminar este producto?");
+		if (!confirmDelete) return;
 
 		try {
+			toast.loading("Eliminando producto...");
 			await api.delete(`/products/${productId}`);
 			setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
+			toast.dismiss();
+			toast.success("Producto eliminado correctamente");
 		} catch (error) {
+			toast.dismiss();
+			toast.error("Error al eliminar producto");
 			// console.error("Error al eliminar producto:", error);
-			alert("No se pudo eliminar el producto. Intenta de nuevo.");
 		}
 	};
 
-	if (loading) return <Loader text="Cargando productos..."/>
-	if (!products.length) return <p className="text-center mt-4 text-gray-500">No hay productos registrados.</p>;
+	if (loading) return <Loader text="Cargando productos..." />;
+	if (!products.length)
+		return <p className="text-center mt-4 text-gray-500">No hay productos registrados.</p>;
 
 	return (
-		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6">
-			{/* DESKTOP */}
+		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6 relative">
+			<CustomToaster />
+
+			{/* Desktop */}
 			<div className="hidden md:block overflow-x-auto">
 				<table className="min-w-full text-sm">
 					<thead className="bg-primary text-white">
@@ -69,12 +81,14 @@ export const ProductTable = ({ onEdit }) => {
 											<button
 												onClick={() => onEdit(product)}
 												className="text-blue-500 hover:text-blue-700 transition"
+												aria-label="Editar producto"
 											>
 												<MdEdit size={18} />
 											</button>
 											<button
 												onClick={() => handleDelete(productId)}
 												className="text-red-500 hover:text-red-700 transition"
+												aria-label="Eliminar producto"
 											>
 												<MdDelete size={18} />
 											</button>
@@ -87,7 +101,7 @@ export const ProductTable = ({ onEdit }) => {
 				</table>
 			</div>
 
-			{/* MOBILE */}
+			{/* Mobile */}
 			<div className="md:hidden divide-y divide-gray-100">
 				{products.map((product) => {
 					const productId = product._id || product.id;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
+import toast from "react-hot-toast";
 
 export const useProductForm = (selectedProduct, onSaved) => {
 	const initialForm = {
@@ -83,20 +84,25 @@ export const useProductForm = (selectedProduct, onSaved) => {
 
 			const productId = form._id || selectedProduct?._id || selectedProduct?.id;
 
+			toast.loading(productId ? "Actualizando producto..." : "Creando producto...");
+
 			if (productId) {
 				await api.patch(`/products/${productId}`, payload);
-				alert("Producto actualizado correctamente");
+				toast.dismiss();
+				toast.success("Producto actualizado correctamente");
 			} else {
 				await api.post("/products", payload);
-				alert("Producto creado correctamente");
+				toast.dismiss();
+				toast.success("Producto creado correctamente");
 			}
 
-			onSaved?.(); 
+			onSaved?.();
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			// console.error("Error al guardar el producto:", error.response?.data || error);
-			alert("Error al guardar el producto. Revisa los campos o tu conexión.");
+			// console.error("Error al guardar producto:", error);
+			toast.dismiss();
+			toast.error("Error al guardar el producto. Inténtalo más tarde.");
 		} finally {
 			setLoading(false);
 		}
