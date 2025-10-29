@@ -1,10 +1,11 @@
 # Woodline Living
 *Furniture Design & E-Commerce Platform*
-Woodline Living is a modern and elegant web application for custom furniture design and sales,
-including a full-featured admin dashboard to manage products, users & orders.
+Woodline Living is a modern and elegant web application for custom furniture design and online sales, featuring a full admin dashboard to manage products, users, and orders.
+Developed with a focus on UX/UI, performance, and scalability.
 
 ## Version 1.0.0.
-First stable release of Woodline Living - Responsive, integrated and production-ready
+The first production-ready version of Woodline Living
+Fully responsive, API-integrated, and optimized for real-world deployment.
 
 ## Main Features
 ### Frontend (User Interface)
@@ -22,9 +23,9 @@ First stable release of Woodline Living - Responsive, integrated and production-
     - **Products** - CRUD operations
     - **Users** - management & editing
     - **Orders** - status management (pending, preparing, delivered, cancelled)
-    - Animated stats dashboard using **Framer Motion**
-    - Simplified and polished UX/UI
-    - Clean API integration with Axios
+    - **Dashboard Home:** Animated analytics using Framer Motion
+    - Simplified and polished UX/UI for smooth admin interaction
+    - Clean integration with RESTful APIs via Axio
 
 ### API Integration
 - Connected to ElevenCode backend API
@@ -32,51 +33,7 @@ First stable release of Woodline Living - Responsive, integrated and production-
     - /products
     - /users
     - orders/:orderId/status
-
-## Project Structure
-src/
-├── app.jsx
-├── core/
-│   ├── http/axios.js
-│   ├── cart/
-│   │   ├── cart.api.js
-│   │   └── cart.service.js
-├── dashboard/
-│   ├── components/
-│   │   ├── ProductTable.jsx
-│   │   ├── UserTable.jsx
-│   │   ├── ReviewTable.jsx
-│   │   └── OrderTable.jsx
-│   ├── hooks/
-│   │   ├── useProducts.jsx
-│   │   ├── useUsers.jsx
-│   │   └── useOrders.jsx
-│   └── pages/
-│       ├── DashboardHome.jsx
-│       ├── OrdersPage.jsx
-│       ├── ProductsPage.jsx
-│       ├── UsersPage.jsx
-│       └── ReviewsPage.jsx
-├── landing/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── Footer.jsx
-│   │   ├── Buttons/
-│   │   └── Reviews/
-│   └── pages/
-│       ├── HomePage.jsx
-│       ├── ProductsPage.jsx
-│       ├── AboutPage.jsx
-│       ├── ContactPage.jsx
-│       ├── ShippingPage.jsx
-│       ├── ReturnsPage.jsx
-│       ├── DeliveryTimePage.jsx
-│       ├── TermsPage.jsx
-│       ├── PrivacyPolicyPage.jsx
-│       └── CookiesPolicyPage.jsx
-└── contexts/
-    ├── AuthContext.jsx
-    └── CartContext.jsx
+- Includes request interceptors for JWT-based authentication
 
 
 ## Installation & Setup
@@ -97,7 +54,16 @@ npm run build
 
 # Author
 ## Raquel Ruiz
-Full-Stack Developer || Designer || Creative Technologist
+Full-Stack Developer | Designer | Creative Technologist
+Passionate about creating intuitive digital products that merge technology, design, and storytelling.
+
+# Connect with Me
+Stay updated and follow my work here:
+
+**GitHub:** github.com/raquelruz
+**LinkedIn:** linkedin.com/in/raquel-ruiz-lopez/
+**Instagram:** @raquelruz.dev / 
+**Email:** raquelruizlopezcepero@gmail.com
 
 # License
 © 2025 Woodline Living. All rights reserved.
@@ -106,6 +72,6 @@ Unauthorized reproduction or redistribution of this software or its visual ident
 # Version Notes
 ## Woodline Living v1.0.0.
 - Stable release
-- Complete dashboard integration
-- Legal & informational pages
-- Ready for production deployment
+- Complete admin dashboard integration
+- Full Legal & informational pages
+- Production-ready build
