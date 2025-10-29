@@ -1,34 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "../../core/http/axios";
 
 export const useOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-	useEffect(() => {
-		fetchOrders();
-	}, []);
-
-	const fetchOrders = async () => {
+	const fetchOrders = useCallback(async (userId = null) => {
 		try {
 			setLoading(true);
-			const response = await api.get("/orders");
-			setOrders(Array.isArray(response.data) ? response.data : []);
+			setError(null);
+
+			const url = userId ? `/orders?userId=${userId}` : "/orders";
+			const response = await api.get(url);
+			const data = Array.isArray(response.data) ? response.data : [];
+			setOrders(data);
 		} catch (error) {
-			throw error;
+			// console.error("Error al obtener pedidos:", error);
+			setError("No se pudieron cargar los pedidos.");
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, []);
 
 	const updateStatus = async (orderId, newStatus) => {
-		try {
-			await api.patch(`/orders/${orderId}/status`, { status: newStatus });
-			fetchOrders();
-		} catch (error) {
-			alert("Error al actualizar estado del pedido");
-		}
+		if (!orderId) return;
+		await api.patch(`/orders/${orderId}/status`, { status: newStatus });
+		await fetchOrders();
 	};
 
-	return { orders, loading, fetchOrders, updateStatus };
+	useEffect(() => {
+		fetchOrders();
+	}, [fetchOrders]);
+
+	return { orders, loading, error, fetchOrders, updateStatus };
 };

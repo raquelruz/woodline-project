@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
+import toast from "react-hot-toast";
 
 export const useUserForm = (selectedUser, onSaved) => {
 	const initialForm = {
@@ -52,20 +53,25 @@ export const useUserForm = (selectedUser, onSaved) => {
 
 			const userId = form._id || selectedUser?._id || selectedUser?.id;
 
+			toast.loading(userId ? "Actualizando usuario..." : "Creando usuario...");
+
 			if (userId) {
 				await api.put(`/users/${userId}`, payload);
-				alert("Usuario actualizado correctamente");
+				toast.dismiss();
+				toast.success("Usuario actualizado correctamente");
 			} else {
 				await api.post("/auth/register", payload);
-				alert("Usuario creado correctamente");
+				toast.dismiss();
+				toast.success("Usuario creado correctamente");
 			}
 
 			onSaved?.();
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			// console.error("Error al guardar el usuario:", error.response?.data || error);
-			alert("Error al guardar el usuario.");
+			// console.error("Error al guardar el usuario:", error);
+			toast.dismiss();
+			toast.error("Error al guardar el usuario");
 		} finally {
 			setLoading(false);
 		}

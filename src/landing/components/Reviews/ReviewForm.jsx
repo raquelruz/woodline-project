@@ -45,7 +45,7 @@ export const ReviewForm = ({ productId, onNewReview }) => {
 				setRating(0);
 			}
 		} catch (error) {
-			console.error(error)
+			// console.error(error)
 			setError("Error al enviar la reseña. Inténtalo más tarde.");
 		} finally {
 			setLoading(false);
