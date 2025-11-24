@@ -1,4 +1,4 @@
-export const ProcessingModal = ({ isOpen }) => {
+export const ProcessingModal = memo(({ isOpen }) => {
 	if (!isOpen) return null;
 
 	return (
@@ -28,4 +28,4 @@ export const ProcessingModal = ({ isOpen }) => {
 			</div>
 		</div>
 	);
-};
+});

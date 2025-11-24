@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Input } from "./Input";
 
-export const FormInput = ({ containerClass, input, label }) => {
+export const FormInput = memo(({ containerClass, input, label }) => {
     return (
         <div className={containerClass}>
             <label htmlFor={input.name} className={`font-medium text- text-primary ${label.className}`}>
@@ -18,4 +19,4 @@ export const FormInput = ({ containerClass, input, label }) => {
             />
         </div>
     );
-};
+});

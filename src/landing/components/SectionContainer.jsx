@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Container } from "./Container";
 
-export const SectionContainer = ({ bg, title, childrenContainerStyle, children }) => {
+export const SectionContainer = memo(({ bg, title, childrenContainerStyle, children }) => {
     return (
         <section className={`py-3xl ${bg}`}>
             <Container className="w-full flex flex-col justify-center md:gap-2xl gap-md px-md pb-md">
@@ -9,4 +10,4 @@ export const SectionContainer = ({ bg, title, childrenContainerStyle, children }
             </Container>
         </section>
     );
-};
+});

@@ -1,9 +1,10 @@
+import { memo } from "react";
 import aboutImage from "../../assets/images/team-img.jpg";
 import { FaLeaf, FaHandshake, FaCouch } from "react-icons/fa";
 
 const aboutClass = "text-gray-700 leading-relaxed";
 
-export const About = () => {
+export const About = memo(() => {
 	return (
 		<section className="bg-gradient-to-b from-white to-gray-50 py-20">
 			<div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
@@ -80,4 +81,4 @@ export const About = () => {
 			</div>
 		</section>
 	);
-};
+});

@@ -1,4 +1,6 @@
-export const ProfileHeader = ({ user }) => {
+import { memo } from "react";
+
+export const ProfileHeader = memo(({ user }) => {
 	return (
 		<div className="flex items-center gap-4">
 			<div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold">
@@ -11,4 +13,4 @@ export const ProfileHeader = ({ user }) => {
 			</div>
 		</div>
 	);
-};
+});

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { ProductForm } from "../components/ProductForm";
 import { ProductTable } from "../components/ProductsTable";
 
-export const ProductsPage = () => {
+export const ProductsPage = memo(() => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
 
@@ -24,4 +24,4 @@ export const ProductsPage = () => {
 			</div>
         </section>
     )
-}
+});

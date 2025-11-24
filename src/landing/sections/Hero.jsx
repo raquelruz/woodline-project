@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-export const Hero = () => {
+export const Hero = memo(() => {
 	const navigate = useNavigate();
 
 	return (
@@ -42,4 +43,4 @@ export const Hero = () => {
 			</div>
 		</section>
 	);
-};
+});

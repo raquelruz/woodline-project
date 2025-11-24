@@ -1,4 +1,6 @@
-export const OrderProductList = ({ items }) => {
+import { memo } from "react";
+
+export const OrderProductList = memo(({ items }) => {
 	if (!items || items.length === 0) {
 		return <p className="text-gray-500 text-center py-4">No hay productos en este pedido.</p>;
 	}
@@ -19,4 +21,4 @@ export const OrderProductList = ({ items }) => {
 			))}
 		</ul>
 	);
-};
+});

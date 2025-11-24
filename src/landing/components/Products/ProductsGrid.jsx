@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { ProductCard } from "./ProductsCard";
 
-export const ProductGrid = ({ products, onView, searchQuery }) => {
+export const ProductGrid = memo(({ products, onView, searchQuery }) => {
 	if (products.length === 0) {
 		return (
 			<p className="col-span-full text-center text-gray-500">
@@ -20,4 +21,4 @@ export const ProductGrid = ({ products, onView, searchQuery }) => {
 			))}
 		</div>
 	);
-};
+});

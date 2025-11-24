@@ -1,4 +1,6 @@
-export const Input = ({ ...props }) => {
+import { memo } from "react";
+
+export const Input = memo(({ ...props }) => {
 	return (
 		<input
 			{...props}
@@ -6,4 +8,4 @@ export const Input = ({ ...props }) => {
             focus:text-primary transition ${props.className}`}
 		/>
 	);
-};
+});
