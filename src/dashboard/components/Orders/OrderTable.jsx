@@ -3,8 +3,9 @@ import { Loader } from "../../../landing/components/Loader";
 import { OrderRow } from "./OrderRow";
 import { OrderCard } from "./OrderCard";
 import toast, { Toaster } from "react-hot-toast";
+import { memo } from "react";
 
-export const OrderTable = () => {
+export const OrderTable = memo(() => {
 	const { orders, loading, updateStatus } = useOrders();
 
 	const handleStatusChange = async (orderId, newStatus) => {
@@ -79,4 +80,4 @@ export const OrderTable = () => {
 			</div>
 		</div>
 	);
-};
+});

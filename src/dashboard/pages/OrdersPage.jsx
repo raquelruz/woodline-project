@@ -1,7 +1,8 @@
 import { useOrders } from "../hooks/useOrders";
 import { OrderTable } from "../components/Orders/OrderTable";
+import { memo } from "react";
 
-export const OrdersPage = () => {
+export const OrdersPage = memo(() => {
 	const { orders, updateStatus } = useOrders();
 
 	return (
@@ -14,4 +15,4 @@ export const OrdersPage = () => {
 			<OrderTable orders={orders} onUpdate={updateStatus} />
 		</section>
 	);
-};
+});

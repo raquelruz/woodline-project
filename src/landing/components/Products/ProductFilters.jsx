@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 
 export const ProductFilters = ({
@@ -13,19 +13,29 @@ export const ProductFilters = ({
 	const [sortOrder, setSortOrder] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
 
-	function handleApplyFilters() {
+	const categoryList = useMemo(() => ["all", ...categories], [categories]);
+
+	const handleApplyFilters = useCallback(() => {
 		onFilterChange({
 			minPrice: Number(minPrice) || 0,
 			maxPrice: Number(maxPrice) || Infinity,
 			sort: sortOrder,
 		});
 		onSearchChange(searchTerm);
-	}
+	}, [minPrice, maxPrice, sortOrder, searchTerm, onFilterChange, onSearchChange]);
+
+	const handleCategoryClick = useCallback(
+		(category) => {
+			setSelectedCategory(category);
+		},
+		[setSelectedCategory]
+	);
+
+	console.log("RENDER PRODUCTFILTERS")
 
 	return (
 		<div className="w-full max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-5 mb-10">
 			<div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-				{/* Buscador */}
 				<div className="flex items-center w-full md:w-1/3 bg-gray-50 rounded-full px-4 py-2 border border-gray-200 focus-within:ring-2 focus-within:ring-primary">
 					<FaSearch className="text-primary text-sm mr-3" />
 					<input
@@ -37,7 +47,6 @@ export const ProductFilters = ({
 					/>
 				</div>
 
-				{/* Orden y precio */}
 				<div className="flex flex-wrap justify-center md:justify-end items-center gap-3">
 					<select
 						value={sortOrder}
@@ -57,6 +66,7 @@ export const ProductFilters = ({
 							onChange={(event) => setMinPrice(event.target.value)}
 							className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 						/>
+
 						<label className="text-gray-600">Hasta:</label>
 						<input
 							type="number"
@@ -76,17 +86,16 @@ export const ProductFilters = ({
 				</div>
 			</div>
 
-			{/* Categorías */}
 			<div className="flex flex-wrap justify-center gap-2">
-				{["all", ...categories].map((category) => (
+				{categoryList.map((category) => (
 					<button
 						key={category}
-						onClick={() => setSelectedCategory(category)}
-						className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+						onClick={() => handleCategoryClick(category)}
+						className={
 							selectedCategory === category
-								? "bg-primary text-white"
-								: "bg-gray-100 hover:bg-gray-200 text-gray-700"
-						}`}
+								? "px-4 py-1.5 rounded-full text-sm font-medium bg-primary text-white"
+								: "px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700"
+						}
 					>
 						{category === "all" ? "Todas" : category}
 					</button>

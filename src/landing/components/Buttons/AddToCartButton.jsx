@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
 
-export const AddToCartButton = ({ product }) => {
+export const AddToCartButton = memo(({ product }) => {
 	const { addToCart } = useCart();
 	const [added, setAdded] = useState(false);
 
@@ -31,4 +31,4 @@ export const AddToCartButton = ({ product }) => {
 			{label}
 		</button>
 	);
-};
+});

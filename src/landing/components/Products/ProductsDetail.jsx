@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { api } from "../../../core/http/axios";
 import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 
-export const ProductDetail = () => {
+export const ProductDetail = memo(() => {
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export const ProductDetail = () => {
 				const response = await api.get(`/products/${id}`);
 				setProduct(response.data);
 			} catch (error) {
-				// console.error("Error al cargar el producto:", error);
+				console.error("Error al cargar el producto:", error);
 				throw error;
 			} finally {
 				setLoading(false);
@@ -82,4 +82,4 @@ export const ProductDetail = () => {
 			</div>
 		</section>
 	);
-};
+});

@@ -1,7 +1,8 @@
 import { MdOutlineLogout } from "react-icons/md";
 import { useAuth } from "../../../core/auth/useAuth";
+import { memo } from "react";
 
-export const LogoutButton = ({ variant = "default" }) => {
+export const LogoutButton = memo(({ variant = "default" }) => {
 	const { logout } = useAuth();
 
 	if (variant === "icon") {
@@ -25,4 +26,4 @@ export const LogoutButton = ({ variant = "default" }) => {
 			Cerrar sesión
 		</button>
 	);
-};
+});
