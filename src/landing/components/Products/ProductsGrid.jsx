@@ -1,22 +1,16 @@
 import { memo } from "react";
-import { ProductCard } from "./ProductsCard";
+import { ProductsCard } from "./ProductsCard";
 
-export const ProductGrid = memo(({ products, onView, searchQuery }) => {
-	if (products.length === 0) {
-		return (
-			<p className="col-span-full text-center text-gray-500">
-				No se encontraron productos {searchQuery && `para "${searchQuery}"`}
-			</p>
-		);
-	}
-
+export const ProductsGrid = memo(({ products, onView }) => {
+	console.log("RENDER PRODUCTSGRID")
+	
 	return (
-		<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			{products.map((p, index) => (
-				<ProductCard
-					key={p._id || p.id || `${p.sku}-${index}`}
-					product={p}
-					onView={() => onView(p._id || p.id)} // ✅ solo el ID
+		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+			{products.map((product) => (
+				<ProductsCard
+					key={product._id || product.id}
+					product={product}
+					onView={onView}
 				/>
 			))}
 		</div>

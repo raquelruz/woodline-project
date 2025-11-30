@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../core/categories/useCategories";
 import { Loader } from "../components/Loader";
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 
 export const Categories = memo(() => {
 	const { categories, loading } = useCategories();
 	const navigate = useNavigate();
+
+	const handleCategoryClick = useCallback((slug) => {
+		navigate(`/products?category=${encodeURIComponent(slug)}`);
+	}, []);
 
 	const categoriesMemoized = useMemo(
 		() =>
@@ -29,15 +33,11 @@ export const Categories = memo(() => {
 					</h5>
 				</div>
 			)),
-		[categories]
+		[categories, handleCategoryClick]
 	);
 
 	if (loading) {
 		return <Loader text="Cargando categorías..." />;
-	}
-
-	function handleCategoryClick(slug) {
-		navigate(`/products?category=${encodeURIComponent(slug)}`);
 	}
 
 	console.log("RENDER CATEGORIES");

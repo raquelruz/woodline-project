@@ -4,7 +4,7 @@ import { FaEnvelope } from "react-icons/fa";
 export const Newsletters = () => {
 	const [email, setEmail] = useState("");
 
-	function handleSubmit(event) {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 
 		if (!email) {
@@ -20,6 +20,8 @@ export const Newsletters = () => {
 		window.location.href = `mailto:info@woodlineliving.com?subject=${subject}&body=${body}`;
 		setEmail("");
 	}
+
+	console.log("RENDER NEWSLETTERS")
 
 	return (
 		<section className="py-16 px-6 bg-primary-ultralight">
@@ -44,7 +46,7 @@ export const Newsletters = () => {
 						<input
 							type="email"
 							value={email}
-							onChange={(e) => setEmail(e.target.value)}
+							onChange={(event) => setEmail(event.target.value)}
 							placeholder="Introduce tu correo"
 							className="w-full py-2.5 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none text-sm md:text-base"
 						/>

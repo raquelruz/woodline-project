@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
-import { ProductGrid } from "../components/Products/ProductsGrid";
+import { ProductsGrid } from "../components/Products/ProductsGrid";
 import { Loader } from "../components/Loader";
 
 export const Products = () => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
-	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [loading, setLoading] = useState(true);
+
+	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [filters, setFilters] = useState({
 		minPrice: 0,
 		maxPrice: Infinity,
@@ -19,27 +20,25 @@ export const Products = () => {
 
 	const location = useLocation();
 	const navigate = useNavigate();
-	const searchParams = new URLSearchParams(location.search);
-	const categoryQuery = searchParams.get("category") || "all";
+
+	const categoryQuery = useMemo(() => {
+		const params = new URLSearchParams(location.search);
+		return params.get("category") || "all";
+	}, [location.search]);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
 			setLoading(true);
 			try {
-				const response = await api.get("/products");
-				const data = response.data;
-
+				const { data } = await api.get("/products");
 				setProducts(data);
 
-				const uniqueCategories = [...new Set(data.flatMap((p) => p.category || []))];
-				setCategories(uniqueCategories);
+				const unique = [...new Set(data.flatMap((p) => p.category || []))];
+				setCategories(unique);
 
-				if (categoryQuery && categoryQuery !== "all") {
-					setSelectedCategory(categoryQuery);
-				}
+				setSelectedCategory(categoryQuery);
 			} catch (error) {
-				// console.error("Error al obtener productos:", error);
-				throw error;
+				console.error("Error al obtener productos:", error);
 			} finally {
 				setLoading(false);
 			}
@@ -48,73 +47,99 @@ export const Products = () => {
 		fetchProducts();
 	}, [categoryQuery]);
 
-	const handleCategoryChange = (category) => {
-		setSelectedCategory(category);
-		if (category === "all") {
-			navigate("/products");
-		} else {
-			navigate(`/products?category=${encodeURIComponent(category)}`);
-		}
-	};
+	const handleCategoryChange = useCallback(
+		(category) => {
+			setSelectedCategory(category);
 
-	const handleFilterChange = (newFilters) => {
+			if (category === "all") {
+				navigate("/products");
+				return;
+			}
+
+			const encoded = encodeURIComponent(category);
+			navigate(`/products?category=${encoded}`);
+		},
+		[navigate]
+	);
+
+	const handleFilterChange = useCallback((newFilters) => {
 		setFilters(newFilters);
-	};
+	}, []);
 
-	const handleSearchChange = (term) => {
+	const handleSearchChange = useCallback((term) => {
 		setSearchTerm(term);
-	};
+	}, []);
 
-	const handleViewProduct = (productId) => {
-		navigate(`/products/${productId}`);
-	};
+	const handleViewProduct = useCallback(
+		(product) => {
+			const id = product.id || product._id;
+			navigate(`/products/${id}`);
+		},
+		[navigate]
+	);
 
-	const filterProducts = () => {
-		let filtered = products.filter((p) => {
-			const matchesCategory = selectedCategory === "all" || p.category?.includes(selectedCategory);
+	const filteredProducts = useMemo(() => {
+		let result = products;
 
-			const matchesSearch =
-				searchTerm === "" ||
-				p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				p.description.toLowerCase().includes(searchTerm.toLowerCase());
+		if (selectedCategory !== "all") {
+			result = result.filter((p) => p.category?.includes(selectedCategory));
+		}
 
-			const matchesPrice = (p.price ?? 0) >= filters.minPrice && (p.price ?? 0) <= filters.maxPrice;
+		if (searchTerm) {
+			const q = searchTerm.toLowerCase();
+			result = result.filter((p) => {
+				return (
+					p.name.toLowerCase().includes(q) ||
+					p.description.toLowerCase().includes(q)
+				);
+			});
+		}
 
-			return matchesCategory && matchesSearch && matchesPrice;
+		result = result.filter((p) => {
+			const price = p.price ?? 0;
+			return price >= filters.minPrice && price <= filters.maxPrice;
 		});
 
 		if (filters.sort === "priceAsc") {
-			filtered = [...filtered].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-		} else if (filters.sort === "priceDesc") {
-			filtered = [...filtered].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+			result = [...result].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
 		}
 
-		return filtered;
-	};
+		if (filters.sort === "priceDesc") {
+			result = [...result].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+		}
 
-	const filteredProducts = filterProducts();
+		return result;
+	}, [products, selectedCategory, searchTerm, filters]);
 
-	if (loading) return <Loader text="Cargando productos..." />;
+	if (loading) {
+		return <Loader text="Cargando productos..." />;
+	}
+
+	console.log("RENDER PRODUCTS");
 
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
+
 			<ProductFilters
 				categories={categories}
 				selectedCategory={selectedCategory}
-				setSelectedCategory={handleCategoryChange}
+				onCategoryChange={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
 			/>
 
-			{!filteredProducts.length && (
-				<div className="text-center text-gray-500 mt-20">
-					<p>No se encontraron productos que coincidan con la búsqueda.</p>
-				</div>
-			)}
+			<div className="mt-10">
+				{filteredProducts.length === 0 && (
+					<div className="text-center text-gray-500 mt-20">
+						<p>No se encontraron productos.</p>
+					</div>
+				)}
 
-			{filteredProducts.length > 0 && (
-				<ProductGrid products={filteredProducts} onView={handleViewProduct} searchQuery={searchTerm} />
-			)}
+				{filteredProducts.length > 0 && (
+					<ProductsGrid products={filteredProducts} onView={handleViewProduct} />
+				)}
+			</div>
+
 		</section>
 	);
 };

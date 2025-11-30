@@ -8,7 +8,7 @@ import { FeaturedProducts } from "../sections/FeaturedProducts";
 
 export const Home = () => {
 	return (
-		<div className="">
+		<>
 			<Hero />
 
 			<Container>
@@ -18,6 +18,6 @@ export const Home = () => {
 				<Testimonials />
 				<Newsletters />
 			</Container>
-		</div>
+		</>
 	);
 };

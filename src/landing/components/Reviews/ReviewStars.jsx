@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { FaStar } from "react-icons/fa";
 
-export const ReviewStars = memo(({ rating = 0, setRating }) => {
+export const ReviewStars = ({ rating = 0, setRating }) => {
 	const stars = [1, 2, 3, 4, 5];
 
 	return (
@@ -17,4 +17,4 @@ export const ReviewStars = memo(({ rating = 0, setRating }) => {
 			))}
 		</div>
 	);
-});
+};

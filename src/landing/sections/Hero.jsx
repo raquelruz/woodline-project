@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 export const Hero = memo(() => {
 	const navigate = useNavigate();
 
+	console.log("RENDER HERO");
+
 	return (
 		<section className="flex flex-col justify-center items-start max-h-[1080px] min-h-[600px] w-full bg-gradient-to-br from-primary/10 to-white px-6 rounded-b-4xl">
 			<div className="max-w-[600px]">
