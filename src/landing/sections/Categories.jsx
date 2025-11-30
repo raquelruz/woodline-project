@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../core/categories/useCategories";
 import { Loader } from "../components/Loader";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
-export const Categories = () => {
+export const Categories = memo(() => {
 	const { categories, loading } = useCategories();
 	const navigate = useNavigate();
 
@@ -40,6 +40,8 @@ export const Categories = () => {
 		navigate(`/products?category=${encodeURIComponent(slug)}`);
 	}
 
+	console.log("RENDER CATEGORIES");
+
 	return (
 		<section className="py-12 bg-bg-light text-center">
 			<div className="mb-16">
@@ -52,4 +54,4 @@ export const Categories = () => {
 			<div className="flex flex-wrap justify-center gap-10 px-4">{categoriesMemoized}</div>
 		</section>
 	);
-};
+});

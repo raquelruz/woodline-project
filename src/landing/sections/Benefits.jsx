@@ -1,6 +1,7 @@
 import handsIcon from "../../assets/icons/payment-icon.png";
 import returnIcon from "../../assets/icons/return-icon.png";
 import customerIcon from "../../assets/icons/headphone-icon.png";
+import { BenefitCard } from "../components/BenefitCard";
 import { useMemo } from "react";
 
 export const Benefits = () => {
@@ -25,24 +26,7 @@ export const Benefits = () => {
 		[]
 	);
 
-	const benefitsMemoized = useMemo(
-		() =>
-			benefits.map((benefit, index) => (
-				<div
-					key={index}
-					className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 p-8 flex flex-col items-center text-center hover:-translate-y-2"
-				>
-					<div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-tr from-primary to-primary-light mb-6 shadow-md">
-						<img src={benefit.img} alt={benefit.title} className="w-10 h-10" />
-					</div>
-
-					<h5 className="text-xl font-title font-semibold text-primary mb-2">{benefit.title}</h5>
-
-					<p className="text-gray-600 font-landing leading-relaxed">{benefit.description}</p>
-				</div>
-			)),
-		[benefits]
-	);
+	console.log("RENDER BENEFIT")
 
 	return (
 		<section className="py-24 bg-primary-ultralight">
@@ -56,7 +40,9 @@ export const Benefits = () => {
 			</div>
 
 			<div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6">
-				{benefitsMemoized}
+				{benefits.map((benefit, index) => (
+					<BenefitCard key={index} img={benefit.img} title={benefit.title} description={benefit.description} />
+				))}
 			</div>
 		</section>
 	);
