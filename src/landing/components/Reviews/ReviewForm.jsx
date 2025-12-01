@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReviewStars } from "./ReviewStars";
 import { api } from "../../../core/http/axios";
-import { getTokenFromLocalStorage } from "../../../core/auth/auth.service"; // asegúrate de tenerlo
+import { getTokenFromLocalStorage } from "../../../core/auth/auth.service"; 
 
 export const ReviewForm = ({ productId, onNewReview }) => {
 	const [name, setName] = useState("");

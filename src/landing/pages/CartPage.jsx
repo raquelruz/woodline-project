@@ -34,7 +34,7 @@ export const CartPage = () => {
 		};
 	}, [items]);
 
-	console.log("RENDER CARTPAGE");
+	// console.log("Render CartPage");
 
 	return (
 		<div className="min-h-screen p-8 bg-gray-50">

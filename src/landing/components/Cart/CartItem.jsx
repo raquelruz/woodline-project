@@ -1,20 +1,29 @@
+import { memo, useMemo } from "react";
+
 const cartCard =
 	"flex flex-col md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition";
 
-export const CartItem = ({ item, incrementQty, decrementQty, removeFromCart }) => {
-	const id = item.productId ?? item._id ?? item.id;
+export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart }) => {
+	const id = useMemo(() => item.productId ?? item._id ?? item.id, [item]);
 
-	if (!id) console.warn("ITEM SIN ID:", item);
+	useMemo(() => {
+		if (!id) console.warn("Item sin ID:", item);
+	}, [id, item]);
 
-	const quantity = item.quantity || 1;
-	const price = (item.price || 0).toFixed(2);
+	const quantity = useMemo(() => item.quantity || 1, [item.quantity]);
+	const price = useMemo(() => (item.price || 0).toFixed(2), [item.price]);
+
+	const image = useMemo(() => {
+		if (!item.images?.[0]) return null;
+		return <img src={item.images[0]} alt={item.name} className="w-28 h-28 rounded-lg object-cover border" />;
+	}, [item.images, item.name]);
+
+	// console.log("Render CartItem");
 
 	return (
 		<div className={cartCard}>
 			<div className="flex items-center gap-4 w-full md:w-auto">
-				{item.images?.[0] && (
-					<img src={item.images[0]} alt={item.name} className="w-28 h-28 rounded-lg object-cover border" />
-				)}
+				{image}
 
 				<div>
 					<h2 className="font-semibold font-title text-primary">{item.name}</h2>
@@ -53,4 +62,4 @@ export const CartItem = ({ item, incrementQty, decrementQty, removeFromCart }) =
 			</div>
 		</div>
 	);
-};
+});

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { getProfileApi, loginApi, logoutApi, registerApi } from "./auth.api";
@@ -13,7 +13,7 @@ export const useAuth = () => {
 	const { setUser } = useContext(AuthContext);
 	const navigate = useNavigate();
 
-	const login = async ({ email, password }) => {
+	const login = useCallback(async ({ email, password }) => {
 		try {
 			const authData = await loginApi({ email, password });
 			if (authData?.token && authData?.user) {
@@ -23,15 +23,16 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			// console.error("Error en login:", error);
+			console.error("Error al iniciar sesión:", error);
 			throw error;
 		}
-	};
+	}, []);
 
-	const logout = async () => {
+	const logout = useCallback(async () => {
 		try {
 			const response = await logoutApi();
 		} catch (error) {
+			console.error("Error al iniciar sesión, error");
 			throw error;
 		} finally {
 			removeUserFromLocalStorage();
@@ -39,9 +40,9 @@ export const useAuth = () => {
 			setUser(null);
 			navigate("/login");
 		}
-	};
+	}, []);
 
-	const register = async (user) => {
+	const register = useCallback(async (user) => {
 		try {
 			const authData = await registerApi(user);
 			if (authData?.token && authData?.user) {
@@ -51,19 +52,19 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			// console.error("Error en registro:", error);
+			console.error("Error en al registrar usuario:", error);
 			throw error;
 		}
-	};
+	}, []);
 
-	const getProfile = async () => {
+	const getProfile = useCallback(async () => {
 		try {
 			const { user } = await getProfileApi();
 		} catch (error) {
-			// console.error("Error al obtener perfil:", error);
+			console.error("Error al obtener perfil:", error);
 			throw error;
 		}
-	};
+	}, []);
 
 	return { login, logout, register, getProfile };
 };

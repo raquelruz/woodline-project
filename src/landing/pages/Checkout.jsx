@@ -59,7 +59,7 @@ export const Checkout = () => {
 		setShowPayment(true);
 	}, [user]);
 
-	console.log("RENDER CHECKOUT")
+	// console.log("Render Checkout")
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-10 px-4">
