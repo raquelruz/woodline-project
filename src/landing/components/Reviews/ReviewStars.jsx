@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { FaStar } from "react-icons/fa";
 
 export const ReviewStars = ({ rating = 0, setRating }) => {

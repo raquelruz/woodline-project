@@ -7,6 +7,8 @@ export const BackButton = memo(() => {
 	const user = getUserFromLocalStorage();
 
 	if (!user || user.role !== "admin") return null;
+
+	// console.log("Render BackButton");
 	
 	return (
 	<div className="text-center">

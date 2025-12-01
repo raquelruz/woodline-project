@@ -29,6 +29,7 @@ export const Products = () => {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			setLoading(true);
+
 			try {
 				const { data } = await api.get("/products");
 				setProducts(data);
@@ -56,8 +57,7 @@ export const Products = () => {
 				return;
 			}
 
-			const encoded = encodeURIComponent(category);
-			navigate(`/products?category=${encoded}`);
+			navigate(`/products?category=${encodeURIComponent(category)}`);
 		},
 		[navigate]
 	);
@@ -87,12 +87,7 @@ export const Products = () => {
 
 		if (searchTerm) {
 			const q = searchTerm.toLowerCase();
-			result = result.filter((p) => {
-				return (
-					p.name.toLowerCase().includes(q) ||
-					p.description.toLowerCase().includes(q)
-				);
-			});
+			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
 		}
 
 		result = result.filter((p) => {
@@ -111,15 +106,12 @@ export const Products = () => {
 		return result;
 	}, [products, selectedCategory, searchTerm, filters]);
 
-	if (loading) {
-		return <Loader text="Cargando productos..." />;
-	}
+	if (loading) return <Loader text="Cargando productos..." />;
 
-	console.log("RENDER PRODUCTS");
+	console.log("Render Products");
 
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
-
 			<ProductFilters
 				categories={categories}
 				selectedCategory={selectedCategory}
@@ -135,11 +127,8 @@ export const Products = () => {
 					</div>
 				)}
 
-				{filteredProducts.length > 0 && (
-					<ProductsGrid products={filteredProducts} onView={handleViewProduct} />
-				)}
+				{filteredProducts.length > 0 && <ProductsGrid products={filteredProducts} onView={handleViewProduct} />}
 			</div>
-
 		</section>
 	);
 };

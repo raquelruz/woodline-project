@@ -14,7 +14,7 @@ export const FeaturedProducts = () => {
 
 	if (loading) return <Loader text="Cargando productos destacados..." />;
 
-	console.log("RENDER FEATUREDPRODUCTS");
+	console.log("Render FeaturedProducts");
 
 	return (
 		<section className="py-24 bg-gray-50">

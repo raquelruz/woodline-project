@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { api } from "../core/http/axios";
 
 export const useFeaturedProducts = () => {
@@ -6,24 +6,32 @@ export const useFeaturedProducts = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 
-	useEffect(() => {
-		async function fetchFeatured() {
-			try {
-				const { data } = await api.get("/products");
-				const sorted = data.sort(
-					(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-				);
-				setFeatured(sorted.slice(0, 6));
-			} catch (error) {
-				setError("Error al mostrar productos");
-				console.error(error);
-			} finally {
-				setLoading(false);
-			}
-		}
+	const fetchFeatured = useCallback(async () => {
+		try {
+			const { data } = await api.get("/products");
 
-		fetchFeatured();
+			const sorted = data.sort(
+				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+			);
+
+			setFeatured(sorted.slice(0, 9)); 
+		} catch (error) {
+			setError("Error al mostrar productos");
+			console.error(error);
+		} finally {
+			setLoading(false);
+		}
 	}, []);
 
-	return { featured, loading, error };
-}
+	useEffect(() => {
+		fetchFeatured();
+	}, [fetchFeatured]);
+
+	const memoFeatured = useMemo(() => featured, [featured]);
+
+	return {
+		featured: memoFeatured,
+		loading,
+		error,
+	};
+};

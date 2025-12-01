@@ -21,7 +21,7 @@ export const Newsletters = () => {
 		setEmail("");
 	}
 
-	console.log("RENDER NEWSLETTERS")
+	// console.log("Render Newsletters");
 
 	return (
 		<section className="py-16 px-6 bg-primary-ultralight">

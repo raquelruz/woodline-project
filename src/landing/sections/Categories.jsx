@@ -40,7 +40,7 @@ export const Categories = memo(() => {
 		return <Loader text="Cargando categorías..." />;
 	}
 
-	console.log("RENDER CATEGORIES");
+	console.log("Render Categories");
 
 	return (
 		<section className="py-12 bg-bg-light text-center">

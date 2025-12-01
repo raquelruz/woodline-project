@@ -36,6 +36,8 @@ export const ProductDetail = memo(() => {
 		return <div className="flex justify-center items-center py-20 text-error">Producto no encontrado.</div>;
 	}
 
+	// console.log("Render ProductsDetail")
+
 	return (
 		<section className="relative min-h-screen px-4 py-2">
 			<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">

@@ -2,6 +2,8 @@ import { memo } from "react";
 import { toCurrency } from "../../../helpers/orders.helpers";
 
 export const OrderSummary = memo(({ subtotal, tax, total }) => {
+    // console.log("Render OrderSummary")
+
     return (
         <div className="pt-4 border-t border-primary text-gray-600 space-y-2">
             <div className="flex justify-between">

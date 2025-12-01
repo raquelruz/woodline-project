@@ -5,7 +5,7 @@ import { FaLeaf, FaHandshake, FaCouch } from "react-icons/fa";
 const aboutClass = "text-gray-700 leading-relaxed";
 
 export const About = memo(() => {
-	console.log("RENDER ABOUT");
+	// console.log("Render About");
 	
 	return (
 		<section className="bg-gradient-to-b from-white to-gray-50 py-20">

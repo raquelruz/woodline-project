@@ -18,6 +18,8 @@ export const LogoutButton = memo(({ variant = "default" }) => {
 		);
 	}
 
+	// console.log("Render LogoutButton");
+
 	return (
 		<button
 			onClick={logout}

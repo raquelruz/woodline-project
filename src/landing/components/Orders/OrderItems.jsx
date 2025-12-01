@@ -4,6 +4,8 @@ export const OrderItems = memo(({ items }) => {
     if (items.length === 0)
         return <p className="text-gray-500">Tu carrito está vacío.</p>;
 
+    // console.log("Render OrderItems")
+
     return (
         <>
             {items.map((item) => (

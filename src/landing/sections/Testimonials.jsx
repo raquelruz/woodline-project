@@ -20,7 +20,7 @@ export const Testimonials = memo(() => {
 		setCurrent((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
 	};
 
-	console.log("RENDER TESTIMONIAL")
+	// console.log("Render Testimonials");
 
 	return (
 		<section className="relative py-24 bg-gradient-to-b from-bg-light via-white to-bg-light overflow-hidden">

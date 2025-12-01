@@ -82,7 +82,7 @@ export const Footer = () => {
 		[sections]
 	);
 
-	console.log("RENDER FOOTER");
+	// console.log("Render Footer");
 	
 	return (
 		<footer className="bg-gray-100 py-12 px-6 border-t border-gray-200">

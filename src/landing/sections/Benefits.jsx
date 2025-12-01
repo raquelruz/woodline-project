@@ -26,7 +26,7 @@ export const Benefits = () => {
 		[]
 	);
 
-	console.log("RENDER BENEFIT")
+	// console.log("Render Benefits")
 
 	return (
 		<section className="py-24 bg-primary-ultralight">
