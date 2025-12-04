@@ -26,10 +26,12 @@ export const CartSummary = memo(({ subtotal, deliveryFee, discount, total }) => 
 					<span>Subtotal</span>
 					<span>{summaryValues.formattedSubtotal}</span>
 				</div>
+
 				<div className="flex justify-between">
 					<span>Gastos de envío</span>
 					<span>{summaryValues.formattedDelivery} €</span>
 				</div>
+
 				<div className="flex justify-between text-success">
 					<span>Descuento</span>
 					<span>-{summaryValues.formattedDiscount}%</span>
@@ -40,7 +42,8 @@ export const CartSummary = memo(({ subtotal, deliveryFee, discount, total }) => 
 				<span>Total</span>
 				<span>{summaryValues.formattedTotal} €</span>
 			</div>
-			<button className="w-full mt-6 bg-primary-hover text-white font-semibold py-3 rounded-xl hover:bg-primary-pressed transition">
+
+			<button onClick={onCheckout} className={buttonClasses} aria-label="Ir al checkout">
 				Comprar ahora →
 			</button>
 		</div>

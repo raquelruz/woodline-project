@@ -2,12 +2,13 @@ import { useCallback, useMemo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
 
-export const AddToCartButton = ({ product }) => {
+export const AddToCartButton = memo(({ product }) => {
 	const { addToCart } = useCart();
 	const [added, setAdded] = useState(false);
 
 	const handleAdd = useCallback(() => {
 		if (!product) return;
+
 		addToCart(product);
 		setAdded(true);
 		setTimeout(() => setAdded(false), 2000);
@@ -34,4 +35,4 @@ export const AddToCartButton = ({ product }) => {
 			{label}
 		</button>
 	);
-};
+});

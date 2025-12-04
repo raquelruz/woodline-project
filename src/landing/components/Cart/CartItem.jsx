@@ -25,18 +25,15 @@ export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart
 
 	return (
 		<div className={cartCard}>
-			{/* Imagen + info */}
 			<div className="flex items-center gap-4 w-full md:w-auto">
-				{item.images?.[0] && (
-					<img src={item.images[0]} alt={item.name} className="w-28 h-28 rounded-lg object-cover border" />
-				)}
+				{image}
+
 				<div>
 					<h2 className="font-semibold font-title text-primary">{item.name}</h2>
 					<p className="text-primary mt-1">{priceText} €</p>
 				</div>
 			</div>
 
-			{/* Controles */}
 			<div className="flex items-center gap-3 mt-4 md:mt-0">
 				<button
 					onClick={handleDecrement}
@@ -49,10 +46,12 @@ export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart
 				<button onClick={handleIncrement} className="px-3 py-1 border rounded-lg text-primary hover:bg-primary">
 					+
 				</button>
+
 				<button
 					onClick={() => handleRemove}
 					className="font-bold ml-3 text-error hover:text-red-700"
-					title="Remove"
+					title="Eliminar producto"
+					aria-label="Eliminar producto"
 				>
 					✕
 				</button>

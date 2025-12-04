@@ -2,14 +2,15 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
-import { ProductGrid } from "../components/Products/ProductsGrid";
+import { ProductsGrid } from "../components/Products/ProductsGrid";
 import { Loader } from "../components/Loader";
 
 export const Products = memo(() => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
-	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [loading, setLoading] = useState(true);
+
+	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [filters, setFilters] = useState({
 		minPrice: 0,
 		maxPrice: Infinity,
@@ -19,8 +20,11 @@ export const Products = memo(() => {
 
 	const location = useLocation();
 	const navigate = useNavigate();
-	const searchParams = new URLSearchParams(location.search);
-	const categoryQuery = searchParams.get("category") || "all";
+
+	const categoryQuery = useMemo(() => {
+		const params = new URLSearchParams(location.search);
+		return params.get("category") || "all";
+	}, [location.search]);
 
 	const fetchProducts = useCallback(async () => {
 		setLoading(true);
@@ -103,20 +107,20 @@ export const Products = memo(() => {
 			<ProductFilters
 				categories={categories}
 				selectedCategory={selectedCategory}
-				setSelectedCategory={handleCategoryChange}
+				onCategoryChange={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
 			/>
 
-			{!filteredProducts.length && (
-				<div className="text-center text-gray-500 mt-20">
-					<p>No se encontraron productos que coincidan con la búsqueda.</p>
-				</div>
-			)}
+			<div className="mt-10">
+				{filteredProducts.length === 0 && (
+					<div className="text-center text-gray-500 mt-20">
+						<p>No se encontraron productos.</p>
+					</div>
+				)}
 
-			{filteredProducts.length > 0 && (
-				<ProductGrid products={filteredProducts} onView={handleViewProduct} searchQuery={searchTerm} />
-			)}
+				{filteredProducts.length > 0 && <ProductsGrid products={filteredProducts} onView={handleViewProduct} />}
+			</div>
 		</section>
 	);
 });

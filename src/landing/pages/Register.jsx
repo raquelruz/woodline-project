@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
@@ -94,35 +94,49 @@ export const Register = () => {
 		setForm(INITIAL_FORM);
 	};
 
+	const formMemoized = useMemo(() => {
+		return REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => { 
+						console.log("RENDERIZA FORMINPUTMAP")
+						return (
+							<FormInput
+								key={input.name}
+								containerClass={containerClass}
+								input={{
+									name: input.name,
+									type: input.type,
+									placeholder: input.placeholder,
+									value: form[input.name],
+									onChange: onInputChange,
+									required: input.required,
+								}}
+								label={{
+									text: label.text,
+									className: label.className,
+								}}
+							/>
+						);
+					})
+	}, [form]);
+
+	console.log("RENDERIZO REGISTER")
+
 	return (
 		<Container className="flex items-center justify-center min-h-screen bg-gray-100 p-12">
 			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[500px]">
 				<h2 className="font-title text-primary text-center pb-10">Crear cuenta</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
-					{REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
-						<FormInput
-							key={input.name}
-							containerClass={containerClass}
-							input={{
-								name: input.name,
-								type: input.type,
-								placeholder: input.placeholder,
-								value: form[input.name],
-								onChange: onInputChange,
-								required: input.required,
-							}}
-							label={{
-								text: label.text,
-								className: label.className,
-							}}
-						/>
-					))}
+					{formMemoized}
 
-					<button type="submit" className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all">Crear cuenta</button>
+					<button
+						type="submit"
+						className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all"
+					>
+						Crear cuenta
+					</button>
 				</form>
 
-								<p className="mt-4 text-center text-gray-600 text-sm">
+				<p className="mt-4 text-center text-gray-600 text-sm">
 					¿Ya tienes una cuenta?{" "}
 					<Link to="/login" className="text-primary hover:underline">
 						Inicia sesión

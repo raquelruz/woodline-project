@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Container } from "./Container";
 
 export const SectionContainer = ({ bg, title, childrenContainerStyle, children }) => {

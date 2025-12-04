@@ -14,8 +14,8 @@ export const ProductCard = memo(({ product, onView }) => {
 	return (
 		<div className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col">
 			<img
-				src={Array.isArray(product.images) ? product.images[0] : product.images}
-				alt={product.name}
+				src={mainImage}
+				alt={name}
 				className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
 			/>
 
@@ -28,9 +28,10 @@ export const ProductCard = memo(({ product, onView }) => {
 				</div>
 
 				<div className="flex justify-between items-center mt-4">
-					<span className="text-xl font-landing font-bold text-primary">{product.price} €</span>
+					<span className="text-xl font-landing font-bold text-primary">{price} €</span>
+
 					<button
-						onClick={() => onView(product)}
+						onClick={handleView}
 						className="px-4 py-2 font-landing font-medium text-white bg-primary rounded-lg hover:bg-primary-light transition-colors"
 					>
 						Ver más

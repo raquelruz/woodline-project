@@ -1,4 +1,8 @@
-export const PrivacyPolicyPage = () => {
+import { memo } from "react";
+
+export const PrivacyPolicyPage = memo(() => {
+	console.log("RENDER PRIVACYPOLICYPAGE");
+	
 	return (
 		<section className="px-6 md:px-16 py-12 bg-gray-50 min-h-[80vh]">
 			<h1 className="text-3xl font-title font-bold text-primary mb-6 text-center">
@@ -48,4 +52,4 @@ export const PrivacyPolicyPage = () => {
 			</div>
 		</section>
 	);
-};
+});

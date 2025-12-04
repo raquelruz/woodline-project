@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { getUserFromLocalStorage } from "../../../core/auth/auth.service";
+import { memo } from "react";
 
-export const BackButton = () => {
+export const BackButton = memo(() => {
 	const user = getUserFromLocalStorage();
 
 	if (!user || user.role !== "admin") return null;
+
+	// console.log("Render BackButton");
 	
 	return (
 	<div className="text-center">
@@ -18,4 +21,4 @@ export const BackButton = () => {
 		</Link>
 	</div>
 	);
-};
+});

@@ -1,13 +1,48 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { CustomToaster } from "./CustomToaster";
 
-export const ProductTable = ({ onEdit }) => {
+export const ProductTable = memo(({ onEdit }) => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
+
+	const productsDashboardMemoized = useMemo(
+		() =>
+			products.map((product) => {
+				const productId = product._id || product.id;
+				return (
+					<tr key={productId} className="hover:bg-gray-50 transition">
+						<td className="px-4 py-3 font-semibold text-gray-700">{product.name}</td>
+						<td className="px-4 py-3 text-gray-500">
+							{Array.isArray(product.category) ? product.category.join(", ") : product.category}
+						</td>
+						<td className="px-4 py-3 text-primary font-bold">{product.price} €</td>
+						<td className="px-4 py-3 text-center">
+							<div className="flex justify-center gap-4">
+								<button
+									onClick={() => onEdit(product)}
+									className="text-blue-500 hover:text-blue-700 transition"
+									aria-label="Editar producto"
+								>
+									<MdEdit size={18} />
+								</button>
+								<button
+									onClick={() => handleDelete(productId)}
+									className="text-red-500 hover:text-red-700 transition"
+									aria-label="Eliminar producto"
+								>
+									<MdDelete size={18} />
+								</button>
+							</div>
+						</td>
+					</tr>
+				);
+			}),
+		[products]
+	);
 
 	useEffect(() => {
 		fetchProducts();
@@ -46,8 +81,7 @@ export const ProductTable = ({ onEdit }) => {
 	};
 
 	if (loading) return <Loader text="Cargando productos..." />;
-	if (!products.length)
-		return <p className="text-center mt-4 text-gray-500">No hay productos registrados.</p>;
+	if (!products.length) return <p className="text-center mt-4 text-gray-500">No hay productos registrados.</p>;
 
 	return (
 		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6 relative">
@@ -65,38 +99,7 @@ export const ProductTable = ({ onEdit }) => {
 						</tr>
 					</thead>
 					<tbody className="divide-y divide-gray-100">
-						{products.map((product) => {
-							const productId = product._id || product.id;
-							return (
-								<tr key={productId} className="hover:bg-gray-50 transition">
-									<td className="px-4 py-3 font-semibold text-gray-700">{product.name}</td>
-									<td className="px-4 py-3 text-gray-500">
-										{Array.isArray(product.category)
-											? product.category.join(", ")
-											: product.category}
-									</td>
-									<td className="px-4 py-3 text-primary font-bold">{product.price} €</td>
-									<td className="px-4 py-3 text-center">
-										<div className="flex justify-center gap-4">
-											<button
-												onClick={() => onEdit(product)}
-												className="text-blue-500 hover:text-blue-700 transition"
-												aria-label="Editar producto"
-											>
-												<MdEdit size={18} />
-											</button>
-											<button
-												onClick={() => handleDelete(productId)}
-												className="text-red-500 hover:text-red-700 transition"
-												aria-label="Eliminar producto"
-											>
-												<MdDelete size={18} />
-											</button>
-										</div>
-									</td>
-								</tr>
-							);
-						})}
+						{productsDashboardMemoized}
 					</tbody>
 				</table>
 			</div>
@@ -110,9 +113,7 @@ export const ProductTable = ({ onEdit }) => {
 							<p className="font-semibold text-gray-800">{product.name}</p>
 							<p className="text-gray-500 text-sm mb-1">
 								Categorías:{" "}
-								{Array.isArray(product.category)
-									? product.category.join(", ")
-									: product.category}
+								{Array.isArray(product.category) ? product.category.join(", ") : product.category}
 							</p>
 							<p className="text-primary font-bold mb-3">{product.price} €</p>
 
@@ -136,4 +137,4 @@ export const ProductTable = ({ onEdit }) => {
 			</div>
 		</div>
 	);
-};
+});

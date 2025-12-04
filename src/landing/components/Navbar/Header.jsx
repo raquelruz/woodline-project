@@ -13,6 +13,8 @@ export const Header = () => {
 	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
 
+	// console.log("Render Header");
+
 	return (
 		<header className="shadow-md relative bg-white">
 			<Container>

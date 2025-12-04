@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { CustomToaster } from "./CustomToaster";
 
-export const UserTable = ({ onEdit }) => {
+export const UserTable = memo(({ onEdit }) => {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(true);
 
@@ -21,10 +21,10 @@ export const UserTable = ({ onEdit }) => {
 			const data = Array.isArray(response.data) ? response.data : [];
 			setUsers(data);
 			toast.dismiss();
-			toast.success("Usuarios cargados correctamente ✅");
+			toast.success("Usuarios cargados correctamente");
 		} catch (error) {
 			toast.dismiss();
-			toast.error("Error al cargar usuarios ❌");
+			toast.error("Error al cargar usuarios");
 			console.error("Error al cargar usuarios:", error);
 		} finally {
 			setLoading(false);
@@ -40,10 +40,10 @@ export const UserTable = ({ onEdit }) => {
 			await api.delete(`/users/${userId}`);
 			setUsers((prev) => prev.filter((u) => (u._id || u.id) !== userId));
 			toast.dismiss();
-			toast.success("Usuario eliminado correctamente 🗑️");
+			toast.success("Usuario eliminado correctamente");
 		} catch (error) {
 			toast.dismiss();
-			toast.error("Error al eliminar usuario ❌");
+			toast.error("Error al eliminar usuario");
 			console.error("Error al eliminar usuario:", error);
 		}
 	};
@@ -134,4 +134,4 @@ export const UserTable = ({ onEdit }) => {
 			</div>
 		</div>
 	);
-};
+});

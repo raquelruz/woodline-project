@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { translateStatus, getStatusClass, isRecentOrder, formatDate } from "../../utils/orderUtils.js";
 import { useNavigate } from "react-router-dom";
 
-export const OrderRow = ({ order, onChange }) => {
+export const OrderRow = memo(({ order, onChange }) => {
 	const navigate = useNavigate();
 
 	const orderId = order._id || order.id;
@@ -69,4 +70,4 @@ export const OrderRow = ({ order, onChange }) => {
 			</td>
 		</tr>
 	);
-};
+});

@@ -1,11 +1,14 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../../core/cart/useCart.jsx";
-import { useOrders } from "../../core/orders/useOrders.jsx";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
-import { calculateSubtotal, calculateTax, toCurrency } from "../../helpers/orders.helpers.js";
-import { LoadingButton } from "../components/Buttons/LoadingButton.jsx";
-import { PaymentModal } from "../components/Modals/PaymentModal.jsx";
+import { useCart } from "../../core/cart/useCart";
+import { useOrders } from "../../core/orders/useOrders";
+import { AuthContext } from "../../contexts/AuthContext";
+import { calculateSubtotal, calculateTax } from "../../helpers/orders.helpers";
+import { LoadingButton } from "../components/Buttons/LoadingButton";
+import { PaymentModal } from "../components/Modals/PaymentModal";
+import { OrderItems } from "../components/Orders/OrderItems";
+import { CheckoutForm } from "../components/Orders/CheckoutForm";
+import { OrderSummary } from "../components/Orders/OrderSummary";
 
 export const Checkout = () => {
 	const { items, clearCart } = useCart();
@@ -145,7 +148,6 @@ export const Checkout = () => {
 						onClick={handleConfirm}
 						loading={loading}
 						disabled={!shippingAddress || !billingAddress}
-						loadingText="Confirmando..."
 					>
 						Confirmar pedido
 					</LoadingButton>

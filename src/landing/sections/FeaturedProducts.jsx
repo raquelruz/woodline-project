@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import { Link } from "react-router-dom";
 import { Loader } from "../components/Loader";
+import { FeaturedProductCard } from "../components/FeaturedProductCard";
+import { useFeaturedProducts } from "../../hooks/useFeaturedProductCard";
 
 export const FeaturedProducts = () => {
-	const [featured, setFeatured] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
+	const { featured, loading } = useFeaturedProducts();
 
 	const fetchFeatured = useCallback(async () => {
 		try {

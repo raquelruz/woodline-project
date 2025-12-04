@@ -50,6 +50,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 		setProcessing(true);
 		setTimeout(() => {
 			setProcessing(false);
+
 			if (Math.random() > 0.2) {
 				onSuccess();
 			} else {
@@ -159,7 +160,37 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 		} else {
 			content = paypalContent;
 		}
-	}
+
+		// PAYPAL
+		return (
+			<div className="space-y-4">
+				<input
+					type="email"
+					name="paypalEmail"
+					value={form.paypalEmail}
+					onChange={handleChange}
+					placeholder="Correo de PayPal"
+					className={inputClass}
+				/>
+
+				{error && <p className="text-error text-sm">{error}</p>}
+
+				<div className="flex justify-end gap-3 mt-4">
+					<button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+						Cancelar
+					</button>
+
+					<button onClick={handlePayment} className={buttonClass}>
+						Pagar ahora
+					</button>
+				</div>
+			</div>
+		);
+	}, [processing, form, error, handleChange, onClose, handlePayment, paymentMethod]);
+
+	if (!isOpen) return null;
+
+	// console.log("Render PaymentModal");
 
 	// console.log("Render PaymentModal")
 
