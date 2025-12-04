@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart/useCart.jsx";
 import { useOrders } from "../../core/orders/useOrders.jsx";
@@ -20,12 +20,24 @@ export const Checkout = () => {
 	const [showPayment, setShowPayment] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	// Cálculos del pedido
-	const subtotal = calculateSubtotal(items);
-	const tax = calculateTax(subtotal);
-	const total = subtotal + tax;
+	const subtotal = useMemo(() => calculateSubtotal(items), [items]);
+	const tax = useMemo(() => calculateTax(subtotal), [subtotal]);
+	const total = useMemo(() => subtotal + tax, [subtotal, tax]);
 
-	const handlePaymentSuccess = async () => {
+	const orderItems = useMemo(
+		() =>
+			items.map((item) => (
+				<div key={item.productId || item.id} className="flex justify-between border-b pb-2">
+					<span>
+						{item.name} x {item.quantity}
+					</span>
+					<span>{(item.price * item.quantity).toFixed(2)} €</span>
+				</div>
+			)),
+		[items]
+	);
+
+	const handlePaymentSuccess = useCallback(async () => {
 		setShowPayment(false);
 
 		if (!user) {
@@ -35,32 +47,31 @@ export const Checkout = () => {
 
 		try {
 			setLoading(true);
+
 			const order = await createOrder(user.id, items, {
 				shippingAddress,
 				billingAddress,
 				paymentMethod,
 			});
 
-			console.log("Pedido creado:", order);
-
 			clearCart();
-			navigate("/order-success"); 
+			navigate("/order-success");
 		} catch (error) {
-			// console.error("Error al crear pedido:", error);
-			// console.error("Backend:", error.response?.data);
 			alert("Hubo un error al confirmar el pedido.");
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, [user, createOrder, items, shippingAddress, billingAddress, paymentMethod, navigate, clearCart]);
 
-	const handleConfirm = () => {
+	const handleConfirm = useCallback(() => {
 		if (!user) {
 			alert("Debes iniciar sesión para confirmar tu pedido");
 			return;
 		}
 		setShowPayment(true);
-	};
+	}, [user]);
+
+	console.log("Render Checkout");
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -75,17 +86,7 @@ export const Checkout = () => {
 				<div className="md:col-span-2 bg-white shadow-md rounded-xl p-6 space-y-4">
 					<h2 className="text-2xl font-title font-bold text-primary mb-4">Resumen del pedido</h2>
 
-					{items.length === 0 && <p className="text-gray-500">Tu carrito está vacío.</p>}
-
-					{items.length > 0 &&
-						items.map((item) => (
-							<div key={item.productId || item.id} className="flex justify-between border-b pb-2">
-								<span>
-									{item.name} x {item.quantity}
-								</span>
-								<span>{(item.price * item.quantity).toFixed(2)} €</span>
-							</div>
-						))}
+					{items.length === 0 ? <p className="text-gray-500">Tu carrito está vacío.</p> : orderItems}
 				</div>
 
 				<div className="bg-white shadow-md rounded-xl p-6 space-y-4">
@@ -98,7 +99,6 @@ export const Checkout = () => {
 								type="text"
 								value={shippingAddress}
 								onChange={(event) => setShippingAddress(event.target.value)}
-								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>
@@ -109,7 +109,6 @@ export const Checkout = () => {
 								type="text"
 								value={billingAddress}
 								onChange={(event) => setBillingAddress(event.target.value)}
-								placeholder="Calle Ejemplo, Nº 123"
 								className="w-full px-3 py-2 border rounded-lg"
 							/>
 						</div>

@@ -1,15 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useContext, useState } from "react";
+import { memo, useContext, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 
 const linkClass = "text-primary hover:text-primary-light ";
 
-export const Navbar = () => {
+export const Navbar = memo(() => {
 	const { user } = useContext(AuthContext);
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const closeMenu = () => setMobileMenuOpen(false);
+
+	// console.log("Render Navbar");
 
 	return (
 		<nav className="w-full px-6 md:px-10 py-3 flex items-center justify-center">
@@ -89,4 +91,4 @@ export const Navbar = () => {
 			)}
 		</nav>
 	);
-};
+});

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
 import { ProductGrid } from "../components/Products/ProductsGrid";
 import { Loader } from "../components/Loader";
 
-export const Products = () => {
+export const Products = memo(() => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState("all");
@@ -22,79 +22,81 @@ export const Products = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const categoryQuery = searchParams.get("category") || "all";
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			setLoading(true);
-			try {
-				const response = await api.get("/products");
-				const data = response.data;
-
-				setProducts(data);
-
-				const uniqueCategories = [...new Set(data.flatMap((p) => p.category || []))];
-				setCategories(uniqueCategories);
-
-				if (categoryQuery && categoryQuery !== "all") {
-					setSelectedCategory(categoryQuery);
-				}
-			} catch (error) {
-				// console.error("Error al obtener productos:", error);
-				throw error;
-			} finally {
-				setLoading(false);
+	const fetchProducts = useCallback(async () => {
+		setLoading(true);
+		try {
+			const { data } = await api.get("/products");
+			setProducts(data);
+			const unique = [...new Set(data.flatMap((p) => p.category || []))];
+			setCategories(unique);
+			if (categoryQuery !== "all") {
+				setSelectedCategory(categoryQuery);
 			}
-		};
-
-		fetchProducts();
+		} catch (error) {
+			console.error("Error al obtener productos:", error);
+		} finally {
+			setLoading(false);
+		}
 	}, [categoryQuery]);
 
-	const handleCategoryChange = (category) => {
+	useEffect(() => {
+		fetchProducts();
+	}, [fetchProducts]);
+
+	const handleCategoryChange = useCallback((category) => {
 		setSelectedCategory(category);
 		if (category === "all") {
 			navigate("/products");
 		} else {
 			navigate(`/products?category=${encodeURIComponent(category)}`);
 		}
-	};
+	}, []);
 
-	const handleFilterChange = (newFilters) => {
+	const handleFilterChange = useCallback((newFilters) => {
 		setFilters(newFilters);
-	};
+	}, []);
 
-	const handleSearchChange = (term) => {
+	const handleSearchChange = useCallback((term) => {
 		setSearchTerm(term);
-	};
+	}, []);
 
-	const handleViewProduct = (productId) => {
-		navigate(`/products/${productId}`);
-	};
+	const handleViewProduct = useCallback(
+		(productId) => {
+			navigate(`/products/${productId}`);
+		},
+		[navigate]
+	);
 
-	const filterProducts = () => {
-		let filtered = products.filter((p) => {
-			const matchesCategory = selectedCategory === "all" || p.category?.includes(selectedCategory);
+	const filteredProducts = useMemo(() => {
+		let result = products;
 
-			const matchesSearch =
-				searchTerm === "" ||
-				p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				p.description.toLowerCase().includes(searchTerm.toLowerCase());
+		if (selectedCategory !== "all") {
+			result = result.filter((p) => p.category?.includes(selectedCategory));
+		}
 
-			const matchesPrice = (p.price ?? 0) >= filters.minPrice && (p.price ?? 0) <= filters.maxPrice;
+		if (searchTerm) {
+			const q = searchTerm.toLowerCase();
+			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+		}
 
-			return matchesCategory && matchesSearch && matchesPrice;
+		result = result.filter((p) => {
+			const price = p.price ?? 0;
+			return price >= filters.minPrice && price <= filters.maxPrice;
 		});
 
 		if (filters.sort === "priceAsc") {
-			filtered = [...filtered].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-		} else if (filters.sort === "priceDesc") {
-			filtered = [...filtered].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+			result = [...result].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+		}
+		if (filters.sort === "priceDesc") {
+			result = [...result].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
 		}
 
-		return filtered;
-	};
-
-	const filteredProducts = filterProducts();
+		return result;
+	}, [products, selectedCategory, searchTerm, filters]);
 
 	if (loading) return <Loader text="Cargando productos..." />;
+
+	// console.log("Render Products");
 
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
@@ -117,4 +119,4 @@ export const Products = () => {
 			)}
 		</section>
 	);
-};
+});

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
@@ -36,24 +36,26 @@ const LOGIN_FIELDS = [
 	},
 ];
 
-export const Login = () => {
+export const Login = memo(() => {
 	const [form, setForm] = useState(INITIAL_FORM);
 	const { login } = useAuth();
 
-	const onInputChange = (event) => {
+	const onInputChange = useCallback((event) => {
 		const { name, value } = event.target;
 
 		setForm({ ...form, [name]: value });
-	};
+	}, []);
 
-	const onLoginSubmit = async (event) => {
+	const onLoginSubmit = useCallback(async (event) => {
 		event.preventDefault();
 		await login(form);
 		setForm(INITIAL_FORM);
-	};
+	}, [login, form]);
+
+	// console.log("Render Login");
 
 	return (
-		<Container className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+		<div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
 			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[450px]">
 				<h2 className="font-title text-primary text-center pb-10">Iniciar sesión</h2>
 
@@ -92,6 +94,6 @@ export const Login = () => {
 					</Link>
 				</p>
 			</div>
-		</Container>
+		</div>
 	);
-};
+});

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 
-export const ProductFilters = ({
+export const ProductFilters = memo(({
 	categories,
 	selectedCategory,
 	setSelectedCategory,
@@ -13,14 +13,39 @@ export const ProductFilters = ({
 	const [sortOrder, setSortOrder] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
 
-	function handleApplyFilters() {
+	const handleApplyFilters = useCallback(() => {
 		onFilterChange({
 			minPrice: Number(minPrice) || 0,
 			maxPrice: Number(maxPrice) || Infinity,
 			sort: sortOrder,
 		});
 		onSearchChange(searchTerm);
-	}
+	}, [minPrice, maxPrice, sortOrder, searchTerm, onFilterChange, onSearchChange]);
+
+	const handleSelectCategory = useCallback(
+		(category) => {
+			setSelectedCategory(category);
+		},
+		[setSelectedCategory]
+	);
+
+	const memoizedCategoryButtons = useMemo(() => {
+		return ["all", ...categories].map((category) => (
+			<button
+				key={category}
+				onClick={() => handleSelectCategory(category)}
+				className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+					selectedCategory === category
+						? "bg-primary text-white"
+						: "bg-gray-100 hover:bg-gray-200 text-gray-700"
+				}`}
+			>
+				{category === "all" ? "Todas" : category}
+			</button>
+		));
+	}, [categories, selectedCategory, handleSelectCategory]);
+	
+	// console.log("Render ProductFilters");
 
 	return (
 		<div className="w-full max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-5 mb-10">
@@ -78,20 +103,8 @@ export const ProductFilters = ({
 
 			{/* Categorías */}
 			<div className="flex flex-wrap justify-center gap-2">
-				{["all", ...categories].map((category) => (
-					<button
-						key={category}
-						onClick={() => setSelectedCategory(category)}
-						className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-							selectedCategory === category
-								? "bg-primary text-white"
-								: "bg-gray-100 hover:bg-gray-200 text-gray-700"
-						}`}
-					>
-						{category === "all" ? "Todas" : category}
-					</button>
-				))}
+				{memoizedCategoryButtons}
 			</div>
 		</div>
 	);
-};
+});
