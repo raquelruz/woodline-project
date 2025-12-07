@@ -43,14 +43,20 @@ export const Login = memo(() => {
 	const onInputChange = useCallback((event) => {
 		const { name, value } = event.target;
 
-		setForm({ ...form, [name]: value });
+		setForm((prev) => ({
+			...prev,
+			[name]: value,
+		}));
 	}, []);
 
-	const onLoginSubmit = useCallback(async (event) => {
-		event.preventDefault();
-		await login(form);
-		setForm(INITIAL_FORM);
-	}, [login, form]);
+	const onLoginSubmit = useCallback(
+		async (event) => {
+			event.preventDefault();
+			await login(form);
+			setForm(INITIAL_FORM);
+		},
+		[form]
+	);
 
 	// console.log("Render Login");
 

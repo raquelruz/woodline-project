@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
@@ -17,6 +17,8 @@ export const Products = memo(() => {
 		sort: "",
 	});
 	const [searchTerm, setSearchTerm] = useState("");
+
+	const searchInputRef = useRef(null);
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -46,6 +48,10 @@ export const Products = memo(() => {
 	useEffect(() => {
 		fetchProducts();
 	}, [fetchProducts]);
+
+	useEffect(() => {
+		searchInputRef.current?.focus();
+	}, []);
 
 	const handleCategoryChange = useCallback((category) => {
 		setSelectedCategory(category);
@@ -105,11 +111,13 @@ export const Products = memo(() => {
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
 			<ProductFilters
+				ref={searchInputRef}
 				categories={categories}
 				selectedCategory={selectedCategory}
 				onCategoryChange={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
+				searchRef={searchInputRef}
 			/>
 
 			<div className="mt-10">

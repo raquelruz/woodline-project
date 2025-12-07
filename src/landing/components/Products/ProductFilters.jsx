@@ -1,51 +1,15 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, forwardRef, useCallback, useMemo, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 
-export const ProductFilters = memo(({
-	categories,
-	selectedCategory,
-	setSelectedCategory,
-	onFilterChange,
-	onSearchChange,
-}) => {
-	const [minPrice, setMinPrice] = useState("");
-	const [maxPrice, setMaxPrice] = useState("");
-	const [sortOrder, setSortOrder] = useState("");
-	const [searchTerm, setSearchTerm] = useState("");
-
-	const handleApplyFilters = useCallback(() => {
-		onFilterChange({
-			minPrice: Number(minPrice) || 0,
-			maxPrice: Number(maxPrice) || Infinity,
-			sort: sortOrder,
-		});
-		onSearchChange(searchTerm);
-	}, [minPrice, maxPrice, sortOrder, searchTerm, onFilterChange, onSearchChange]);
-
-	const handleSelectCategory = useCallback(
-		(category) => {
-			setSelectedCategory(category);
-		},
-		[setSelectedCategory]
-	);
-
-	const memoizedCategoryButtons = useMemo(() => {
-		return ["all", ...categories].map((category) => (
-			<button
-				key={category}
-				onClick={() => handleSelectCategory(category)}
-				className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-					selectedCategory === category
-						? "bg-primary text-white"
-						: "bg-gray-100 hover:bg-gray-200 text-gray-700"
-				}`}
-			>
-				{category === "all" ? "Todas" : category}
-			</button>
-		));
-	}, [categories, selectedCategory, handleSelectCategory]);
-	
-	// console.log("Render ProductFilters");
+export const ProductFilters = memo(
+	forwardRef(function ProductFilters(
+		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange },
+		searchRef
+	) {
+		const [minPrice, setMinPrice] = useState("");
+		const [maxPrice, setMaxPrice] = useState("");
+		const [sortOrder, setSortOrder] = useState("");
+		const [searchTerm, setSearchTerm] = useState("");
 
 		const handleApplyFilters = useCallback(() => {
 			onFilterChange({
@@ -56,22 +20,37 @@ export const ProductFilters = memo(({
 			onSearchChange(searchTerm);
 		}, [minPrice, maxPrice, sortOrder, searchTerm, onFilterChange, onSearchChange]);
 
-		const handleCategoryClick = useCallback(
+		const handleSelectCategory = useCallback(
 			(category) => {
-				onCategoryChange(category);
+				setSelectedCategory(category);
 			},
-			[onCategoryChange]
+			[setSelectedCategory]
 		);
 
-		// console.log("Render ProductFilters");
+		const memoizedCategoryButtons = useMemo(() => {
+			return ["all", ...categories].map((category) => (
+				<button
+					key={category}
+					onClick={() => handleSelectCategory(category)}
+					className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+						selectedCategory === category
+							? "bg-primary text-white"
+							: "bg-gray-100 hover:bg-gray-200 text-gray-700"
+					}`}
+				>
+					{category === "all" ? "Todas" : category}
+				</button>
+			));
+		}, [categories, selectedCategory, handleSelectCategory]);
 
 		return (
 			<div className="w-full max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-5 mb-10">
-				{/* BUSCADOR */}
 				<div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+					{/* Buscador */}
 					<div className="flex items-center w-full md:w-1/3 bg-gray-50 rounded-full px-4 py-2 border border-gray-200 focus-within:ring-2 focus-within:ring-primary">
 						<FaSearch className="text-primary text-sm mr-3" />
 						<input
+							ref={searchRef}
 							type="text"
 							placeholder="Buscar productos..."
 							value={searchTerm}
@@ -80,7 +59,7 @@ export const ProductFilters = memo(({
 						/>
 					</div>
 
-					{/* FILTROS */}
+					{/* Orden y precios */}
 					<div className="flex flex-wrap justify-center md:justify-end items-center gap-3">
 						<select
 							value={sortOrder}
@@ -100,7 +79,6 @@ export const ProductFilters = memo(({
 								onChange={(event) => setMinPrice(event.target.value)}
 								className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 							/>
-
 							<label className="text-gray-600">Hasta:</label>
 							<input
 								type="number"
@@ -120,10 +98,9 @@ export const ProductFilters = memo(({
 					</div>
 				</div>
 
-			{/* Categorías */}
-			<div className="flex flex-wrap justify-center gap-2">
-				{memoizedCategoryButtons}
+				{/* Categorías */}
+				<div className="flex flex-wrap justify-center gap-2">{memoizedCategoryButtons}</div>
 			</div>
-		</div>
-	);
-});
+		);
+	})
+);

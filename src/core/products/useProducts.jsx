@@ -15,8 +15,6 @@ export const useProducts = (searchQuery, categoryQuery, filters) => {
 			const uniqueCategories = [...new Set(data.flatMap((p) => p.category || []))];
 			setCategories(uniqueCategories);
 		} catch (error) {
-			setProducts([]);
-			setCategories([]);
 			throw error;
 		} finally {
 			setLoading(false);
@@ -28,31 +26,30 @@ export const useProducts = (searchQuery, categoryQuery, filters) => {
 	}, [fetchProducts]);
 
 	const filteredProducts = useMemo(() => {
-		return products
-			.filter((p) => {
-				const matchesCategory = categoryQuery === "all" || p.category?.includes(categoryQuery);
+		let result = [...products];
 
-				const matchesSearch =
-					!searchQuery ||
-					p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-					p.description.toLowerCase().includes(searchQuery.toLowerCase());
+		if (categoryQuery !== "all") {
+			result = result.filter((p) => p.category?.includes(categoryQuery));
+		}
 
-				const matchesPrice =
-					(!filters.minPrice || p.price >= filters.minPrice) &&
-					(!filters.maxPrice || p.price <= filters.maxPrice);
+		if (searchQuery) {
+			const q = searchQuery.toLowerCase();
+			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+		}
 
-				return matchesCategory && matchesSearch && matchesPrice;
-			})
-			.sort((a, b) => {
-				if (filters.sort === "priceAsc") return a.price - b.price;
-				if (filters.sort === "priceDesc") return b.price - a.price;
-				return 0;
-			});
+		result = result.filter((p) => {
+			const price = p.price || 0;
+			return price >= (filters.minPrice ?? 0) && price <= (filters.maxPrice ?? Infinity);
+		});
+
+		if (filters.sort === "priceAsc") {
+			result.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+		} else if (filters.sort === "priceDesc") {
+			result.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+		}
+
+		return result;
 	}, [products, searchQuery, categoryQuery, filters]);
 
-	return {
-		products: filteredProducts,
-		categories,
-		loading,
-	};
+	return { products: filteredProducts, categories, loading };
 };

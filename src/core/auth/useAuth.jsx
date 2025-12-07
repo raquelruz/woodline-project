@@ -23,7 +23,7 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			console.error("Error al iniciar sesión:", error);
+			console.error("Error en login:", error);
 			throw error;
 		}
 	}, []);
@@ -52,7 +52,7 @@ export const useAuth = () => {
 				navigate("/");
 			}
 		} catch (error) {
-			console.error("Error en al registrar usuario:", error);
+			console.error("Error en registro:", error);
 			throw error;
 		}
 	}, []);

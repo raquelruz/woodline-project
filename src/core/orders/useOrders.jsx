@@ -39,7 +39,7 @@ export const useOrders = () => {
 		const allOrders = await getOrdersApi();
 		const pedidos = Array.isArray(allOrders) ? allOrders : allOrders.data || [];
 		const userOrders = pedidos.filter((order) => order.userId === userId || order.user?._id === userId);
-		
+
 		return userOrders;
 	}, []);
 
