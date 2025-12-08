@@ -4,6 +4,8 @@ import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
 import { ProductGrid } from "../components/Products/ProductGrid";
 import { Loader } from "../components/Loader";
+import { ErrorBoundary } from "../components/ErrorBoundary";
+import { PageError } from "../components/PageError";
 
 export const Products = memo(() => {
 	const [products, setProducts] = useState([]);
@@ -91,11 +93,7 @@ export const Products = memo(() => {
 
 		if (searchTerm) {
 			const q = searchTerm.toLowerCase();
-			result = result.filter(
-				(p) =>
-					p.name.toLowerCase().includes(q) ||
-					p.description.toLowerCase().includes(q)
-			);
+			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
 		}
 
 		result = result.filter((p) => {
@@ -118,7 +116,6 @@ export const Products = memo(() => {
 
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
-
 			<ProductFilters
 				ref={searchInputRef}
 				categories={categories}
@@ -130,15 +127,33 @@ export const Products = memo(() => {
 			/>
 
 			<div className="mt-10">
-				{filteredProducts.length === 0 && (
-					<div className="text-center text-gray-500 mt-20">
-						<p>No se encontraron productos.</p>
-					</div>
-				)}
+				<ErrorBoundary
+					fallback={
+						<PageError
+							title="Error al cargar productos"
+							message="No se pudieron mostrar los productos. Intenta recargar la página."
+						/>
+					}
+				>
+					{filteredProducts.length === 0 && (
+						<PageError
+							title="Sin resultados"
+							message="No se encontraron productos con los filtros seleccionados."
+							icon="🔍"
+							fullPage={false}
+							retryText="Limpiar filtros"
+							onRetry={() => {
+								setSearchTerm("");
+								setSelectedCategory("all");
+								setFilters({ minPrice: 0, maxPrice: Infinity, sort: "" });
+							}}
+						/>
+					)}
 
-				{filteredProducts.length > 0 && (
-					<ProductGrid products={filteredProducts} onView={handleViewProduct} />
-				)}
+					{filteredProducts.length > 0 && (
+						<ProductGrid products={filteredProducts} onView={handleViewProduct} />
+					)}
+				</ErrorBoundary>
 			</div>
 		</section>
 	);
