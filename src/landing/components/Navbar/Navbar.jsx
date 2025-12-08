@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { memo, useContext, useState } from "react";
+import { memo, useMemo, useContext, useState, useCallback } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { memo } from "react";
 
 const linkClass = "text-primary hover:text-primary-light";
 

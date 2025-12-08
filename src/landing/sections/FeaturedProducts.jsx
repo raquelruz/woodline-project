@@ -1,28 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { api } from "../../core/http/axios";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../components/Loader";
-import { FeaturedProductCard } from "../components/FeaturedProductCard";
 import { useFeaturedProducts } from "../../hooks/useFeaturedProductCard";
 
 export const FeaturedProducts = () => {
 	const { featured, loading } = useFeaturedProducts();
-
-	const fetchFeatured = useCallback(async () => {
-		try {
-			const { data } = await api.get("/products");
-			const sorted = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-			setFeatured(sorted.slice(0, 6));
-		} catch (err) {
-			setError("Error al mostrar productos");
-		} finally {
-			setLoading(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		fetchFeatured();
-	}, [fetchFeatured]);
 
 	const memoizedList = useMemo(() => {
 		return featured.map((product) => (
@@ -48,13 +30,9 @@ export const FeaturedProducts = () => {
 				</div>
 			</Link>
 		));
-	});
+	}, [featured]);
 
-	if (loading) {
-		return <Loader text="Cargando productos destacados..." />;
-	}
-
-	// console.log("Render FeaturedProducts");
+	if (loading) return <Loader text="Cargando productos destacados..." />;
 
 	return (
 		<section className="py-24 bg-gray-50">
@@ -67,7 +45,9 @@ export const FeaturedProducts = () => {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">{memoizedList}</div>
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">
+				{memoizedList}
+			</div>
 		</section>
 	);
 };

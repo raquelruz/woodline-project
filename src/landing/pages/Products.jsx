@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
-import { ProductsGrid } from "../components/Products/ProductsGrid";
+import { ProductGrid } from "../components/Products/ProductGrid";
 import { Loader } from "../components/Loader";
 
 export const Products = memo(() => {
@@ -33,8 +33,10 @@ export const Products = memo(() => {
 		try {
 			const { data } = await api.get("/products");
 			setProducts(data);
+
 			const unique = [...new Set(data.flatMap((p) => p.category || []))];
 			setCategories(unique);
+
 			if (categoryQuery !== "all") {
 				setSelectedCategory(categoryQuery);
 			}
@@ -53,14 +55,17 @@ export const Products = memo(() => {
 		searchInputRef.current?.focus();
 	}, []);
 
-	const handleCategoryChange = useCallback((category) => {
-		setSelectedCategory(category);
-		if (category === "all") {
-			navigate("/products");
-		} else {
-			navigate(`/products?category=${encodeURIComponent(category)}`);
-		}
-	}, []);
+	const handleCategoryChange = useCallback(
+		(category) => {
+			setSelectedCategory(category);
+			if (category === "all") {
+				navigate("/products");
+			} else {
+				navigate(`/products?category=${encodeURIComponent(category)}`);
+			}
+		},
+		[navigate]
+	);
 
 	const handleFilterChange = useCallback((newFilters) => {
 		setFilters(newFilters);
@@ -86,7 +91,11 @@ export const Products = memo(() => {
 
 		if (searchTerm) {
 			const q = searchTerm.toLowerCase();
-			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+			result = result.filter(
+				(p) =>
+					p.name.toLowerCase().includes(q) ||
+					p.description.toLowerCase().includes(q)
+			);
 		}
 
 		result = result.filter((p) => {
@@ -97,6 +106,7 @@ export const Products = memo(() => {
 		if (filters.sort === "priceAsc") {
 			result = [...result].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
 		}
+
 		if (filters.sort === "priceDesc") {
 			result = [...result].sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
 		}
@@ -106,15 +116,14 @@ export const Products = memo(() => {
 
 	if (loading) return <Loader text="Cargando productos..." />;
 
-	// console.log("Render Products");
-
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
+
 			<ProductFilters
 				ref={searchInputRef}
 				categories={categories}
 				selectedCategory={selectedCategory}
-				onCategoryChange={handleCategoryChange}
+				setSelectedCategory={handleCategoryChange}     // ← ESTA LÍNEA ARREGLA TODO
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
 				searchRef={searchInputRef}
@@ -127,7 +136,9 @@ export const Products = memo(() => {
 					</div>
 				)}
 
-				{filteredProducts.length > 0 && <ProductsGrid products={filteredProducts} onView={handleViewProduct} />}
+				{filteredProducts.length > 0 && (
+					<ProductGrid products={filteredProducts} onView={handleViewProduct} />
+				)}
 			</div>
 		</section>
 	);

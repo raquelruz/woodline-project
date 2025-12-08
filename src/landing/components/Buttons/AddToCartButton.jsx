@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
 
