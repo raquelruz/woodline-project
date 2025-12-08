@@ -46,7 +46,6 @@ export const ProductFilters = memo(
 		return (
 			<div className="w-full max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-5 mb-10">
 				<div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-
 					<div className="flex items-center w-full md:w-1/3 bg-gray-50 rounded-full px-4 py-2 border border-gray-200 focus-within:ring-2 focus-within:ring-primary">
 						<FaSearch className="text-primary text-sm mr-3" />
 						<input

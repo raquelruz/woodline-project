@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
@@ -83,20 +83,20 @@ export const Register = () => {
 	const [form, setForm] = useState(INITIAL_FORM);
 	const { register } = useAuth();
 
-	const onInputChange = (event) => {
+	const onInputChange = useCallback((event) => {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
-	};
+	}, [form]);
 
-	const onRegisterSubmit = async (event) => {
+	const onRegisterSubmit = useCallback(async (event) => {
 		event.preventDefault();
 		register(form);
 		setForm(INITIAL_FORM);
-	};
+	}, []);
 
 	const formMemoized = useMemo(() => {
 		return REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => { 
-						console.log("RENDERIZA FORMINPUTMAP")
+						// console.log("Render FormInputMap")
 						return (
 							<FormInput
 								key={input.name}
@@ -118,7 +118,7 @@ export const Register = () => {
 					})
 	}, [form]);
 
-	console.log("RENDERIZO REGISTER")
+	// console.log("Render Register")
 
 	return (
 		<Container className="flex items-center justify-center min-h-screen bg-gray-100 p-12">

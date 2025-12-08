@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
@@ -58,9 +58,31 @@ export const Login = memo(() => {
 		[form]
 	);
 
-	// console.log("Render Login");
+	const memoizedForm = useMemo(() => {
+		return LOGIN_FIELDS.map(({ label, input, containerClass }) => {
+			// console.log("Render FormInputMap Login")
+			return (
+				<FormInput
+					key={input.name}
+					containerClass={containerClass}
+					input={{
+						name: input.name,
+						type: input.type,
+						placeholder: input.placeholder,
+						value: form[input.name],
+						onChange: onInputChange,
+						required: input.required,
+					}}
+					label={{
+						text: label.text,
+						className: label.className,
+					}}
+				/>
+			);
+		});
+	}, [form]);
 
-	console.log("RENDER LOGIN")
+	// console.log("Render Login");
 
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -68,24 +90,7 @@ export const Login = memo(() => {
 				<h2 className="font-title text-primary text-center pb-10">Iniciar sesión</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onLoginSubmit}>
-					{LOGIN_FIELDS.map(({ label, input, containerClass }) => (
-						<FormInput
-							key={input.name}
-							containerClass={containerClass}
-							input={{
-								name: input.name,
-								type: input.type,
-								placeholder: input.placeholder,
-								value: form[input.name],
-								onChange: onInputChange,
-								required: input.required,
-							}}
-							label={{
-								text: label.text,
-								className: label.className,
-							}}
-						/>
-					))}
+					{memoizedForm}
 
 					<button
 						type="submit"

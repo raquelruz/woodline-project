@@ -6,9 +6,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { calculateSubtotal, calculateTax } from "../../helpers/orders.helpers";
 import { LoadingButton } from "../components/Buttons/LoadingButton";
 import { PaymentModal } from "../components/Modals/PaymentModal";
-import { OrderItems } from "../components/Orders/OrderItems";
-import { CheckoutForm } from "../components/Orders/CheckoutForm";
-import { OrderSummary } from "../components/Orders/OrderSummary";
+
+const toCurrency = (value) => value.toFixed(2);
 
 export const Checkout = () => {
 	const { items, clearCart } = useCart();

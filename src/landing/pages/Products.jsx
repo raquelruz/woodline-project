@@ -123,7 +123,7 @@ export const Products = memo(() => {
 				ref={searchInputRef}
 				categories={categories}
 				selectedCategory={selectedCategory}
-				setSelectedCategory={handleCategoryChange}     // ← ESTA LÍNEA ARREGLA TODO
+				setSelectedCategory={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
 				searchRef={searchInputRef}
