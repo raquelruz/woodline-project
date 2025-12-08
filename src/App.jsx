@@ -29,6 +29,8 @@ import { CookiesPolicyPage } from "./landing/pages/Legal/CookiesPolicyPage";
 import { IndividualProduct } from "./landing/pages/IndividualProduct";
 import { ProductDetail } from "./landing/components/Products/ProductsDetail";
 import { Toaster } from "react-hot-toast";
+import { ErrorBoundary } from "./landing/components/ErrorBoundary";
+import { PageError } from "./landing/components/PageError";
 
 export const App = () => {
 	return (
@@ -36,118 +38,129 @@ export const App = () => {
 			<Header />
 
 			<main>
-				<Routes>
-					{/* Rutas públicas */}
-					<Route path="/" element={<Home />} />
-					<Route path="/products" element={<Products />} />
-					<Route
-						path="/products/:id"
-						element={
-							<IndividualProduct>
-								<ProductDetail />
-							</IndividualProduct>
-						}
-					/>
-					<Route path="/about" element={<About />} />
-					<Route path="/contact" element={<Contact />} />
-
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
-					<Route path="/users" element={<Users />} />
-
-					<Route path="/shipping" element={<ShippingPage />} />
-					<Route path="/returns" element={<ReturnsPage />} />
-					<Route path="/delivery-time" element={<DeliveryTimePage />} />
-
-					<Route path="/terms" element={<TermsPage />} />
-					<Route path="/privacy" element={<PrivacyPolicyPage />} />
-					<Route path="/cookies" element={<CookiesPolicyPage />} />
-
-					{/* Rutas privadas */}
-					<Route
-						path="/profile"
-						element={
-							<PrivateRoute>
-								<Profile />
-							</PrivateRoute>
-						}
-					/>
-					<Route
-						path="/cart"
-						element={
-							<PrivateRoute>
-								<CartPage />
-							</PrivateRoute>
-						}
-					/>
-					<Route
-						path="/checkout"
-						element={
-							<PrivateRoute>
-								<Checkout />
-							</PrivateRoute>
-						}
-					/>
-					<Route
-						path="/order-success"
-						element={
-							<PrivateRoute>
-								<OrderSuccessPage />
-							</PrivateRoute>
-						}
-					/>
-					<Route path="/orders/:id" element={<OrderDetail />} />
-
-					<Route
-						path="/dashboard"
-						element={
-							<PrivateRoute role="admin">
-								<DashboardLayout />
-							</PrivateRoute>
-						}
-					>
+				<ErrorBoundary
+					fallback={
+						<PageError
+							title="Error en la navegación"
+							message="Ha ocurrido un error al cargar esta página. Por favor, intenta navegar a otra sección."
+							onRetry={() => window.location.reload()}
+							fullPage
+						/>
+					}
+				>
+					<Routes>
+						{/* Rutas públicas */}
+						<Route path="/" element={<Home />} />
+						<Route path="/products" element={<Products />} />
 						<Route
-							index
+							path="/products/:id"
 							element={
-								<PrivateRoute role="admin">
-									<DashboardHome />
+								<IndividualProduct>
+									<ProductDetail />
+								</IndividualProduct>
+							}
+						/>
+						<Route path="/about" element={<About />} />
+						<Route path="/contact" element={<Contact />} />
+
+						<Route path="/login" element={<Login />} />
+						<Route path="/register" element={<Register />} />
+						<Route path="/users" element={<Users />} />
+
+						<Route path="/shipping" element={<ShippingPage />} />
+						<Route path="/returns" element={<ReturnsPage />} />
+						<Route path="/delivery-time" element={<DeliveryTimePage />} />
+
+						<Route path="/terms" element={<TermsPage />} />
+						<Route path="/privacy" element={<PrivacyPolicyPage />} />
+						<Route path="/cookies" element={<CookiesPolicyPage />} />
+
+						{/* Rutas privadas */}
+						<Route
+							path="/profile"
+							element={
+								<PrivateRoute>
+									<Profile />
 								</PrivateRoute>
 							}
 						/>
 						<Route
-							path="products"
+							path="/cart"
 							element={
-								<PrivateRoute role="admin">
-									<ProductsPage />
+								<PrivateRoute>
+									<CartPage />
 								</PrivateRoute>
 							}
 						/>
 						<Route
-							path="users"
+							path="/checkout"
 							element={
-								<PrivateRoute role="admin">
-									<UsersPage />
+								<PrivateRoute>
+									<Checkout />
 								</PrivateRoute>
 							}
 						/>
 						<Route
-							path="orders"
+							path="/order-success"
 							element={
-								<PrivateRoute role="admin">
-									<OrdersPage />
+								<PrivateRoute>
+									<OrderSuccessPage />
 								</PrivateRoute>
 							}
 						/>
+						<Route path="/orders/:id" element={<OrderDetail />} />
+
 						<Route
-							path="orders/:id"
+							path="/dashboard"
 							element={
 								<PrivateRoute role="admin">
-									<OrderDetail />
+									<DashboardLayout />
 								</PrivateRoute>
 							}
-						/>
-					</Route>
-				</Routes>
+						>
+							<Route
+								index
+								element={
+									<PrivateRoute role="admin">
+										<DashboardHome />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="products"
+								element={
+									<PrivateRoute role="admin">
+										<ProductsPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="users"
+								element={
+									<PrivateRoute role="admin">
+										<UsersPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="orders"
+								element={
+									<PrivateRoute role="admin">
+										<OrdersPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="orders/:id"
+								element={
+									<PrivateRoute role="admin">
+										<OrderDetail />
+									</PrivateRoute>
+								}
+							/>
+						</Route>
+					</Routes>
+				</ErrorBoundary>
 			</main>
 
 			<div>
