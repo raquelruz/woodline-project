@@ -1,11 +1,11 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../core/http/axios";
 import { ProductFilters } from "../components/Products/ProductFilters";
-import { ProductsGrid } from "../components/Products/ProductsGrid";
+import { ProductGrid } from "../components/Products/ProductGrid";
 import { Loader } from "../components/Loader";
 
-export const Products = () => {
+export const Products = memo(() => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -18,6 +18,8 @@ export const Products = () => {
 	});
 	const [searchTerm, setSearchTerm] = useState("");
 
+	const searchInputRef = useRef(null);
+
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -26,38 +28,41 @@ export const Products = () => {
 		return params.get("category") || "all";
 	}, [location.search]);
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			setLoading(true);
+	const fetchProducts = useCallback(async () => {
+		setLoading(true);
+		try {
+			const { data } = await api.get("/products");
+			setProducts(data);
 
-			try {
-				const { data } = await api.get("/products");
-				setProducts(data);
+			const unique = [...new Set(data.flatMap((p) => p.category || []))];
+			setCategories(unique);
 
-				const unique = [...new Set(data.flatMap((p) => p.category || []))];
-				setCategories(unique);
-
+			if (categoryQuery !== "all") {
 				setSelectedCategory(categoryQuery);
-			} catch (error) {
-				console.error("Error al obtener productos:", error);
-			} finally {
-				setLoading(false);
 			}
-		};
-
-		fetchProducts();
+		} catch (error) {
+			console.error("Error al obtener productos:", error);
+		} finally {
+			setLoading(false);
+		}
 	}, [categoryQuery]);
+
+	useEffect(() => {
+		fetchProducts();
+	}, [fetchProducts]);
+
+	useEffect(() => {
+		searchInputRef.current?.focus();
+	}, []);
 
 	const handleCategoryChange = useCallback(
 		(category) => {
 			setSelectedCategory(category);
-
 			if (category === "all") {
 				navigate("/products");
-				return;
+			} else {
+				navigate(`/products?category=${encodeURIComponent(category)}`);
 			}
-
-			navigate(`/products?category=${encodeURIComponent(category)}`);
 		},
 		[navigate]
 	);
@@ -71,9 +76,8 @@ export const Products = () => {
 	}, []);
 
 	const handleViewProduct = useCallback(
-		(product) => {
-			const id = product.id || product._id;
-			navigate(`/products/${id}`);
+		(productId) => {
+			navigate(`/products/${productId}`);
 		},
 		[navigate]
 	);
@@ -87,7 +91,11 @@ export const Products = () => {
 
 		if (searchTerm) {
 			const q = searchTerm.toLowerCase();
-			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+			result = result.filter(
+				(p) =>
+					p.name.toLowerCase().includes(q) ||
+					p.description.toLowerCase().includes(q)
+			);
 		}
 
 		result = result.filter((p) => {
@@ -108,16 +116,17 @@ export const Products = () => {
 
 	if (loading) return <Loader text="Cargando productos..." />;
 
-	console.log("Render Products");
-
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
+
 			<ProductFilters
+				ref={searchInputRef}
 				categories={categories}
 				selectedCategory={selectedCategory}
-				onCategoryChange={handleCategoryChange}
+				setSelectedCategory={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
+				searchRef={searchInputRef}
 			/>
 
 			<div className="mt-10">
@@ -127,8 +136,10 @@ export const Products = () => {
 					</div>
 				)}
 
-				{filteredProducts.length > 0 && <ProductsGrid products={filteredProducts} onView={handleViewProduct} />}
+				{filteredProducts.length > 0 && (
+					<ProductGrid products={filteredProducts} onView={handleViewProduct} />
+				)}
 			</div>
 		</section>
 	);
-};
+});

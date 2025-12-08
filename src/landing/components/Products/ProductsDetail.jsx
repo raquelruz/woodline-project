@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../../../core/http/axios";
 import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
@@ -9,20 +9,29 @@ export const ProductDetail = memo(() => {
 	const [product, setProduct] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		const fetchProduct = async () => {
-			try {
-				const response = await api.get(`/products/${id}`);
-				setProduct(response.data);
-			} catch (error) {
-				console.error("Error al cargar el producto:", error);
-				throw error;
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchProduct();
+	const fetchProduct = useCallback(async () => {
+		try {
+			const response = await api.get(`/products/${id}`);
+			setProduct(response.data);
+		} catch (error) {
+			console.error("Error al cargar el producto:", error);
+			setProduct(null);
+		} finally {
+			setLoading(false);
+		}
 	}, [id]);
+
+	useEffect(() => {
+		fetchProduct();
+	}, [fetchProduct]);
+
+	const categoryLabel = useMemo(() => {
+		return product?.category?.join(", ") || "General";
+	}, [product?.category]);
+
+	const formattedPrice = useMemo(() => {
+		return product ? product.price.toFixed(2) : "";
+	}, [product]);
 
 	if (loading) {
 		return (
@@ -36,7 +45,7 @@ export const ProductDetail = memo(() => {
 		return <div className="flex justify-center items-center py-20 text-error">Producto no encontrado.</div>;
 	}
 
-	// console.log("Render ProductsDetail")
+	// console.log("Render ProductDetail");
 
 	return (
 		<section className="relative min-h-screen px-4 py-2">
@@ -60,16 +69,13 @@ export const ProductDetail = memo(() => {
 							<div>
 								<p className="text-sm text-gray-400 mb-1">Precio</p>
 								<p className="text-2xl md:text-4xl font-title font-extrabold text-primary">
-									{product.price.toFixed(2)} €
+									{formattedPrice} €
 								</p>
 							</div>
 						</div>
 
 						<span className="text-sm text-gray-400">
-							Categoría:{" "}
-							<span className="font-medium text-gray-700">
-								{product.category?.join(", ") || "General"}
-							</span>
+							Categoría: <span className="font-medium text-gray-700">{categoryLabel}</span>
 						</span>
 					</div>
 

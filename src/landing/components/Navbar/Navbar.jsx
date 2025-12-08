@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useContext, useState, useCallback, useMemo } from "react";
+import { memo, useMemo, useContext, useState, useCallback } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { memo } from "react";
 
 const linkClass = "text-primary hover:text-primary-light";
 
@@ -38,6 +37,8 @@ export const Navbar = memo(() => {
 
 		return baseLinks;
 	}, [user?.role]);
+
+	// console.log("Render Navbar");
 
 	// console.log("Render Navbar");
 
