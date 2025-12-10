@@ -38,9 +38,9 @@ export const Profile = () => {
 	const [error, setError] = useState(null);
 	const [success, setSuccess] = useState(false);
 
-	if (!user) return <Navigate to="/login" replace />;
-
 	useEffect(() => {
+		if (!user) return;
+		
 		setFormData({
 			firstName: user.name || "",
 			lastName: user.lastName || "",
@@ -49,6 +49,8 @@ export const Profile = () => {
 			address: user.address || "",
 		});
 	}, [user]);
+
+	if (!user) return <Navigate to="/login" replace />;
 
 	const handleChange = (event) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });

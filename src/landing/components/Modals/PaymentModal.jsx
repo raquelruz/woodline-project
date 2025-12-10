@@ -5,7 +5,7 @@ import {
 	isValidCVV,
 	isValidHolder,
 	isValidEmail,
-} from "../../../helpers/paymentValidators.helpers";
+} from "../../../helpers/paymentValidators.helpers"
 
 const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring-primary";
 const buttonClass = "px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary";
