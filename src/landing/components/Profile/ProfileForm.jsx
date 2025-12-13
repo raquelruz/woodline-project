@@ -8,7 +8,7 @@ export const ProfileForm = memo(
 			return null;
 		}, [error, success]);
 
-		console.log("Render ProfileForm");
+		// console.log("Render ProfileForm");
 
 		return (
 			<form className="space-y-4" onSubmit={handleSave}>

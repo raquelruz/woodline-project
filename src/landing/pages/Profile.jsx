@@ -6,12 +6,16 @@ import { useOrders } from "../../core/orders/useOrders";
 import { ProfileHeader } from "../components/Profile/ProfileHeader";
 import { ProfileForm } from "../components/Profile/ProfileForm";
 import { ProfileOrders } from "../components/Profile/ProfileOrders";
+import { FavoritesContext } from "../../contexts/FavoritesContext";
+import { EmptyFavorites } from "../components/Favorites/FavoritesEmpty";
+import { FavoritesCard } from "../components/Favorites/FavoritesCard";
 
 const inputClass = "w-full p-2 rounded border border-primary-light text-primary-light focus:ring-primary";
 const saveButton = "bg-primary px-6 py-2 rounded text-white font-medium hover:bg-primary-light transition";
 
 export const Profile = () => {
 	const { user, setUser } = useContext(AuthContext);
+	const { favorites } = useContext(FavoritesContext);
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -38,9 +42,9 @@ export const Profile = () => {
 	const [error, setError] = useState(null);
 	const [success, setSuccess] = useState(false);
 
-	if (!user) return <Navigate to="/login" replace />;
-
 	useEffect(() => {
+		if (!user) return;
+
 		setFormData({
 			firstName: user.name || "",
 			lastName: user.lastName || "",
@@ -49,6 +53,8 @@ export const Profile = () => {
 			address: user.address || "",
 		});
 	}, [user]);
+
+	if (!user) return <Navigate to="/login" replace />;
 
 	const handleChange = (event) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -92,6 +98,12 @@ export const Profile = () => {
 					saveButton={saveButton}
 				/>
 				<ProfileOrders orders={orders} handleViewOrder={handleViewOrder} />
+
+				<div className="p-4">
+					<h2 className="text-3xl text-primary font-semibold mb-6">Productos favoritos ♥</h2>
+					{favorites.length === 0 && <EmptyFavorites />}
+					{favorites.length > 0 && <FavoritesCard products={favorites} />}
+				</div>
 			</div>
 		</div>
 	);
