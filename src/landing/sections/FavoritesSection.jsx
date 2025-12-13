@@ -1,20 +1,14 @@
-import { EmptyFavorites } from "../components/Favorites/EmptyFavorites";
-import { FavoritesCard } from "../components/Favorites//FavoritesCard"
-
 export const FavoritesSection = ({ favorites }) => {
-    const hasFavorites = favorites.length > 0;
+	const hasFavorites = favorites.length > 0;
 
-    return (
-        <div className="p-4">
-            <h2 className="text-3xl text-primary font-semibold mb-6">
-                Productos favoritos ♥
-            </h2>
+	return (
+		<div className="p-4">
+			<h2 className="text-3xl text-primary font-semibold mb-6">
+				Productos favoritos ♥
+			</h2>
 
-            {!hasFavorites ? (
-                <EmptyFavorites />
-            ) : (
-                <FavoritesCard products={favorites} />
-            )}
-        </div>
-    );
+			{hasFavorites && <FavoritesCard products={favorites} />}
+			{!hasFavorites && <EmptyFavorites />}
+		</div>
+	);
 };
