@@ -1,3 +1,6 @@
+import { EmptyFavorites } from "../components/Favorites/EmptyFavorites";
+import { FavoritesCard } from "../components/Favorites/FavoritesCard";
+
 export const FavoritesSection = ({ favorites }) => {
 	const hasFavorites = favorites.length > 0;
 
