@@ -14,7 +14,9 @@ export const ProductDetail = memo(() => {
 		try {
 			const response = await api.get(`/products/${id}`);
 			const product = response.data;
+
 			product.id = product.id || product._id;
+
 			setProduct(product);
 		} catch (error) {
 			console.error("Error al cargar el producto:", error);
@@ -27,6 +29,35 @@ export const ProductDetail = memo(() => {
 	useEffect(() => {
 		fetchProduct();
 	}, [fetchProduct]);
+
+	useEffect(() => {
+		if (!product) return;
+
+		try {
+			const viewedRaw = localStorage.getItem("viewed");
+			const viewed = viewedRaw ? JSON.parse(viewedRaw) : [];
+
+			const exists = viewed.some((p) => (p.id || p._id) === product.id);
+
+			if (!exists) {
+				const updated = [
+					{
+						id: product.id,
+						name: product.name,
+						image: product.images?.[0] || "/placeholder.jpg",
+						price: product.price,
+					},
+					...viewed,
+				];
+
+				const limited = updated.slice(0, 8);
+
+				localStorage.setItem("viewed", JSON.stringify(limited));
+			}
+		} catch (error) {
+			console.error("Error guardando historial de vistos:", error);
+		}
+	}, [product]);
 
 	const categoryLabel = useMemo(() => {
 		return product?.category?.join(", ") || "General";

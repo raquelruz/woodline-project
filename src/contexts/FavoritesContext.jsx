@@ -14,7 +14,6 @@ export const FavoritesProvider = ({ children }) => {
 			if (!user?.id) return;
 
 			const favs = await getUserFavorites(user.id);
-			console.log("📌 FAVORITOS DEL BACKEND:", favs);
 			setFavorites(favs);
 		};
 
