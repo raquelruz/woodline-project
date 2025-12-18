@@ -5,7 +5,7 @@ import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { FavButton } from "../Buttons/FavButton";
 
-export const ProductDetail = memo(() => {
+const ProductDetail = memo(() => {
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -124,3 +124,5 @@ export const ProductDetail = memo(() => {
 		</section>
 	);
 });
+
+export default ProductDetail;

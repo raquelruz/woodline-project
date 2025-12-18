@@ -9,7 +9,7 @@ import { PaymentModal } from "../components/Modals/PaymentModal";
 
 const toCurrency = (value) => value.toFixed(2);
 
-export const Checkout = () => {
+const Checkout = () => {
 	const { items, clearCart } = useCart();
 	const { createOrder } = useOrders();
 	const { user } = useContext(AuthContext);
@@ -155,3 +155,5 @@ export const Checkout = () => {
 		</div>
 	);
 };
+
+export default Checkout;

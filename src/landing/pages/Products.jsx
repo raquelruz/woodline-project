@@ -7,7 +7,7 @@ import { Loader } from "../components/Loader";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { PageError } from "../components/PageError";
 
-export const Products = memo(() => {
+const Products = memo(() => {
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -158,3 +158,5 @@ export const Products = memo(() => {
 		</section>
 	);
 });
+
+export default Products;

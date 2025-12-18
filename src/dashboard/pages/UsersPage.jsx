@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import { UserForm } from "../components/UserForm";
 import { UserTable } from "../components/UserTable";
 
-export const UsersPage = memo(() => {
+const UsersPage = memo(() => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     const handleUserSaved = () => {
@@ -21,3 +21,5 @@ export const UsersPage = memo(() => {
 		</section>
 	);
 });
+
+export default UsersPage;

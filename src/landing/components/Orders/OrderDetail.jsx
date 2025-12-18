@@ -10,7 +10,7 @@ import { formatOrderId, translateStatus, getStatusClass, formatDate } from "../.
 
 import { IoCalendarOutline, IoCashOutline, IoInformationCircleOutline, IoCubeOutline } from "react-icons/io5";
 
-export const OrderDetail = () => {
+const OrderDetail = () => {
 	const { id } = useParams();
 	const [order, setOrder] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -82,3 +82,5 @@ export const OrderDetail = () => {
 		</section>
 	);
 };
+
+export default OrderDetail;

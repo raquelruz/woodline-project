@@ -1,8 +1,6 @@
 import { memo } from "react";
 
-export const ReturnsPage = memo(() => {
-	console.log("RENDER RETURNSPAGE")
-	
+const ReturnsPage = memo(() => {
 	return (
 		<section className="px-6 md:px-16 py-12 bg-gray-50 min-h-[80vh]">
 			<h1 className="text-3xl font-title font-bold text-primary mb-6 text-center">Devoluciones</h1>
@@ -40,3 +38,5 @@ export const ReturnsPage = memo(() => {
 		</section>
 	);
 });
+
+export default ReturnsPage;

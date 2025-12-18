@@ -79,7 +79,7 @@ const REGISTER_FORM_FIELDS = [
 	},
 ];
 
-export const Register = () => {
+const Register = () => {
 	const [form, setForm] = useState(INITIAL_FORM);
 	const { register } = useAuth();
 
@@ -146,3 +146,5 @@ export const Register = () => {
 		</Container>
 	);
 };
+
+export default Register;

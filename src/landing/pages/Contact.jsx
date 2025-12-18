@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 
-export const Contact = () => {
+const Contact = () => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -195,3 +195,5 @@ export const Contact = () => {
 		</section>
 	);
 };
+
+export default Contact;
