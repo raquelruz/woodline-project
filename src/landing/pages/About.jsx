@@ -4,7 +4,7 @@ import { FaLeaf, FaHandshake, FaCouch } from "react-icons/fa";
 
 const aboutClass = "text-gray-700 leading-relaxed";
 
-export const About = memo(() => {
+const About = memo(() => {
 	// console.log("Render About");
 	
 	return (
@@ -84,3 +84,5 @@ export const About = memo(() => {
 		</section>
 	);
 });
+
+export default About;

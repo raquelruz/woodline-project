@@ -9,7 +9,7 @@ import { ViewedList } from "../components/ViewedList";
 import { useContext } from "react";
 import { ViewedContext } from "../../contexts/ViewedContext";
 
-export const Home = () => {
+const Home = () => {
 	const { viewed } = useContext(ViewedContext);
 
 	return (
@@ -36,3 +36,5 @@ export const Home = () => {
 		</>
 	);
 };
+
+export default Home;

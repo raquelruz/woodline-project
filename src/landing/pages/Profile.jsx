@@ -6,7 +6,7 @@ import { useProfileForm } from "../../hooks/useProfileForm";
 import { useProfileOrders } from "../../hooks/useProfileOrders";
 import { ProfileContent } from "../components/ProfileContent";
 
-export const Profile = () => {
+const Profile = () => {
 	const { user, setUser } = useContext(AuthContext);
 	const { favorites } = useContext(FavoritesContext);
 
@@ -17,3 +17,5 @@ export const Profile = () => {
 
 	return <ProfileContent user={user} favorites={favorites} profileForm={profileForm} orders={orders} />;
 };
+
+export default Profile;

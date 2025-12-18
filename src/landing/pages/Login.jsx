@@ -35,7 +35,7 @@ const LOGIN_FIELDS = [
 	},
 ];
 
-export const Login = memo(() => {
+const Login = memo(() => {
 	const [form, setForm] = useState(INITIAL_FORM);
 	const { login } = useAuth();
 
@@ -109,3 +109,5 @@ export const Login = memo(() => {
 		</div>
 	);
 });
+
+export default Login;

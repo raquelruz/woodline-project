@@ -1,38 +1,49 @@
-import "./App.css";
-import { Home } from "./landing/pages/Home";
+import { lazy, Suspense } from "react";
 import { Header } from "./landing/components/Navbar/Header";
-import { Products } from "./landing/pages/Products";
-import { About } from "./landing/pages/About";
-import { Contact } from "./landing/pages/Contact";
 import { Footer } from "./landing/sections/Footer";
 import { Route, Routes } from "react-router-dom";
-import { Login } from "./landing/pages/Login";
-import { Register } from "./landing/pages/Register";
-import { Users } from "./landing/pages/Users";
 import { PrivateRoute } from "./landing/components/PrivateRoute";
-import { Profile } from "./landing/pages/Profile";
-import { CartPage } from "./landing/pages/CartPage";
-import { Checkout } from "./landing/pages/Checkout";
-import { OrderSuccessPage } from "./landing/pages/OrderSuccessPage";
-import { OrderDetail } from "./landing/components/Orders/OrderDetail";
-import { DashboardLayout } from "./dashboard/pages/DashboardLayout";
-import { DashboardHome } from "./dashboard/pages/DashboardHome";
-import { ProductsPage } from "./dashboard/pages/ProductsPage";
-import { UsersPage } from "./dashboard/pages/UsersPage";
-import { OrdersPage } from "./dashboard/pages/OrdersPage";
-import { ShippingPage } from "./landing/pages/Help/ShippingPage";
-import { ReturnsPage } from "./landing/pages/Help/ReturnsPage";
-import { DeliveryTimePage } from "./landing/pages/Help/DeliveryTimePage";
-import { TermsPage } from "./landing/pages/Legal/TermsPage";
-import { PrivacyPolicyPage } from "./landing/pages/Legal/PrivacyPolicyPage";
-import { CookiesPolicyPage } from "./landing/pages/Legal/CookiesPolicyPage";
-import { IndividualProduct } from "./landing/pages/IndividualProduct";
-import { ProductDetail } from "./landing/components/Products/ProductsDetail";
-import { Toaster } from "react-hot-toast";
 import { ErrorBoundary } from "./landing/components/ErrorBoundary";
 import { PageError } from "./landing/components/PageError";
+import { useAuthContext } from "./hooks/useAuthContext";
+import { PageSpinner } from "./landing/components/PageSpinner";
+
+const Home = lazy(() => import("./landing/pages/Home"));
+const Products = lazy(() => import("./landing/pages/Products"));
+const About = lazy(() => import("./landing/pages/About"));
+const Contact = lazy(() => import("./landing/pages/Contact"));
+const Login = lazy(() => import("./landing/pages/Login"));
+const Register = lazy(() => import("./landing/pages/Register"));
+const Profile = lazy(() => import("./landing/pages/Profile"));
+
+const ShippingPage = lazy(() => import("./landing/pages/Help/ShippingPage"));
+const ReturnsPage = lazy(() => import ("./landing/pages/Help/ReturnsPage"));
+const DeliveryTimePage = lazy(() => import("./landing/pages/Help/DeliveryTimePage"));
+const CookiesPolicyPage = lazy(() => import("./landing/pages/Legal/CookiesPolicyPage"));
+const PrivacyPolicyPage = lazy(() => import("./landing/pages/Legal/PrivacyPolicyPage"));
+const TermsPage = lazy(() => import("./landing/pages/Legal/TermsPage"));
+
+const IndividualProduct = lazy(() => import("./landing/pages/IndividualProduct"));
+const ProductDetail = lazy(() => import("./landing/components/Products/ProductsDetail"));
+const CartPage = lazy(() => import("./landing/pages/CartPage"));
+const Checkout = lazy(() => import("./landing/pages/Checkout"));
+
+const OrdersPage = lazy(() => import("./dashboard/pages/OrdersPage"));
+const OrderDetail = lazy(() => import("./landing/components/Orders/OrderDetail"));
+const OrderSuccessPage = lazy(() => import("./landing/pages/OrderSuccessPage"));
+
+const DashboardLayout = lazy(() => import("./dashboard/pages/DashboardLayout"));
+const DashboardHome = lazy(() => import("./dashboard/pages/DashboardHome"));
+const ProductsPage = lazy(() => import("./dashboard/pages/ProductsPage"));
+const UsersPage = lazy(() => import("./dashboard/pages/UsersPage"));
 
 export const App = () => {
+	const { isLoading } = useAuthContext();
+
+	if (isLoading) {
+		return <PageSpinner message="Cargando aplicación..." fullpage />;
+	}
+
 	return (
 		<div className="h-dvh min-h-screen grid-rows-[auto_1fr_80px] md:grid-rows-[auto_1fr_120px]">
 			<Header />
@@ -48,118 +59,119 @@ export const App = () => {
 						/>
 					}
 				>
-					<Routes>
-						{/* Rutas públicas */}
-						<Route path="/" element={<Home />} />
-						<Route path="/products" element={<Products />} />
-						<Route
-							path="/products/:id"
-							element={
-								<IndividualProduct>
-									<ProductDetail />
-								</IndividualProduct>
-							}
-						/>
-						<Route path="/about" element={<About />} />
-						<Route path="/contact" element={<Contact />} />
-
-						<Route path="/login" element={<Login />} />
-						<Route path="/register" element={<Register />} />
-						<Route path="/users" element={<Users />} />
-
-						<Route path="/shipping" element={<ShippingPage />} />
-						<Route path="/returns" element={<ReturnsPage />} />
-						<Route path="/delivery-time" element={<DeliveryTimePage />} />
-
-						<Route path="/terms" element={<TermsPage />} />
-						<Route path="/privacy" element={<PrivacyPolicyPage />} />
-						<Route path="/cookies" element={<CookiesPolicyPage />} />
-
-						{/* Rutas privadas */}
-						<Route
-							path="/profile"
-							element={
-								<PrivateRoute>
-									<Profile />
-								</PrivateRoute>
-							}
-						/>
-						<Route
-							path="/cart"
-							element={
-								<PrivateRoute>
-									<CartPage />
-								</PrivateRoute>
-							}
-						/>
-						<Route
-							path="/checkout"
-							element={
-								<PrivateRoute>
-									<Checkout />
-								</PrivateRoute>
-							}
-						/>
-						<Route
-							path="/order-success"
-							element={
-								<PrivateRoute>
-									<OrderSuccessPage />
-								</PrivateRoute>
-							}
-						/>
-						<Route path="/orders/:id" element={<OrderDetail />} />
-
-						<Route
-							path="/dashboard"
-							element={
-								<PrivateRoute role="admin">
-									<DashboardLayout />
-								</PrivateRoute>
-							}
-						>
+					<Suspense fallback={<PageSpinner message="Cargando página..." fullpage />}>
+						<Routes>
+							{/* Rutas públicas */}
+							<Route path="/" element={<Home />} />
+							<Route path="/products" element={<Products />} />
 							<Route
-								index
+								path="/products/:id"
 								element={
-									<PrivateRoute role="admin">
-										<DashboardHome />
+									<IndividualProduct>
+										<ProductDetail />
+									</IndividualProduct>
+								}
+							/>
+							<Route path="/about" element={<About />} />
+							<Route path="/contact" element={<Contact />} />
+
+							<Route path="/login" element={<Login />} />
+							<Route path="/register" element={<Register />} />
+
+							<Route path="/shipping" element={<ShippingPage />} />
+							<Route path="/returns" element={<ReturnsPage />} />
+							<Route path="/delivery-time" element={<DeliveryTimePage />} />
+
+							<Route path="/terms" element={<TermsPage />} />
+							<Route path="/privacy" element={<PrivacyPolicyPage />} />
+							<Route path="/cookies" element={<CookiesPolicyPage />} />
+
+							{/* Rutas privadas */}
+							<Route
+								path="/profile"
+								element={
+									<PrivateRoute>
+										<Profile />
 									</PrivateRoute>
 								}
 							/>
 							<Route
-								path="products"
+								path="/cart"
 								element={
-									<PrivateRoute role="admin">
-										<ProductsPage />
+									<PrivateRoute>
+										<CartPage />
 									</PrivateRoute>
 								}
 							/>
 							<Route
-								path="users"
+								path="/checkout"
 								element={
-									<PrivateRoute role="admin">
-										<UsersPage />
+									<PrivateRoute>
+										<Checkout />
 									</PrivateRoute>
 								}
 							/>
 							<Route
-								path="orders"
+								path="/order-success"
 								element={
-									<PrivateRoute role="admin">
-										<OrdersPage />
+									<PrivateRoute>
+										<OrderSuccessPage />
 									</PrivateRoute>
 								}
 							/>
+							<Route path="/orders/:id" element={<OrderDetail />} />
+
 							<Route
-								path="orders/:id"
+								path="/dashboard"
 								element={
 									<PrivateRoute role="admin">
-										<OrderDetail />
+										<DashboardLayout />
 									</PrivateRoute>
 								}
-							/>
-						</Route>
-					</Routes>
+							>
+								<Route
+									index
+									element={
+										<PrivateRoute role="admin">
+											<DashboardHome />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									path="products"
+									element={
+										<PrivateRoute role="admin">
+											<ProductsPage />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									path="users"
+									element={
+										<PrivateRoute role="admin">
+											<UsersPage />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									path="orders"
+									element={
+										<PrivateRoute role="admin">
+											<OrdersPage />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									path="orders/:id"
+									element={
+										<PrivateRoute role="admin">
+											<OrderDetail />
+										</PrivateRoute>
+									}
+								/>
+							</Route>
+						</Routes>
+					</Suspense>
 				</ErrorBoundary>
 			</main>
 

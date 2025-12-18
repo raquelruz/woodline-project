@@ -8,7 +8,7 @@ import { CartSummary } from "../components/Cart/CartSummary.jsx";
 import { EmptyCart } from "../components/Cart/EmptyCart.jsx";
 import { ErrorBoundary } from "../components/ErrorBoundary.jsx";
 
-export const CartPage = () => {
+const CartPage = () => {
 	const { items, removeFromCart, incrementQty, decrementQty } = useCart();
 	const navigate = useNavigate();
 	const { user } = useContext(AuthContext);
@@ -81,3 +81,5 @@ export const CartPage = () => {
 		</div>
 	);
 };
+
+export default CartPage;

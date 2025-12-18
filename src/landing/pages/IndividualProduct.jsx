@@ -1,7 +1,7 @@
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-export const IndividualProduct = ({ children }) => {
+const IndividualProduct = ({ children }) => {
 	const navigate = useNavigate();
 
 	return (
@@ -24,3 +24,5 @@ export const IndividualProduct = ({ children }) => {
 		</section>
 	);
 };
+
+export default IndividualProduct;
