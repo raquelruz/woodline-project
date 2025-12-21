@@ -1,4 +1,6 @@
-export const ShippingPage = () => {
+import { memo } from "react";
+
+const ShippingPage = memo(() => {
 	return (
 		<section className="px-6 md:px-16 py-12 bg-gray-50 min-h-[80vh]">
 			<h1 className="text-3xl font-title font-bold text-primary mb-6 text-center">Envíos</h1>
@@ -35,4 +37,6 @@ export const ShippingPage = () => {
 			</div>
 		</section>
 	);
-};
+});
+
+export default ShippingPage;

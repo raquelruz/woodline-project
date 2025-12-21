@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { Link } from "react-router-dom";
@@ -79,20 +79,46 @@ const REGISTER_FORM_FIELDS = [
 	},
 ];
 
-export const Register = () => {
+const Register = () => {
 	const [form, setForm] = useState(INITIAL_FORM);
 	const { register } = useAuth();
 
-	const onInputChange = (event) => {
+	const onInputChange = useCallback((event) => {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
-	};
+	}, [form]);
 
-	const onRegisterSubmit = async (event) => {
+	const onRegisterSubmit = useCallback(async (event) => {
 		event.preventDefault();
 		register(form);
 		setForm(INITIAL_FORM);
-	};
+	}, []);
+
+	const formMemoized = useMemo(() => {
+		return REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => { 
+						// console.log("Render FormInputMap")
+						return (
+							<FormInput
+								key={input.name}
+								containerClass={containerClass}
+								input={{
+									name: input.name,
+									type: input.type,
+									placeholder: input.placeholder,
+									value: form[input.name],
+									onChange: onInputChange,
+									required: input.required,
+								}}
+								label={{
+									text: label.text,
+									className: label.className,
+								}}
+							/>
+						);
+					})
+	}, [form]);
+
+	// console.log("Render Register")
 
 	return (
 		<Container className="flex items-center justify-center min-h-screen bg-gray-100 p-12">
@@ -100,29 +126,17 @@ export const Register = () => {
 				<h2 className="font-title text-primary text-center pb-10">Crear cuenta</h2>
 
 				<form className="flex flex-col gap-5" onSubmit={onRegisterSubmit}>
-					{REGISTER_FORM_FIELDS.map(({ label, input, containerClass }) => (
-						<FormInput
-							key={input.name}
-							containerClass={containerClass}
-							input={{
-								name: input.name,
-								type: input.type,
-								placeholder: input.placeholder,
-								value: form[input.name],
-								onChange: onInputChange,
-								required: input.required,
-							}}
-							label={{
-								text: label.text,
-								className: label.className,
-							}}
-						/>
-					))}
+					{formMemoized}
 
-					<button type="submit" className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all">Crear cuenta</button>
+					<button
+						type="submit"
+						className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all"
+					>
+						Crear cuenta
+					</button>
 				</form>
 
-								<p className="mt-4 text-center text-gray-600 text-sm">
+				<p className="mt-4 text-center text-gray-600 text-sm">
 					¿Ya tienes una cuenta?{" "}
 					<Link to="/login" className="text-primary hover:underline">
 						Inicia sesión
@@ -132,3 +146,5 @@ export const Register = () => {
 		</Container>
 	);
 };
+
+export default Register;

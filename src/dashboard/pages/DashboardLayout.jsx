@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { LogoutButton } from "../../landing/components/Buttons/LogoutButton";
 import { MdMenu, MdClose, MdHome, MdShoppingBag, MdInventory, MdPeople } from "react-icons/md";
 
-export const DashboardLayout = () => {
+const DashboardLayout = memo(() => {
 	const [open, setOpen] = useState(false);
 
 	const navItems = [
@@ -67,4 +67,6 @@ export const DashboardLayout = () => {
 			</main>
 		</div>
 	);
-};
+});
+
+export default DashboardLayout;

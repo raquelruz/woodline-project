@@ -1,4 +1,6 @@
-export const Loader = ({ text }) => {
+import { memo } from "react";
+
+export const Loader = memo(({ text }) => {
 	return (
 		<div className="flex flex-col items-center justify-center m-20">
 			<svg
@@ -17,4 +19,4 @@ export const Loader = ({ text }) => {
 			<p className="text-gray-500">{text}</p>
 		</div>
 	);
-};
+});

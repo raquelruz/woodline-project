@@ -1,7 +1,8 @@
 // src/components/common/CustomToaster.jsx
+import { memo } from "react";
 import { Toaster } from "react-hot-toast";
 
-export const CustomToaster = () => {
+export const CustomToaster = memo(() => {
 	return (
 		<Toaster
 			position="top-center"
@@ -21,4 +22,4 @@ export const CustomToaster = () => {
 			}}
 		/>
 	);
-};
+});

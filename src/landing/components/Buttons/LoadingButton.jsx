@@ -1,4 +1,6 @@
-export const LoadingButton = ({
+import { memo } from "react";
+
+export const LoadingButton = memo(({
 	onClick,
 	loading = false,
 	disabled = false,
@@ -47,4 +49,4 @@ export const LoadingButton = ({
 			{buttonContent}
 		</button>
 	);
-};
+});

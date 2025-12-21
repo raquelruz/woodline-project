@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { StatCard } from "../components/StatCard";
 import { Loader } from "../../landing/components/Loader";
 
-export const DashboardHome = () => {
+const DashboardHome = memo(() => {
 	const [stats, setStats] = useState({ products: 0, users: 0, orders: 0 });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -66,4 +66,6 @@ export const DashboardHome = () => {
 			</div>
 		</section>
 	);
-};
+});
+
+export default DashboardHome;

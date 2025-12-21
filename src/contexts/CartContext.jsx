@@ -22,7 +22,7 @@ export const CartProvider = ({ children }) => {
 					saveCartInLocalStorage(newCart);
 					setCart(newCart);
 				} catch (error) {
-					// console.error("Error creando carrito:", error);
+					console.error("Error creando carrito:", error);
 					throw error;
 				}
 			}
