@@ -3,39 +3,39 @@ import returnIcon from "../../assets/icons/return-icon.png";
 import customerIcon from "../../assets/icons/headphone-icon.png";
 import { BenefitCard } from "../components/BenefitCard";
 import { useMemo } from "react";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const Benefits = () => {
+	const { t } = useTranslate();
 	const benefits = useMemo(
 		() => [
 			{
 				img: handsIcon,
-				title: "Métodos de pago",
-				description: "Ofrecemos opciones de pago flexibles para hacerlo más fácil.",
+				title: t("pages.home.payment_title"),
+				description: t("pages.home.payment_description"),
 			},
 			{
 				img: returnIcon,
-				title: "Devoluciones",
-				description: "Puedes devolver un producto dentro de los 30 días posteriores a la compra.",
+				title: t("pages.home.returns"),
+				description: t("pages.home.returns_description"),
 			},
 			{
 				img: customerIcon,
-				title: "Atención al cliente",
-				description: "Nuestro equipo está disponible 24/7 para ayudarte en lo que necesites.",
+				title: t("pages.home.customerservice_title"),
+				description: t("pages.home.customerservice_description"),
 			},
 		],
 		[]
 	);
 
-	// console.log("Render Benefits")
-
 	return (
 		<section className="py-24 bg-primary-ultralight">
 			<div className="text-center mb-16">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
-					<span className="text-primary">Nuestros Beneficios</span>
+					<span className="text-primary">{t("pages.home.benefits_title")}</span>
 				</h2>
 				<p className="text-gray-500 mt-3">
-					Disfruta de una experiencia de compra segura, fácil y sin complicaciones.
+					{t("pages.home.benefits_description")}
 				</p>
 			</div>
 

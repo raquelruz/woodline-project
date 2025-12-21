@@ -1,12 +1,12 @@
 import { memo, useMemo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const OrderProductList = memo(({ items }) => {
+	const { t } = useTranslate();
 	const productList = useMemo(() => {
 		if (!items || items.length === 0) {
-			return <p className="text-gray-500 text-center py-4">No hay productos en este pedido.</p>;
+			return <p className="text-gray-500 text-center py-4">{t("common.no_results")}</p>;
 		}
-
-		// console.log("Render ProductList");
 
 		return (
 			<ul className="divide-y divide-gray-200">
@@ -17,10 +17,10 @@ export const OrderProductList = memo(({ items }) => {
 					>
 						<div>
 							<p className="font-medium text-gray-800">{item.name}</p>
-							<p className="text-sm text-gray-500">Cantidad: {item.quantity || 1}</p>
+							<p className="text-sm text-gray-500">{t("common.quantity")}: {item.quantity || 1}</p>
 						</div>
 
-						<p className="font-semibold text-gray-700">{Number(item.price).toFixed(2)} €</p>
+						<p className="font-semibold text-gray-700">{Number(item.price).toFixed(2)} {t("orders.currency")}</p>
 					</li>
 				))}
 			</ul>

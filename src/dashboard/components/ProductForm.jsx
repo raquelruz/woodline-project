@@ -1,7 +1,9 @@
 import { MdAdd, MdClose } from "react-icons/md";
 import { useProductForm } from "../hooks/useProductForm";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const ProductForm = ({ selectedProduct, onSaved }) => {
+	const { t } = useTranslate();
 	const {
 		form,
 		loading,
@@ -20,7 +22,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 					className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-light transition"
 				>
 					<MdAdd size={20} />
-					Crear producto nuevo
+					{t("pages.dashboard.create_product")}
 				</button>
 			)}
 
@@ -29,7 +31,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 				<form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
 					<div className="flex items-center justify-between mb-2">
 						<h3 className="font-title font-semibold text-primary">
-							{selectedProduct ? "Editar producto" : "Nuevo producto"}
+							{selectedProduct ? t("products.edit_product") : t("products.new_product")}
 						</h3>
 						<MdClose
 							size={22}
@@ -47,7 +49,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 							name="name"
 							value={form.name}
 							onChange={handleChange}
-							placeholder="Nombre del producto"
+							placeholder={t("products.product_name")}
 							className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary"
 							required
 						/>
@@ -57,7 +59,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 							name="price"
 							value={form.price}
 							onChange={handleChange}
-							placeholder="Precio (€)"
+							placeholder={t("products.price_label")}
 							className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary"
 							required
 						/>
@@ -67,7 +69,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 							name="sku"
 							value={form.sku}
 							onChange={handleChange}
-							placeholder="SKU (Referencia interna)"
+							placeholder={t("products.sku")}
 							className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary"
 						/>
 					</div>
@@ -76,7 +78,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						name="description"
 						value={form.description}
 						onChange={handleChange}
-						placeholder="Descripción corta del producto"
+						placeholder={t("products.product_short_description")}
 						rows="3"
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary resize-none"
 						required
@@ -86,7 +88,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						name="longDescription"
 						value={form.longDescription}
 						onChange={handleChange}
-						placeholder="Descripción larga del producto"
+						placeholder={t("products.product_long_description")}
 						rows="4"
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary resize-none"
 					/>
@@ -96,7 +98,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						name="category"
 						value={form.category}
 						onChange={handleChange}
-						placeholder="Categorías (separadas por comas)"
+						placeholder={t("products.categories_info")}
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary"
 					/>
 
@@ -105,7 +107,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						name="images"
 						value={form.images || ""}
 						onChange={handleChange}
-						placeholder="URLs de imágenes (separadas por comas)"
+						placeholder={t("products.image_urls")}
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary"
 					/>
 
@@ -115,10 +117,10 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						className="bg-primary text-white py-2 rounded-md hover:bg-primary-light transition"
 					>
 						{loading
-							? "Guardando..."
+							? t("common.saving")
 							: selectedProduct
-							? "Guardar cambios"
-							: "Añadir producto"}
+							? t("common.save")
+							: t("products.add_product")}
 					</button>
 				</form>
 			)}

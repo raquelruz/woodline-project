@@ -6,8 +6,10 @@ import { ProductGrid } from "../components/Products/ProductGrid";
 import { Loader } from "../components/Loader";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { PageError } from "../components/PageError";
+import { useTranslate } from "../../translations/useTranslate.js";
 
 const Products = memo(() => {
+	const { t } = useTranslate()
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -43,7 +45,7 @@ const Products = memo(() => {
 				setSelectedCategory(categoryQuery);
 			}
 		} catch (error) {
-			console.error("Error al obtener productos:", error);
+			console.error(t("products.error_display"), error);
 		} finally {
 			setLoading(false);
 		}
@@ -112,7 +114,7 @@ const Products = memo(() => {
 		return result;
 	}, [products, selectedCategory, searchTerm, filters]);
 
-	if (loading) return <Loader text="Cargando productos..." />;
+	if (loading) return <Loader text={t("products.loading_products")} />;
 
 	return (
 		<section className="min-h-dvh font-title px-6 py-12 bg-gray-50">
@@ -130,18 +132,18 @@ const Products = memo(() => {
 				<ErrorBoundary
 					fallback={
 						<PageError
-							title="Error al cargar productos"
-							message="No se pudieron mostrar los productos. Intenta recargar la página."
+							title={t("products.error_display")}
+							message={t("products.error_display_message")}
 						/>
 					}
 				>
 					{filteredProducts.length === 0 && (
 						<PageError
-							title="Sin resultados"
-							message="No se encontraron productos con los filtros seleccionados."
+							title={t("products.error_filters")}
+							message={t("products.error_filters_message")}
 							icon="🔍"
 							fullPage={false}
-							retryText="Limpiar filtros"
+							retryText={t("products.clear_filters")}
 							onRetry={() => {
 								setSearchTerm("");
 								setSelectedCategory("all");

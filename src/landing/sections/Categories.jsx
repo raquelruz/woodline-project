@@ -2,8 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../core/categories/useCategories";
 import { Loader } from "../components/Loader";
 import { memo, useCallback, useMemo } from "react";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const Categories = memo(() => {
+	const { t } = useTranslate();
 	const { categories, loading } = useCategories();
 	const navigate = useNavigate();
 
@@ -38,18 +40,16 @@ export const Categories = memo(() => {
 	}, [categories, handleCategoryClick]);
 
 	if (loading) {
-		return <Loader text="Cargando categorías..." />;
+		return <Loader text={t("products.loading_categories")} />;
 	}
-
-	// console.log("Render Categories");
 
 	return (
 		<section className="py-12 bg-bg-light text-center">
 			<div className="mb-16">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
-					Explora nuestras <span className="text-primary">Categorías</span>
+					{t("pages.home.categories_title")} <span className="text-primary">{t("pages.home.categories_span")}</span>
 				</h2>
-				<p className="text-gray-500 mt-3">Muebles y decoración pensados para cada rincón de tu hogar</p>
+				<p className="text-gray-500 mt-3">{t("pages.home.categories_description")}</p>
 			</div>
 
 			<div className="flex flex-wrap justify-center gap-10 px-4">{memoizedCategories}</div>

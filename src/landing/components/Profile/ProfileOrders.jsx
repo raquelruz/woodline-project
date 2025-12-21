@@ -1,4 +1,7 @@
+import { useTranslate } from "../../../translations/useTranslate";
+
 export const ProfileOrders = ({ orders, handleViewOrder }) => {
+	const { t } = useTranslate();
 	function formatOrderId(id) {
 		if (!id) return "Desconocido";
 		const idString = String(id);
@@ -8,21 +11,21 @@ export const ProfileOrders = ({ orders, handleViewOrder }) => {
 	if (orders.length === 0) {
 		return (
 			<div className="mt-10">
-				<h2 className="text-2xl font-semibold mb-4">Últimos pedidos</h2>
-				<p className="text-gray-500">No tienes pedidos recientes.</p>
+				<h2 className="text-2xl font-semibold mb-4">{t("orders.last_orders")}</h2>
+				<p className="text-gray-500">{t("orders.no_orders_registered")}</p>
 			</div>
 		);
 	} else {
 		return (
 			<div className="mt-10">
-				<h2 className="text-2xl font-semibold mb-4">Últimos pedidos</h2>
+				<h2 className="text-2xl font-semibold mb-4">{t("orders.last_orders")}</h2>
 				<ul className="space-y-4">
 					{orders.map((order, index) => {
 						const orderId = order._id || order.id || index;
 						const shortId = formatOrderId(orderId);
 						const orderDate = order.createdAt
 							? new Date(order.createdAt).toLocaleDateString()
-							: "Fecha desconocida";
+							: t("common.unknown");
 
 						return (
 							<li
@@ -30,17 +33,17 @@ export const ProfileOrders = ({ orders, handleViewOrder }) => {
 								className="border rounded p-4 shadow-sm flex justify-between items-center"
 							>
 								<div>
-									<p className="font-medium">Pedido #{shortId}</p>
+									<p className="font-medium">{t("orders.order")} #{shortId}</p>
 									<p className="text-sm text-gray-500">{orderDate}</p>
 								</div>
 
 								<div className="text-right flex flex-col gap-2">
-									<p className="font-semibold text-primary">{order.total} €</p>
+									<p className="font-semibold text-primary">{order.total} {t("common.currency")}</p>
 									<button
 										onClick={() => handleViewOrder(orderId)}
 										className="text-sm bg-primary py-2 px-4 text-white rounded-md hover:bg-primary-light transition-all"
 									>
-										Ver detalles
+										{t("common.view_details")}
 									</button>
 								</div>
 							</li>

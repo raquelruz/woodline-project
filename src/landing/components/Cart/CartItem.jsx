@@ -1,9 +1,11 @@
 import { memo, useCallback, useMemo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
 
 const cartCard =
 	"flex flex-col md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition";
 
 export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart }) => {
+	const { t } = useTranslate();
 	const id = item.productId;
 
 	const quantity = item.quantity || 1;
@@ -20,7 +22,7 @@ export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart
 		removeFromCart(id);
 	}, [removeFromCart, id]);
 
-	const priceText = useMemo(() => (item.price || 0).toFixed(2) + " €", [item.price]);
+	const priceText = useMemo(() => (item.price || 0).toFixed(2) + " " + t("common.currency"), [item.price]);
 
 	const mainImage = item.images?.[0] || "/fallback-product.jpg";
 
@@ -56,8 +58,8 @@ export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart
 				<button
 					onClick={handleRemove}
 					className="font-bold ml-3 text-error hover:text-red-700"
-					title="Eliminar producto"
-					aria-label="Eliminar producto"
+					title={t("common.delete")}
+					aria-label={t("common.delete")}
 				>
 					✕
 				</button>

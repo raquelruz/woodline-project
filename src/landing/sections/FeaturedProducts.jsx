@@ -2,8 +2,10 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { useFeaturedProducts } from "../../hooks/useFeaturedProductCard";
+import { useTranslate } from "../../translations/useTranslate"
 
 export const FeaturedProducts = () => {
+	const { t } = useTranslate()
 	const { featured, loading } = useFeaturedProducts();
 
 	const memoizedList = useMemo(() => {
@@ -38,10 +40,10 @@ export const FeaturedProducts = () => {
 		<section className="py-24 bg-gray-50">
 			<div className="text-center mb-12">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
-					Nuevos <span className="text-primary">Productos</span>
+					{t("pages.home.newproducts_title")}
 				</h2>
 				<p className="text-gray-500 mt-2">
-					Descubre las últimas incorporaciones a nuestra colección de muebles
+					{t("pages.home.newproducts_description")}
 				</p>
 			</div>
 

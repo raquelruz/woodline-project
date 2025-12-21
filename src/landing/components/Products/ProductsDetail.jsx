@@ -4,8 +4,10 @@ import { api } from "../../../core/http/axios";
 import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { FavButton } from "../Buttons/FavButton";
+import { useTranslate } from "../../../translations/useTranslate";
 
 const ProductDetail = memo(() => {
+	const { t } = useTranslate();
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ const ProductDetail = memo(() => {
 
 			setProduct(product);
 		} catch (error) {
-			console.error("Error al cargar el producto:", error);
+			console.error(t("products.error_loading_product"), error);
 			setProduct(null);
 		} finally {
 			setLoading(false);
@@ -55,7 +57,7 @@ const ProductDetail = memo(() => {
 				localStorage.setItem("viewed", JSON.stringify(limited));
 			}
 		} catch (error) {
-			console.error("Error guardando historial de vistos:", error);
+			console.error(t("products.error_viewing_history"), error);
 		}
 	}, [product]);
 
@@ -70,13 +72,13 @@ const ProductDetail = memo(() => {
 	if (loading) {
 		return (
 			<div className="flex justify-center items-center py-20 text-gray-500">
-				<Loader text="Cargando producto..." />
+				<Loader text={t("products.loading_product")}/>
 			</div>
 		);
 	}
 
 	if (!product) {
-		return <div className="flex justify-center items-center py-20 text-error">Producto no encontrado.</div>;
+		return <div className="flex justify-center items-center py-20 text-error">{t("common.no_results")}</div>;
 	}
 
 	return (
@@ -98,14 +100,14 @@ const ProductDetail = memo(() => {
 
 					<div className="flex items-center justify-between mb-6">
 						<div>
-							<p className="text-sm text-gray-400 mb-1">Precio</p>
+							<p className="text-sm text-gray-400 mb-1">{t("products.price_label")}</p>
 							<p className="text-2xl md:text-4xl font-title font-extrabold text-primary">
-								{formattedPrice} €
+								{formattedPrice} {t("common.currency")}
 							</p>
 						</div>
 
 						<span className="text-sm text-gray-400">
-							Categoría: <span className="font-medium text-gray-700">{categoryLabel}</span>
+							{t("common.categories")} <span className="font-medium text-gray-700">{categoryLabel}</span>
 						</span>
 					</div>
 
@@ -115,9 +117,9 @@ const ProductDetail = memo(() => {
 					</div>
 
 					<div className="mt-8 text-sm text-gray-500 space-y-2">
-						<p>✅ Envío gratuito en pedidos superiores a 50 €</p>
-						<p>🔒 Pago 100 % seguro y protegido</p>
-						<p>💬 Soporte personalizado 24/7</p>
+						<p>{t("products.free_shipping")}</p>
+						<p>{t("products.secure_payment")}</p>
+						<p>{t("products.support")}</p>
 					</div>
 				</div>
 			</div>

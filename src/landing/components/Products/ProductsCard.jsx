@@ -1,6 +1,8 @@
 import { memo, useMemo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const ProductCard = memo(({ product, onView }) => {
+	const { t } = useTranslate();
 	const mainImage = product.images?.[0] || "/fallback-product.jpg";
 
 	const memoizedCategories = useMemo(() => {
@@ -33,13 +35,13 @@ export const ProductCard = memo(({ product, onView }) => {
 				</div>
 
 				<div className="flex justify-between items-center mt-4">
-					<span className="text-xl font-landing font-bold text-primary">{product.price} €</span>
+					<span className="text-xl font-landing font-bold text-primary">{product.price} {t("common.currency")}</span>
 
 					<button
 						onClick={handleView}
 						className="px-4 py-2 font-landing font-medium text-white bg-primary rounded-lg hover:bg-primary-light transition-colors"
 					>
-						Ver más
+						{t("common.view_details")}
 					</button>
 				</div>
 			</div>

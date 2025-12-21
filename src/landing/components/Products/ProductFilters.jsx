@@ -1,11 +1,13 @@
 import { memo, forwardRef, useCallback, useMemo, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const ProductFilters = memo(
 	forwardRef(function ProductFilters(
 		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange },
 		searchRef
 	) {
+		const { t } = useTranslate();
 		const [minPrice, setMinPrice] = useState("");
 		const [maxPrice, setMaxPrice] = useState("");
 		const [sortOrder, setSortOrder] = useState("");
@@ -51,7 +53,7 @@ export const ProductFilters = memo(
 						<input
 							ref={searchRef}
 							type="text"
-							placeholder="Buscar productos..."
+							placeholder={t("products.search_placeholder")}
 							value={searchTerm}
 							onChange={(event) => setSearchTerm(event.target.value)}
 							className="w-full bg-transparent outline-none text-sm text-gray-700"
@@ -64,24 +66,26 @@ export const ProductFilters = memo(
 							onChange={(event) => setSortOrder(event.target.value)}
 							className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:ring-2 focus:ring-primary"
 						>
-							<option value="">Ordenar</option>
-							<option value="priceAsc">Precio: menor a mayor</option>
-							<option value="priceDesc">Precio: mayor a menor</option>
+							<option value="">{t("common.sort")}</option>
+							<option value="priceAsc">{t("products.price_low_high")}</option>
+							<option value="priceDesc">{t("products.price_high_low")}</option>
 						</select>
 
 						<div className="flex items-center gap-2 text-sm">
-							<label className="text-gray-600">Desde:</label>
+							<label className="text-gray-600">{t("products.from")}</label>
 							<input
 								type="number"
 								value={minPrice}
 								onChange={(event) => setMinPrice(event.target.value)}
+								placeholder={t("products.price_placeholder")}
 								className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 							/>
-							<label className="text-gray-600">Hasta:</label>
+							<label className="text-gray-600">{t("products.until")}</label>
 							<input
 								type="number"
 								value={maxPrice}
 								onChange={(event) => setMaxPrice(event.target.value)}
+								placeholder={t("products.price_placeholder")}
 								className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 							/>
 						</div>
@@ -91,7 +95,7 @@ export const ProductFilters = memo(
 							className="flex items-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-primary-light transition-all"
 						>
 							<FaFilter />
-							Aplicar
+							{t("common.apply")}
 						</button>
 					</div>
 				</div>

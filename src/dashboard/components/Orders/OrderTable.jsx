@@ -4,24 +4,26 @@ import { OrderRow } from "./OrderRow";
 import { OrderCard } from "./OrderCard";
 import toast, { Toaster } from "react-hot-toast";
 import { memo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const OrderTable = memo(() => {
+	const { t } = useTranslate();
 	const { orders, loading, updateStatus } = useOrders();
 
 	const handleStatusChange = async (orderId, newStatus) => {
 		try {
-			toast.loading("Actualizando estado...");
+			toast.loading(t("orders.updating_status"));
 			await updateStatus(orderId, newStatus);
 			toast.dismiss();
-			toast.success("Estado actualizado correctamente");
+			toast.success(t("orders.update_status_success"));
 		} catch {
 			toast.dismiss();
-			toast.error("Error al actualizar el estado");
+			toast.error(t("orders.error_update_status"));
 		}
 	};
 
-	if (loading) return <Loader text="Cargando pedidos..." />;
-	if (!orders.length) return <p className="text-center mt-4 text-gray-500">No hay pedidos registrados.</p>;
+	if (loading) return <Loader text={t("orders.loading_orders")} />;
+	if (!orders.length) return <p className="text-center mt-4 text-gray-500">{t("orders.no_orders_registered")}</p>;
 
 	return (
 		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6 overflow-hidden">
@@ -48,12 +50,12 @@ export const OrderTable = memo(() => {
 				<table className="min-w-full text-sm">
 					<thead className="bg-primary text-white">
 						<tr>
-							<th className="text-left px-4 py-3 font-medium">Nº Pedido</th>
-							<th className="text-left px-4 py-3 font-medium">Fecha</th>
-							<th className="text-left px-4 py-3 font-medium">Total (€)</th>
-							<th className="text-left px-4 py-3 font-medium">Estado actual</th>
-							<th className="text-left px-4 py-3 font-medium">Actualizar estado</th>
-							<th className="text-left px-4 py-3 font-medium">Acciones</th>
+							<th className="text-left px-4 py-3 font-medium">{t("orders.order_number")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("orders.order_date")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("orders.total_order")} ({t("common.currency")})</th>
+							<th className="text-left px-4 py-3 font-medium">{t("orders.actual_status")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("orders.update_status")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("common.actions")}</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y divide-gray-100">

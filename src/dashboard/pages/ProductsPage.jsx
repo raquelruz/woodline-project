@@ -1,29 +1,29 @@
 import { memo, useState } from "react";
 import { ProductForm } from "../components/ProductForm";
 import { ProductTable } from "../components/ProductsTable";
+import { useTranslate } from "../../translations/useTranslate";
 
 const ProductsPage = memo(() => {
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [refreshKey, setRefreshKey] = useState(0);
+	const { t } = useTranslate();
+	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [refreshKey, setRefreshKey] = useState(0);
 
-    const handleSaved = () => {
-        setSelectedProduct(null);
-        setRefreshKey((prev) => prev + 1);
-    }
-    
-    return (
-        <section>
-            <h2 className="font-title text-center font-bold text-primary mb-4">Gestión de productos</h2>
-            <p className="text-gray-600 text-center mb-4">
-                Desde aquí podrás añadir, editar o eliminar productos de tu tienda.
-            </p>
+	const handleSaved = () => {
+		setSelectedProduct(null);
+		setRefreshKey((prev) => prev + 1);
+	};
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+	return (
+		<section>
+			<h2 className="font-title text-center font-bold text-primary mb-4">{t("pages.dashboard.products_title")}</h2>
+			<p className="text-gray-600 text-center mb-4">{t("pages.dashboard.products_description")}</p>
+
+			<div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 				<ProductForm selectedProduct={selectedProduct} onSaved={handleSaved} />
 				<ProductTable onEdit={setSelectedProduct} key={refreshKey} />
 			</div>
-        </section>
-    )
+		</section>
+	);
 });
 
 export default ProductsPage;

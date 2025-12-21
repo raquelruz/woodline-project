@@ -2,8 +2,10 @@ import { useState, useMemo, memo } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TestimonialCard } from "../components/TestimonialCard";
 import { TESTIMONIALS } from "../../helpers/testimonials";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const Testimonials = memo(() => {
+	const { t } = useTranslate();
 	const [current, setCurrent] = useState(0);
 
 	const testimonialList = useMemo(() => {
@@ -26,7 +28,7 @@ export const Testimonials = memo(() => {
 		<section className="relative py-24 bg-gradient-to-b from-bg-light via-white to-bg-light overflow-hidden">
 			<div className="text-center mb-16">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
-					Lo que opinan <span className="text-primary">nuestros clientes</span>
+					{t()}
 				</h2>
 				<p className="text-gray-500 mt-3">
 					Más de <span className="font-semibold text-primary">15.000 clientes satisfechos</span>
