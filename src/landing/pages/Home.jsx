@@ -8,8 +8,10 @@ import { FeaturedProducts } from "../sections/FeaturedProducts";
 import { ViewedList } from "../components/ViewedList";
 import { useContext } from "react";
 import { ViewedContext } from "../../contexts/ViewedContext";
+import { useTranslate } from "../../translations/useTranslate"
 
 const Home = () => {
+	const { t } = useTranslate()
 	const { viewed } = useContext(ViewedContext);
 
 	return (
@@ -23,7 +25,7 @@ const Home = () => {
 				{viewed.length > 0 && (
 					<div className="mt-10">
 						<h2 className="text-4xl text-center font-title font-extrabold text-gray-800">
-							Visto <span className="text-primary">recientemente</span>
+							{t("pages.home.recently_seen")}
 						</h2>
 						<ViewedList products={viewed} />
 					</div>

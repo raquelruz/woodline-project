@@ -1,8 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const AddToCartButton = memo(({ product }) => {
+	const { t } = useTranslate();
 	const { addToCart } = useCart();
 	const [added, setAdded] = useState(false);
 
@@ -23,11 +25,9 @@ export const AddToCartButton = memo(({ product }) => {
 				isAdded ? "bg-green-500 hover:bg-green-600" : "bg-primary hover:bg-primary-light hover:shadow-lg",
 			].join(" "),
 			Icon: isAdded ? IoCheckmarkCircle : IoCartOutline,
-			label: isAdded ? "Añadido al carrito" : "Añadir al carrito",
+			label: isAdded ? t("products.added_to_cart") : t("products.add_to_cart"),
 		};
 	}, [added]);
-
-	// console.log("Render AddToCartButton");
 
 	return (
 		<button onClick={handleAdd} className={buttonClasses}>

@@ -9,6 +9,7 @@ import { ErrorBoundary } from "./landing/components/ErrorBoundary.jsx";
 import { PageError } from "./landing/components/PageError.jsx";
 import { FavoritesProvider } from "./contexts/FavoritesContext.jsx";
 import { ViewedProvider } from "./contexts/ViewedContext.jsx";
+import "./translations/i18n.js"
 
 createRoot(document.getElementById("root")).render(
 	<ErrorBoundary

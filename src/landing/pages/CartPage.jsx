@@ -7,8 +7,10 @@ import { CartItem } from "../components/Cart/CartItem.jsx";
 import { CartSummary } from "../components/Cart/CartSummary.jsx";
 import { EmptyCart } from "../components/Cart/EmptyCart.jsx";
 import { ErrorBoundary } from "../components/ErrorBoundary.jsx";
+import { useTranslate } from "../../translations/useTranslate.js";
 
 const CartPage = () => {
+	const { t } = useTranslate();
 	const { items, removeFromCart, incrementQty, decrementQty } = useCart();
 	const navigate = useNavigate();
 	const { user } = useContext(AuthContext);
@@ -32,13 +34,11 @@ const CartPage = () => {
 		};
 	}, [items]);
 
-	// console.log("Render CartPage");
-
 	return (
 		<div className="min-h-screen p-8 bg-gray-50">
 			<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 				<div className="md:col-span-2 space-y-6">
-					<h2 className="font-title font-bold text-primary mb-4">Carrito de compra</h2>
+					<h2 className="font-title font-bold text-primary mb-4">{t("products.cart")}</h2>
 
 					{items.length === 0 && <EmptyCart />}
 
@@ -51,9 +51,9 @@ const CartPage = () => {
 									key={itemId}
 									fallback={
 										<div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-600">
-											Error al mostrar un producto del carrito.
+											{t("products.error_display")}
 											<button onClick={() => removeFromCart(itemId)} className="ml-2 underline">
-												Eliminar
+												{t("common.delete")}
 											</button>
 										</div>
 									}

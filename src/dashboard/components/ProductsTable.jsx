@@ -4,8 +4,10 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { CustomToaster } from "./CustomToaster";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const ProductTable = memo(({ onEdit }) => {
+	const { t } = useTranslate();
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
 
@@ -25,14 +27,14 @@ export const ProductTable = memo(({ onEdit }) => {
 								<button
 									onClick={() => onEdit(product)}
 									className="text-blue-500 hover:text-blue-700 transition"
-									aria-label="Editar producto"
+									aria-label={t("products.edit_product")}
 								>
 									<MdEdit size={18} />
 								</button>
 								<button
 									onClick={() => handleDelete(productId)}
 									className="text-red-500 hover:text-red-700 transition"
-									aria-label="Eliminar producto"
+									aria-label={t("product.delete_product")}
 								>
 									<MdDelete size={18} />
 								</button>
@@ -56,7 +58,7 @@ export const ProductTable = memo(({ onEdit }) => {
 			setProducts(data);
 		} catch (error) {
 			toast.dismiss();
-			toast.error("Error al cargar productos");
+			toast.error(t("products.error_loading_product"));
 			// console.error("Error al cargar productos:", error);
 		} finally {
 			setLoading(false);
@@ -64,11 +66,11 @@ export const ProductTable = memo(({ onEdit }) => {
 	};
 
 	const handleDelete = async (productId) => {
-		const confirmDelete = window.confirm("¿Seguro que deseas eliminar este producto?");
+		const confirmDelete = window.confirm(t("confirm_delete_product"));
 		if (!confirmDelete) return;
 
 		try {
-			toast.loading("Eliminando producto...");
+			toast.loading(t("deleting_product"));
 			await api.delete(`/products/${productId}`);
 			setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
 			toast.dismiss();
@@ -81,7 +83,7 @@ export const ProductTable = memo(({ onEdit }) => {
 	};
 
 	if (loading) return <Loader text="Cargando productos..." />;
-	if (!products.length) return <p className="text-center mt-4 text-gray-500">No hay productos registrados.</p>;
+	if (!products.length) return <p className="text-center mt-4 text-gray-500">{t("no_orders_registered")}</p>;
 
 	return (
 		<div className="bg-white rounded-xl shadow-md border border-gray-100 mt-6 relative">
@@ -92,10 +94,10 @@ export const ProductTable = memo(({ onEdit }) => {
 				<table className="min-w-full text-sm">
 					<thead className="bg-primary text-white">
 						<tr>
-							<th className="text-left px-4 py-3 font-medium">Producto</th>
-							<th className="text-left px-4 py-3 font-medium">Categorías</th>
-							<th className="text-left px-4 py-3 font-medium">Precio</th>
-							<th className="text-center px-4 py-3 font-medium">Acciones</th>
+							<th className="text-left px-4 py-3 font-medium">{t("products.product_singular")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("common.categories")}</th>
+							<th className="text-left px-4 py-3 font-medium">{t("common.price")}</th>
+							<th className="text-center px-4 py-3 font-medium">{t("common.actions")}</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y divide-gray-100">
@@ -112,23 +114,23 @@ export const ProductTable = memo(({ onEdit }) => {
 						<div key={productId} className="p-4">
 							<p className="font-semibold text-gray-800">{product.name}</p>
 							<p className="text-gray-500 text-sm mb-1">
-								Categorías:{" "}
+								{t("common.categories")}:{" "}
 								{Array.isArray(product.category) ? product.category.join(", ") : product.category}
 							</p>
-							<p className="text-primary font-bold mb-3">{product.price} €</p>
+							<p className="text-primary font-bold mb-3">{product.price} {t("common.currency")}</p>
 
 							<div className="flex gap-4">
 								<button
 									onClick={() => onEdit(product)}
 									className="flex items-center gap-1 text-blue-500 hover:text-blue-700 transition"
 								>
-									<MdEdit /> Editar
+									<MdEdit /> {t("common.edit")}
 								</button>
 								<button
 									onClick={() => handleDelete(productId)}
 									className="flex items-center gap-1 text-red-500 hover:text-red-700 transition"
 								>
-									<MdDelete /> Eliminar
+									<MdDelete /> {t("common.delete")}
 								</button>
 							</div>
 						</div>

@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 export function formatOrderId(orderId) {
 	if (!orderId) return "Desconocido";
 	return String(orderId).slice(-5);
@@ -5,14 +7,13 @@ export function formatOrderId(orderId) {
 
 export function translateStatus(status) {
 	const map = {
-		pending: "Pendiente",
-		completed: "Completado",
-		cancelled: "Cancelado",
-		preparing: "Preparando",
-		delivered: "Entregado",
+		pending: t("orders.pending"),
+		cancelled: t("orders.canceled"),
+		preparing: t("orders.preparing"),
+		delivered: t("orders.delivered"),
 	};
-	if (!status) return "Desconocido";
-	return map[status] || "Desconocido";
+	if (!status) return t("common.unknown");
+	return map[status] || t("common.unknown");
 }
 
 export function getStatusClass(status) {
@@ -32,7 +33,7 @@ export function getStatusClass(status) {
 }
 
 export function formatDate(date) {
-	if (!date) return "Fecha desconocida";
+	if (!date) return t("common.unknown");
 
 	try {
 		return new Date(date).toLocaleString("es-ES", {
@@ -40,7 +41,7 @@ export function formatDate(date) {
 			timeStyle: "short",
 		});
 	} catch {
-		return "Fecha inválida";
+		return t("common.unknown");
 	}
 }
 

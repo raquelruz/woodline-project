@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { getUserFromLocalStorage } from "../../../core/auth/auth.service";
 import { memo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const BackButton = memo(() => {
+	const { t } = useTranslate();
 	const user = getUserFromLocalStorage();
 
 	if (!user || user.role !== "admin") return null;
-
-	// console.log("Render BackButton");
 	
 	return (
 	<div className="text-center">
@@ -17,7 +17,7 @@ export const BackButton = memo(() => {
 			className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-primary-light transition"
 		>
 			<IoArrowBackCircleOutline className="text-xl" />
-			Volver a pedidos
+			{t("products.back_to_orders")}
 		</Link>
 	</div>
 	);

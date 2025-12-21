@@ -1,19 +1,18 @@
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import logo from "../../../assets/images/woodline-logo.png";
+import logo from "../../../assets/images/woodline-logo-green.png";
 import { Container } from "../Container.jsx";
 import { Navbar } from "./Navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../contexts/AuthContext.jsx";
 import { LogoutButton } from "../Buttons/LogoutButton.jsx";
+import { LanguageSelector } from "../../../translations/LanguageSelector.jsx";
 
 const linkBg = "text-primary hover:text-primary-light cursor-pointer transition-all p-1 rounded-full hover:bg-primary-ultralight"
 
 export const Header = () => {
 	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
-
-	// console.log("Render Header");
 
 	return (
 		<header className="shadow-md relative bg-white">
@@ -22,7 +21,7 @@ export const Header = () => {
 					<img
 						src={logo}
 						alt="logo"
-						className="h-12 cursor-pointer"
+						className="h-6 cursor-pointer"
 						onClick={() => navigate("/")}
 					/>
 
@@ -38,6 +37,8 @@ export const Header = () => {
 						</Link>
 
 						{user && <LogoutButton variant="icon" />}
+
+						<LanguageSelector />
 					</div>
 				</div>
 			</Container>

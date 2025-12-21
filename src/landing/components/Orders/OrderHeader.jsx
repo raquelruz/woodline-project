@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { memo } from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 
-export const OrderHeader = memo(({ orderId }) => (
-	<div className="flex justify-between items-center mb-10">
-		<Link to="/profile" className="flex items-center gap-2 text-primary hover:text-primary-light transition">
-			<IoArrowBackCircleOutline className="text-2xl" />
-			<span className="font-semibold">Volver al perfil</span>
-		</Link>
+export const OrderHeader = memo(({ orderId }) => {
+	const { t } = useTranslation();
 
-		<h1 className="font-title font-bold text-2xl text-gray-800">Pedido #{orderId}</h1>
-	</div>
-));
+	return (
+		<div className="flex justify-between items-center mb-10">
+			<Link to="/profile" className="flex items-center gap-2 text-primary hover:text-primary-light transition">
+				<IoArrowBackCircleOutline className="text-2xl" />
+				<span className="font-semibold">{t("common.back")}</span>
+			</Link>
+
+			<h1 className="font-title font-bold text-2xl text-gray-800">{t("orders.order")} #{orderId}</h1>
+		</div>
+	);
+});

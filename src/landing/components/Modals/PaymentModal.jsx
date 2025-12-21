@@ -6,11 +6,13 @@ import {
 	isValidHolder,
 	isValidEmail,
 } from "../../../helpers/paymentValidators.helpers"
+import { useTranslate } from "../../../translations/useTranslate";
 
 const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring-primary";
 const buttonClass = "px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary";
 
 export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSuccess, paymentMethod }) {
+	const { t } = useTranslate()
 	const [processing, setProcessing] = useState(false);
 	const [error, setError] = useState("");
 	const [form, setForm] = useState({
@@ -29,13 +31,13 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 
 	const validate = useCallback(() => {
 		if (paymentMethod === "credit_card") {
-			if (!isValidCardNumber(form.cardNumber)) return "Número de tarjeta inválido";
-			if (!isValidExpiry(form.expiry)) return "Fecha inválida (usa MM/AA)";
-			if (!isValidCVV(form.cvv)) return "CVV inválido";
-			if (!isValidHolder(form.holder)) return "Titular inválido";
+			if (!isValidCardNumber(form.cardNumber)) return t("orders.invalid_card_number");
+			if (!isValidExpiry(form.expiry)) return t("orders.invalid_date");
+			if (!isValidCVV(form.cvv)) return t("orders.invalid_cvv");
+			if (!isValidHolder(form.holder)) return t("orders.invalid_holder");
 		}
 		if (paymentMethod === "paypal") {
-			if (!isValidEmail(form.paypalEmail)) return "Correo PayPal inválido";
+			if (!isValidEmail(form.paypalEmail)) return t("orders.invalid_paypal");
 		}
 		return null;
 	}, [form, paymentMethod]);
@@ -53,7 +55,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 			if (Math.random() > 0.2) {
 				onSuccess();
 			} else {
-				alert("Error en el pago. Intenta de nuevo.");
+				alert(t("orders.payment_error"));
 				onClose();
 			}
 		}, 2000);
@@ -63,7 +65,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 		() => (
 			<div className="flex flex-col items-center justify-center py-6">
 				<div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
-				<p className="text-gray-600">Procesando pago...</p>
+				<p className="text-gray-600">{t("orders.processing_payment")}</p>
 			</div>
 		),
 		[]
@@ -77,7 +79,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 					name="cardNumber"
 					value={form.cardNumber}
 					onChange={handleChange}
-					placeholder="Número de tarjeta (16 dígitos)"
+					placeholder={t("orders.card_number")}
 					className={inputClass}
 				/>
 
@@ -87,7 +89,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 						name="expiry"
 						value={form.expiry}
 						onChange={handleChange}
-						placeholder="MM/AA"
+						placeholder={t("orders.mm_aa")}
 						className={inputClass}
 					/>
 					<input
@@ -95,7 +97,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 						name="cvv"
 						value={form.cvv}
 						onChange={handleChange}
-						placeholder="CVV"
+						placeholder={t("orders.cvv")}
 						className={inputClass}
 					/>
 				</div>
@@ -105,7 +107,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 					name="holder"
 					value={form.holder}
 					onChange={handleChange}
-					placeholder="Titular de la tarjeta"
+					placeholder={t("orders.card_holder")}
 					className={inputClass}
 				/>
 
@@ -113,10 +115,10 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 
 				<div className="flex justify-end gap-3 mt-4">
 					<button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
-						Cancelar
+						{t("orders.cancel")}
 					</button>
 					<button onClick={handlePayment} className={buttonClass}>
-						Pagar ahora
+						{t("orders.pay_now")}
 					</button>
 				</div>
 			</div>
@@ -139,10 +141,10 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 
 				<div className="flex justify-end gap-3 mt-4">
 					<button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
-						Cancelar
+						{t("orders.cancel")}
 					</button>
 					<button onClick={handlePayment} className={buttonClass}>
-						Pagar ahora
+						{t("orders.pay_now")}
 					</button>
 				</div>
 			</div>
@@ -164,13 +166,11 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 		}
 	}
 
-	// console.log("Render PaymentModal")
-
 	return (
 		<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
 			<div className="bg-white w-[350px] rounded-2xl shadow-lg p-4">
 				<h4 className="text-center font-semibold mb-6 text-gray-800">
-					Pago con {paymentMethod === "paypal" ? "PayPal" : "Tarjeta de crédito"}
+					{t("orders.payment_with")} {paymentMethod === "paypal" ? t("orders.paypal") : t("orders.credit_card")}
 				</h4>
 				{content}
 			</div>

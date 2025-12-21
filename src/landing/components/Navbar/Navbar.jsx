@@ -2,10 +2,12 @@ import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { memo, useMemo, useContext, useState, useCallback } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { useTranslate } from "../../../translations/useTranslate";
 
 const linkClass = "text-primary hover:text-primary-light";
 
 export const Navbar = memo(() => {
+	const { t } = useTranslate();
 	const { user } = useContext(AuthContext);
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,32 +17,28 @@ export const Navbar = memo(() => {
 
 	const desktopLinks = useMemo(
 		() => [
-			{ path: "/", label: "Inicio" },
-			{ path: "/products", label: "Productos" },
-			{ path: "/about", label: "Sobre nosotros" },
-			{ path: "/contact", label: "Contacto" },
+			{ path: "/", label: t("navigation.home") },
+			{ path: "/products", label: t("navigation.products") },
+			{ path: "/about", label: t("navigation.about") },
+			{ path: "/contact", label: t("navigation.contact") },
 		],
 		[]
 	);
 
 	const mobileLinks = useMemo(() => {
 		const baseLinks = [
-			{ path: "/", label: "Inicio" },
-			{ path: "/products", label: "Productos" },
-			{ path: "/about", label: "Sobre nosotros" },
-			{ path: "/contact", label: "Contacto" },
+			{ path: "/", label: t("navigation.home") },
+			{ path: "/products", label: t("navigation.products") },
+			{ path: "/about", label: t("navigation.about") },
+			{ path: "/contact", label: t("navigation.contact") },
 		];
 
 		if (user?.role === "admin") {
-			baseLinks.push({ path: "/dashboard", label: "Panel de control" });
+			baseLinks.push({ path: "/dashboard", label: t("navigation.dashboard") });
 		}
 
 		return baseLinks;
 	}, [user?.role]);
-
-	// console.log("Render Navbar");
-
-	// console.log("Render Navbar");
 
 	return (
 		<nav className="w-full px-6 md:px-10 py-3 flex items-center justify-center">
@@ -68,7 +66,7 @@ export const Navbar = memo(() => {
 								: "hover:text-primary-light"
 						}
 					>
-						Panel de control
+						{t("navigation.dashboard")}
 					</NavLink>
 				)}
 			</div>

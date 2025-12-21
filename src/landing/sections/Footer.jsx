@@ -1,40 +1,42 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/woodline-logo.png";
+import logo from "../../assets/images/woodline-logo-green.png";
 import { FaInstagram, FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 import { useMemo } from "react";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const Footer = () => {
+	const { t } = useTranslate();
 	const sections = useMemo(() => [
 		{
-			title: "Mi cuenta",
+			title: t("pages.home.my_account"),
 			links: [
-				{ name: "Iniciar sesión", to: "/login" },
-				{ name: "Registro", to: "/register" },
-				{ name: "Pedidos", to: "/profile" },
+				{ name: t("auth.login"), to: "/login" },
+				{ name: t("auth.register"), to: "/register" },
+				{ name: t("auth.my_profile"), to: "/profile" },
 			],
 		},
 		{
-			title: "Ayuda",
+			title: t("pages.home.help"),
 			links: [
-				{ name: "Envíos", to: "/shipping" },
-				{ name: "Devoluciones", to: "/returns" },
-				{ name: "Tiempo de entrega", to: "/delivery-time" },
+				{ name: t("pages.home.shipments"), to: "/shipping" },
+				{ name: t("pages.home.returns"), to: "/returns" },
+				{ name: t("orders.orders"), to: "/delivery-time" },
 			],
 		},
 		{
-			title: "Tienda",
+			title: t("pages.home.shop"),
 			links: [
-				{ name: "Todos los productos", to: "/products" },
-				{ name: "Dormitorio", to: "/products?category=dormitorio" },
-				{ name: "Salón", to: "/products?category=salon" },
+				{ name: t("products.all_products"), to: "/products" },
+				{ name: t("products.bedroom"), to: "/products?category=dormitorio" },
+				{ name: t("products.living_room"), to: "/products?category=salon" },
 			],
 		},
 		{
-			title: "Legal",
+			title: t("pages.home.legal"),
 			links: [
-				{ name: "Términos y Condiciones", to: "/terms" },
-				{ name: "Política de privacidad", to: "/privacy" },
-				{ name: "Cookies", to: "/cookies" },
+				{ name: t("pages.home.terms"), to: "/terms" },
+				{ name: t("pages.home.privacy_policy"), to: "/privacy" },
+				{ name: t("pages.home.cookies"), to: "/cookies" },
 			],
 		},
 	]);
@@ -83,15 +85,15 @@ export const Footer = () => {
 	);
 
 	// console.log("Render Footer");
-	
+
 	return (
 		<footer className="bg-gray-100 py-12 px-6 border-t border-gray-200">
 			<div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-10">
 				<div>
-					<img src={logo} alt="logo" className="h-10 mb-4" />
+					<img src={logo} alt="logo" className="h-6 mb-4" />
 					<div className="flex gap-4 mb-4">{socialLinksMemoized}</div>
 					<div className="text-xs text-primary-pressed">
-						<p className="font-semibold">Dirección</p>
+						<p className="font-semibold">{t("auth.address")}</p>
 						<p>+34 123 456 789</p>
 						<p>Jerez de la Frontera, Cádiz, España</p>
 					</div>

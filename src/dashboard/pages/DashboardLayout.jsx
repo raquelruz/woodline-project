@@ -2,15 +2,17 @@ import { memo, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { LogoutButton } from "../../landing/components/Buttons/LogoutButton";
 import { MdMenu, MdClose, MdHome, MdShoppingBag, MdInventory, MdPeople } from "react-icons/md";
+import { useTranslate } from "../../translations/useTranslate";
 
 const DashboardLayout = memo(() => {
+	const { t } = useTranslate();
 	const [open, setOpen] = useState(false);
 
 	const navItems = [
-		{ to: "/dashboard", label: "Inicio", icon: <MdHome /> },
-		{ to: "/dashboard/orders", label: "Pedidos", icon: <MdShoppingBag /> },
-		{ to: "/dashboard/products", label: "Productos", icon: <MdInventory /> },
-		{ to: "/dashboard/users", label: "Usuarios", icon: <MdPeople /> },
+		{ to: "/dashboard", label: t("navigation.home"), icon: <MdHome /> },
+		{ to: "/dashboard/orders", label: t("navigation.orders"), icon: <MdShoppingBag /> },
+		{ to: "/dashboard/products", label: t("navigation.products"), icon: <MdInventory /> },
+		{ to: "/dashboard/users", label: t("navigation.users"), icon: <MdPeople /> },
 	];
 
 	return (

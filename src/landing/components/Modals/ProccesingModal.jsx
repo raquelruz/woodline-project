@@ -1,7 +1,8 @@
-export const ProcessingModal = memo(({ isOpen }) => {
-	if (!isOpen) return null;
+import { useTranslate } from "../../../translations/useTranslate";
 
-	// console.log("Render ProccesingModal");
+export const ProcessingModal = memo(({ isOpen }) => {
+	const { t } = useTranslate();
+	if (!isOpen) return null;
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -26,7 +27,7 @@ export const ProcessingModal = memo(({ isOpen }) => {
 						d="M4 12a8 8 0 018-8v4l3-3-3-3v4a12 12 0 00-12 12h4z"
 					></path>
 				</svg>
-				<p className="text-lg font-semibold text-gray-700">Procesando...</p>
+				<p className="text-lg font-semibold text-gray-700">{t("common.processing")}</p>
 			</div>
 		</div>
 	);

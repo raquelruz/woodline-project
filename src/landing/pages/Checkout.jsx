@@ -6,10 +6,12 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { calculateSubtotal, calculateTax } from "../../helpers/orders.helpers";
 import { LoadingButton } from "../components/Buttons/LoadingButton";
 import { PaymentModal } from "../components/Modals/PaymentModal";
+import { useTranslate } from "../../translations/useTranslate";
 
 const toCurrency = (value) => value.toFixed(2);
 
 const Checkout = () => {
+	const { t } = useTranslate();
 	const { items, clearCart } = useCart();
 	const { createOrder } = useOrders();
 	const { user } = useContext(AuthContext);
@@ -33,7 +35,7 @@ const Checkout = () => {
 					<span>
 						{item.name} x {item.quantity}
 					</span>
-					<span>{(item.price * item.quantity).toFixed(2)} €</span>
+					<span>{(item.price * item.quantity).toFixed(2)} {t("common.currency")}</span>
 				</div>
 			)),
 		[items]
@@ -43,7 +45,7 @@ const Checkout = () => {
 		setShowPayment(false);
 
 		if (!user) {
-			alert("Debes iniciar sesión para confirmar tu pedido");
+			alert(t("auth.unauthorized"));
 			return;
 		}
 
@@ -59,7 +61,7 @@ const Checkout = () => {
 			clearCart();
 			navigate("/order-success");
 		} catch (error) {
-			alert("Hubo un error al confirmar el pedido.");
+			alert(t("product.error_confirmation_order"));
 		} finally {
 			setLoading(false);
 		}
@@ -67,13 +69,11 @@ const Checkout = () => {
 
 	const handleConfirm = useCallback(() => {
 		if (!user) {
-			alert("Debes iniciar sesión para confirmar tu pedido");
+			alert(t("auth.unauthorized"));
 			return;
 		}
 		setShowPayment(true);
 	}, [user]);
-
-	console.log("Render Checkout");
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -86,17 +86,17 @@ const Checkout = () => {
 
 			<div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 				<div className="md:col-span-2 bg-white shadow-md rounded-xl p-6 space-y-4">
-					<h2 className="text-2xl font-title font-bold text-primary mb-4">Resumen del pedido</h2>
+					<h2 className="text-2xl font-title font-bold text-primary mb-4">{t("orders.order_summary")}</h2>
 
-					{items.length === 0 ? <p className="text-gray-500">Tu carrito está vacío.</p> : orderItems}
+					{items.length === 0 ? <p className="text-gray-500">{t("orders.cart_empty")}</p> : orderItems}
 				</div>
 
 				<div className="bg-white shadow-md rounded-xl p-6 space-y-4">
-					<h2 className="font-title font-bold text-primary">Datos de envío</h2>
+					<h2 className="font-title font-bold text-primary">{t("orders.shipping_information")}</h2>
 
 					<div className="space-y-3">
 						<div>
-							<label className="block text-sm font-medium py-2">Dirección de envío</label>
+							<label className="block text-sm font-medium py-2">{t("orders.shipping_address")}</label>
 							<input
 								type="text"
 								value={shippingAddress}
@@ -106,7 +106,7 @@ const Checkout = () => {
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium py-2">Dirección de facturación</label>
+							<label className="block text-sm font-medium py-2">{t("orders.billing_address")}</label>
 							<input
 								type="text"
 								value={billingAddress}
@@ -116,30 +116,30 @@ const Checkout = () => {
 						</div>
 
 						<div>
-							<label className="block text-sm font-medium py-2">Método de pago</label>
+							<label className="block text-sm font-medium py-2">{t("orders.payment_method")}</label>
 							<select
 								value={paymentMethod}
 								onChange={(event) => setPaymentMethod(event.target.value)}
 								className="w-full px-3 py-2 border rounded-lg"
 							>
-								<option value="credit_card">Tarjeta de crédito</option>
-								<option value="paypal">PayPal</option>
+								<option value="credit_card">{t("orders.credit_card")}</option>
+								<option value="paypal">{t("orders.paypal")}</option>
 							</select>
 						</div>
 					</div>
 
 					<div className="pt-4 border-t border-primary text-gray-600 space-y-2">
 						<div className="flex justify-between">
-							<span>Subtotal</span>
-							<span>{toCurrency(subtotal)} €</span>
+							<span>{t("orders.subtotal")}</span>
+							<span>{toCurrency(subtotal)} {t("common.currency")}</span>
 						</div>
 						<div className="flex justify-between">
-							<span>IVA (21%)</span>
-							<span>{toCurrency(tax)} €</span>
+							<span>{t("orders.iva")} (21%)</span>
+							<span>{toCurrency(tax)} {t("common.currency")}</span>
 						</div>
 						<div className="flex justify-between font-bold text-lg text-primary border-t pt-2">
-							<span>Total</span>
-							<span>{toCurrency(total)} €</span>
+							<span>{t("orders.total_order")}</span>
+							<span>{toCurrency(total)} {t("common.currency")}</span>
 						</div>
 					</div>
 
@@ -148,7 +148,7 @@ const Checkout = () => {
 						loading={loading}
 						disabled={!shippingAddress || !billingAddress}
 					>
-						Confirmar pedido
+						{t("orders.confirm_order")}
 					</LoadingButton>
 				</div>
 			</div>

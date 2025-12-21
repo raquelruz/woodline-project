@@ -1,6 +1,8 @@
+import { useTranslate } from "../../../translations/useTranslate";
 import { FavButton } from "../Buttons/FavButton";
 
 export const FavoritesCard = ({ products }) => {
+	const { t } = useTranslate();
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8">
 			{products.map((product) => {
@@ -28,13 +30,13 @@ export const FavoritesCard = ({ products }) => {
 
 							<p className="text-gray-500 text-sm line-clamp-2">{product.description}</p>
 
-							<p className="text-primary text-2xl font-bold mt-2">{product.price} €</p>
+							<p className="text-primary text-2xl font-bold mt-2">{product.price} {t("common.currency")}</p>
 
 							<a
 								href={`/products/${productId}`}
 								className="mt-4 w-full text-center py-2.5 rounded-xl border border-primary text-primary font-medium hover:bg-primary hover:text-white transition-all duration-300"
 							>
-								Ver producto
+								{t("products.see_product")}
 							</a>
 						</div>
 					</div>

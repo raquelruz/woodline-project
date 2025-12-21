@@ -1,7 +1,9 @@
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useTranslate } from "../../translations/useTranslate";
 
 const IndividualProduct = ({ children }) => {
+	const { t } = useTranslate();
 	const navigate = useNavigate();
 
 	return (
@@ -13,7 +15,7 @@ const IndividualProduct = ({ children }) => {
 						className="flex items-center gap-2 text-primary hover:text-primary-light transition-colors"
 					>
 						<IoArrowBackCircleOutline className="text-3xl" />
-						<span className="font-semibold text-lg">Volver</span>
+						<span className="font-semibold text-lg">{t("common.back")}</span>
 					</button>
 				</div>
 

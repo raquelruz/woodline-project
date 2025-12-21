@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { memo } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslate } from "../../translations/useTranslate";
 
 export const Hero = memo(() => {
+	const { t } = useTranslate();
 	const navigate = useNavigate();
 
 	// console.log("Render Hero");
@@ -17,7 +19,8 @@ export const Hero = memo(() => {
 					transition={{ duration: 0.6 }}
 					className="font-bold text-5xl text-primary leading-tight drop-shadow-md"
 				>
-					Ofertas exclusivas en nuestra <span className="text-primary-light">Colección de Muebles</span>
+					{t("pages.home.welcome_title")}{" "}
+					<span className="text-primary-light">{t("pages.home.welcome_span")}</span>
 				</motion.h1>
 
 				<motion.p
@@ -26,8 +29,7 @@ export const Hero = memo(() => {
 					transition={{ delay: 0.3 }}
 					className="mt-6 text-lg text-gray-600"
 				>
-					Explora diferentes categorías y encuentra las mejores ofertas para tu hogar.  
-					Diseños modernos, materiales de alta calidad y precios irresistibles.
+					{t("pages.home.welcome_description")}
 				</motion.p>
 
 				<motion.div
@@ -36,10 +38,11 @@ export const Hero = memo(() => {
 					transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
 					className="mt-10"
 				>
-					<button 
-					onClick={() => navigate("/products")}
-					className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary-light hover:translate-x-1 transition-all duration-300">
-						Compra ahora <FaArrowRight className="text-white text-sm" />
+					<button
+						onClick={() => navigate("/products")}
+						className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary-light hover:translate-x-1 transition-all duration-300"
+					>
+						{t("pages.home.shop_now")} <FaArrowRight className="text-white text-sm" />
 					</button>
 				</motion.div>
 			</div>

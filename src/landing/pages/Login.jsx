@@ -1,113 +1,84 @@
-import { memo, useCallback, useMemo, useState } from "react";
-import { FormInput } from "../components/FormInput";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FormInput } from "../components/FormInput";
 import { useAuth } from "../../core/auth/useAuth";
+import { useTranslate } from "../../translations/useTranslate";
 
-const INITIAL_FORM = { email: "", password: "" };
+const INITIAL_FORM = {
+	email: "",
+	password: "",
+};
 
-const LOGIN_FIELDS = [
-	{
-		containerClass: "flex flex-col gap-2",
-		input: {
+const Login = () => {
+	const { t } = useTranslate();
+	const { login } = useAuth();
+	const [form, setForm] = useState(INITIAL_FORM);
+
+	const handleInputChange = (event) => {
+		const { name, value } = event.target;
+		setForm((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		await login(form);
+		setForm(INITIAL_FORM);
+	};
+
+	const LOGIN_FIELDS = [
+		{
 			name: "email",
 			type: "email",
 			placeholder: "admin@admin.com",
-			label: "Email",
-			required: true,
+			label: t("auth.email_label"),
 		},
-		label: {
-			text: "Email",
-			className: "",
-		},
-	},
-	{
-		containerClass: "flex flex-col gap-2",
-		input: {
+		{
 			name: "password",
 			type: "password",
-			placeholder: "1234",
-			required: true,
+			placeholder: "123456",
+			label: t("auth.password"),
 		},
-		label: {
-			text: "Contraseña",
-			className: "",
-		},
-	},
-];
-
-const Login = memo(() => {
-	const [form, setForm] = useState(INITIAL_FORM);
-	const { login } = useAuth();
-
-	const onInputChange = useCallback((event) => {
-		const { name, value } = event.target;
-
-		setForm((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	}, []);
-
-	const onLoginSubmit = useCallback(
-		async (event) => {
-			event.preventDefault();
-			await login(form);
-			setForm(INITIAL_FORM);
-		},
-		[form]
-	);
-
-	const memoizedForm = useMemo(() => {
-		return LOGIN_FIELDS.map(({ label, input, containerClass }) => {
-			// console.log("Render FormInputMap Login")
-			return (
-				<FormInput
-					key={input.name}
-					containerClass={containerClass}
-					input={{
-						name: input.name,
-						type: input.type,
-						placeholder: input.placeholder,
-						value: form[input.name],
-						onChange: onInputChange,
-						required: input.required,
-					}}
-					label={{
-						text: label.text,
-						className: label.className,
-					}}
-				/>
-			);
-		});
-	}, [form]);
-
-	// console.log("Render Login");
+	];
 
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
 			<div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-[450px]">
-				<h2 className="font-title text-primary text-center pb-10">Iniciar sesión</h2>
+				<h2 className="font-title text-primary text-center pb-10">{t("auth.login")}</h2>
 
-				<form className="flex flex-col gap-5" onSubmit={onLoginSubmit}>
-					{memoizedForm}
+				<form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+					{LOGIN_FIELDS.map(({ name, type, placeholder, label }) => (
+						<FormInput
+							key={name}
+							containerClass="flex flex-col gap-2"
+							input={{
+								name,
+								type,
+								placeholder,
+								value: form[name],
+								onChange: handleInputChange,
+								required: true,
+							}}
+							label={{ text: label }}
+						/>
+					))}
 
 					<button
 						type="submit"
 						className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all"
 					>
-						Iniciar sesión
+						{t("auth.login")}
 					</button>
 				</form>
 
 				<p className="mt-4 text-center text-gray-600 text-sm">
-					¿No tienes cuenta?{" "}
+					{t("auth.dont_have_account")}{" "}
 					<Link to="/register" className="text-primary hover:underline">
-						Regístrate
+						{t("auth.register")}
 					</Link>
 				</p>
 			</div>
 		</div>
 	);
-});
+};
 
 export default Login;

@@ -8,8 +8,8 @@ export const ProfileHeader = memo(({ user }) => {
 			</div>
 
 			<div>
-				<h2 className="text-xl font-semibold">{user.name || "Usuario"}</h2>
-				<p className="text-gray-400">{user.email || "Email no disponible"}</p>
+				<h2 className="text-xl font-semibold">{user.name || t("users.user")}</h2>
+				<p className="text-gray-400">{user.email || t("auth.email_required")}</p>
 			</div>
 		</div>
 	);

@@ -1,14 +1,16 @@
 import { memo } from "react";
 import { translateStatus, getStatusClass, isRecentOrder, formatDate } from "../../utils/orderUtils.js";
 import { useNavigate } from "react-router-dom";
+import { useTranslate } from "../../../translations/useTranslate.js";
 
 export const OrderRow = memo(({ order, onChange }) => {
+	const { t } = useTranslate();
 	const navigate = useNavigate();
 
 	const orderId = order._id || order.id;
 	const customerName = order._id || order.id?.slice(-6) || "Pedido desconocido";
 	const orderDate = formatDate(order.placedAt);
-	const orderTotal = order.total ? `${order.total} €` : "—";
+	const orderTotal = order.total ? `${order.total} ${t("common.currency")}` : "—";
 	const recent = isRecentOrder(order.placedAt);
 
 	const handleChange = (event) => {
@@ -30,7 +32,7 @@ export const OrderRow = memo(({ order, onChange }) => {
 					<span>{customerName}</span>
 					{recent && (
 						<span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full">
-							Nuevo
+							{t("common.new")}
 						</span>
 					)}
 				</div>
@@ -50,10 +52,10 @@ export const OrderRow = memo(({ order, onChange }) => {
 					onChange={handleChange}
 					className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
 				>
-					<option value="pending">Pendiente</option>
-					<option value="preparing">Preparando</option>
-					<option value="delivered">Entregado</option>
-					<option value="cancelled">Cancelado</option>
+					<option value="pending">{t("orders.pending")}</option>
+					<option value="preparing">{t("orders.preparing")}</option>
+					<option value="delivered">{t("orders.delivered")}</option>
+					<option value="cancelled">{t("orders.canceled")}</option>
 				</select>
 			</td>
 			<td>
@@ -62,10 +64,10 @@ export const OrderRow = memo(({ order, onChange }) => {
 					onClick={() => navigate(`/orders/${orderId}`)}
 					className="flex items-center gap-1 text-primary hover:text-primary-light transition text-sm font-semibold"
 				>
-					<span role="img" aria-label="ver detalles">
+					<span role="img" aria-label={t("common.view_details")}>
 						🔍
 					</span>
-					Ver detalles
+					{t("common.view_details")}
 				</button>
 			</td>
 		</tr>
