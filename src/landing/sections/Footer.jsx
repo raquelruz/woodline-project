@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/woodline-logo-green.png";
+import logo from "../../assets/images/woodline-logo.png";
 import { FaInstagram, FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 import { useMemo } from "react";
 import { useTranslate } from "../../translations/useTranslate";
@@ -90,7 +90,7 @@ export const Footer = () => {
 		<footer className="bg-gray-100 py-12 px-6 border-t border-gray-200">
 			<div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-10">
 				<div>
-					<img src={logo} alt="logo" className="h-6 mb-4" />
+					<img src={logo} alt="logo" className="h-16 mb-4" />
 					<div className="flex gap-4 mb-4">{socialLinksMemoized}</div>
 					<div className="text-xs text-primary-pressed">
 						<p className="font-semibold">{t("auth.address")}</p>
