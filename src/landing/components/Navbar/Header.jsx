@@ -1,5 +1,5 @@
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import logo from "../../../assets/images/woodline-logo-green.png";
+import logo from "../../../assets/images/woodline-logo.png";
 import { Container } from "../Container.jsx";
 import { Navbar } from "./Navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ export const Header = () => {
 					<img
 						src={logo}
 						alt="logo"
-						className="h-6 cursor-pointer"
+						className="h-12 cursor-pointer"
 						onClick={() => navigate("/")}
 					/>
 

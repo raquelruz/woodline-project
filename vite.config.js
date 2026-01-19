@@ -3,8 +3,8 @@ import react from "@vitejs/plugin-react";
 import tailwind from "@tailwindcss/vite";
 
 export default defineConfig({
-    plugins: [
-        react(),
-        tailwind()
-    ],
+	plugins: [react(), tailwind()],
+	resolve: {
+		extensions: [".tsx", ".ts", ".jsx", ".js"],
+	},
 });
