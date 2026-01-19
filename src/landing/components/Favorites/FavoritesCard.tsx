@@ -1,12 +1,17 @@
+import type { Product } from "../../../core/types/types";
 import { useTranslate } from "../../../translations/useTranslate";
 import { FavButton } from "../Buttons/FavButton";
 
-export const FavoritesCard = ({ products }) => {
+type FavoritesCardProps = {
+	products: Product[];
+}
+
+export const FavoritesCard = ({ products }: FavoritesCardProps) => {
 	const { t } = useTranslate();
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8">
 			{products.map((product) => {
-				const productId = product.id || product._id || product.sku;
+				const productId = product.id || product.sku;
 
 				return (
 					<div
