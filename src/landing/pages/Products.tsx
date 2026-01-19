@@ -6,7 +6,7 @@ import { ProductGrid } from "../components/Products/ProductGrid";
 import { Loader } from "../components/Loader";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { PageError } from "../components/PageError";
-import { useTranslate } from "../../translations/useTranslate.js";
+import { useTranslate } from "../../translations/useTranslate";
 
 const Products = memo(() => {
 	const { t } = useTranslate()

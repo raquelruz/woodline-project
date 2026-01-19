@@ -1,8 +1,8 @@
-import { ProfileHeader } from "../components/Profile/ProfileHeader.jsx"
-import { ProfileForm } from "../components/Profile//ProfileForm.jsx"
-import { ProfileOrders } from "../components/Profile/ProfileOrders.jsx"
-import { FavoritesSection } from "../sections/FavoritesSection.jsx";
-import { useTranslate } from "../../translations/useTranslate.js";
+import { ProfileHeader } from "../components/Profile/ProfileHeader"
+import { ProfileForm } from "../components/Profile//ProfileForm"
+import { ProfileOrders } from "../components/Profile/ProfileOrders"
+import { FavoritesSection } from "../sections/FavoritesSection";
+import { useTranslate } from "../../translations/useTranslate";
 
 const inputClass =
     "w-full p-2 rounded border border-primary-light text-primary-light focus:ring-primary";

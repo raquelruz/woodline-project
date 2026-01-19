@@ -7,7 +7,7 @@ import {
 	removeUserFromLocalStorage,
 	saveTokenInLocalStorage,
 	saveUserInLocalStorage,
-} from "./auth.service";
+} from "./auth.service.ts";
 
 export const useAuth = () => {
 	const { setUser } = useContext(AuthContext);

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import { createCartApi } from "../core/cart/cart.api.js";
-import { getCartFromLocalStorage, saveCartInLocalStorage } from "../core/cart/cart.service.js";
-import { normalizeCart } from "../helpers/normalizeCart.js";
+import { createCartApi } from "../core/cart/cart.api";
+import { getCartFromLocalStorage, saveCartInLocalStorage } from "../core/cart/cart.service";
+import { normalizeCart } from "../helpers/normalizeCart";
 
 export const CartContext = createContext(null);
 

@@ -1,4 +1,4 @@
-import { api } from "../http/axios.js";
+import { api } from "../http/axios";
 
 export const createCartApi = async () => {
 	const response = await api.post("/carts", {

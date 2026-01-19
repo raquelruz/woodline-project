@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FavoritesContext } from "../../../contexts/FavoritesContext.jsx"
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useTranslate } from "../../../translations/useTranslate.js";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const FavButton = ({ product, size = 24 }) => {
 	const { t } = useTranslate();

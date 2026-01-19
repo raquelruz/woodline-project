@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { translateStatus, getStatusClass, isRecentOrder, formatDate } from "../../utils/orderUtils.js";
+import { translateStatus, getStatusClass, isRecentOrder, formatDate } from "../../utils/orderUtils";
 import { useNavigate } from "react-router-dom";
-import { useTranslate } from "../../../translations/useTranslate.js";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const OrderRow = memo(({ order, onChange }) => {
 	const { t } = useTranslate();

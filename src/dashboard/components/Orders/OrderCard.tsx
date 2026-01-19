@@ -1,6 +1,6 @@
-import { translateStatus, getStatusClass, isRecentOrder, formatOrderId, formatDate } from "../../utils/orderUtils.js";
+import { translateStatus, getStatusClass, isRecentOrder, formatOrderId, formatDate } from "../../utils/orderUtils";
 import { useNavigate } from "react-router-dom";
-import { useTranslate } from "../../../translations/useTranslate.js";
+import { useTranslate } from "../../../translations/useTranslate";
 
 export const OrderCard = ({ order, onChange }) => {
 	const { t } = useTranslate();

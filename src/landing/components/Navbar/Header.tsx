@@ -1,12 +1,12 @@
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import logo from "../../../assets/images/woodline-logo.png";
-import { Container } from "../Container.jsx";
-import { Navbar } from "./Navbar.jsx";
+import { Container } from "../Container";
+import { Navbar } from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../../contexts/AuthContext.jsx";
-import { LogoutButton } from "../Buttons/LogoutButton.jsx";
-import { LanguageSelector } from "../../../translations/LanguageSelector.jsx";
+import { AuthContext } from "../../../contexts/AuthContext.js";
+import { LogoutButton } from "../Buttons/LogoutButton";
+import { LanguageSelector } from "../../../translations/LanguageSelector";
 
 const linkBg = "text-primary hover:text-primary-light cursor-pointer transition-all p-1 rounded-full hover:bg-primary-ultralight"
 

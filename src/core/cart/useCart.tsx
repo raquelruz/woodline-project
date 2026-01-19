@@ -1,8 +1,8 @@
 import { useCallback, useContext } from "react";
-import { CartContext } from "../../contexts/CartContext.jsx";
-import { saveCartInLocalStorage } from "./cart.service.js";
-import { normalizeCart } from "../../helpers/normalizeCart.js";
-import { createOrderApi } from "../orders/orders.api.js";
+import { CartContext } from "../../contexts/CartContext";
+import { saveCartInLocalStorage } from "./cart.service";
+import { normalizeCart } from "../../helpers/normalizeCart";
+import { createOrderApi } from "../orders/orders.api";
 
 export const useCart = () => {
 	const { cart, setCart } = useContext(CartContext);

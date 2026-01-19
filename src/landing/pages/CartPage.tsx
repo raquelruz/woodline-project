@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../core/cart/useCart.jsx";
 import { useCallback, useContext, useMemo } from "react";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContext.js";
 
-import { CartItem } from "../components/Cart/CartItem.jsx";
-import { CartSummary } from "../components/Cart/CartSummary.jsx";
-import { EmptyCart } from "../components/Cart/EmptyCart.jsx";
-import { ErrorBoundary } from "../components/ErrorBoundary.jsx";
-import { useTranslate } from "../../translations/useTranslate.js";
+import { CartItem } from "../components/Cart/CartItem";
+import { CartSummary } from "../components/Cart/CartSummary";
+import { EmptyCart } from "../components/Cart/EmptyCart";
+import { ErrorBoundary } from "../components/ErrorBoundary";
+import { useTranslate } from "../../translations/useTranslate";
 
 const CartPage = () => {
 	const { t } = useTranslate();
