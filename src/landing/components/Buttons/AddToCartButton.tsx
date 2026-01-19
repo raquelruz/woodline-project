@@ -2,8 +2,13 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { Product } from "../../../core/types/types";
 
-export const AddToCartButton = memo(({ product }) => {
+type AddToCartButtonProps = {
+	product: Product;
+}
+
+export const AddToCartButton = memo(({ product }: AddToCartButtonProps) => {
 	const { t } = useTranslate();
 	const { addToCart } = useCart();
 	const [added, setAdded] = useState(false);

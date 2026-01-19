@@ -1,7 +1,16 @@
 import { memo, useMemo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
 
-export const CartSummary = memo(({ subtotal, deliveryFee, discount, total, onCheckout, buttonClasses }) => {
+type CartSummaryProps = {
+	subtotal: number;
+	deliveryFee: number;
+	discount: number;
+	total: number;
+	onCheckout: () => void;
+	buttonClasses?: string;
+}
+
+export const CartSummary = memo(({ subtotal, deliveryFee, discount, total, onCheckout, buttonClasses }: CartSummaryProps ) => {
 	const { t } = useTranslate();
 	const summaryValues = useMemo(() => {
 		return {

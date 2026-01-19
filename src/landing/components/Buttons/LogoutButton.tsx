@@ -3,7 +3,13 @@ import { useAuth } from "../../../core/auth/useAuth";
 import { memo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
 
-export const LogoutButton = memo(({ variant = "default" }) => {
+type LogoutButtonVariant = "default" | "icon";
+
+type LogoutButtonProps = {
+	variant?: LogoutButtonVariant;
+}
+
+export const LogoutButton = memo(({ variant = "default" }: LogoutButtonProps) => {
 	const { t } = useTranslate();
 	const { logout } = useAuth();
 

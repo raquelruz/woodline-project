@@ -2,8 +2,15 @@ import { useContext } from "react";
 import { FavoritesContext } from "../../../contexts/FavoritesContext.jsx"
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { Product } from "../../../core/types/types.js";
 
-export const FavButton = ({ product, size = 24 }) => {
+type FavButtonProps = {
+	product: Product;
+	size?: number;
+};
+
+
+export const FavButton = ({ product, size = 24 }: FavButtonProps) => {
 	const { t } = useTranslate();
 	const { favorites, toggleFavorite } = useContext(FavoritesContext);
 	const favs = Array.isArray(favorites) ? favorites : [];

@@ -4,7 +4,22 @@ import { useTranslate } from "../../../translations/useTranslate";
 const cartCard =
 	"flex flex-col md:flex-row items-center justify-between shadow-md rounded-xl p-4 hover:shadow-lg transition";
 
-export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart }) => {
+type CartItemData = {
+	productId: string;
+	name: string;
+	price: number;
+	quantity: number;
+	images?: string[];
+};
+
+type CartItemProps = {
+	item: CartItemData;
+	incrementQty: (id: string) => void;
+	decrementQty: (id: string) => void;
+	removeFromCart: (id: string) => void;
+}
+
+export const CartItem = memo(({ item, incrementQty, decrementQty, removeFromCart }: CartItemProps) => {
 	const { t } = useTranslate();
 	const id = item.productId;
 

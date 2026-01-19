@@ -1,4 +1,16 @@
-import { memo } from "react";
+import { memo, type ReactNode } from "react";
+
+// ReactNode permite pasar como children cualquier cosa que React pueda mostrar:
+// texto, elementos, iconos, números, null o varios elementos juntos. (????)
+
+type LoadingButton = {
+	onClick?: () => void;
+	loading?: boolean;
+	disabled?: boolean;
+	children: ReactNode;
+	loadingText?: string;
+	className?: string;
+}
 
 export const LoadingButton = memo(({
 	onClick,
@@ -7,8 +19,8 @@ export const LoadingButton = memo(({
 	children,
 	loadingText = "Procesando...",
 	className = "",
-}) => {
-	let buttonContent;
+}: LoadingButton) => {
+	let buttonContent: ReactNode;
 
 	if (loading) {
 		buttonContent = (
