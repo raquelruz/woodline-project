@@ -1,6 +1,11 @@
+import { memo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
 
-export const ProcessingModal = memo(({ isOpen }) => {
+type ProcessingModalProp = {
+	isOpen: boolean;
+}
+
+export const ProcessingModal = memo(({ isOpen }: ProcessingModalProp) => {
 	const { t } = useTranslate();
 	if (!isOpen) return null;
 

@@ -5,17 +5,39 @@ import {
 	isValidCVV,
 	isValidHolder,
 	isValidEmail,
-} from "../../../helpers/paymentValidators.helpers"
+} from "../../../helpers/paymentValidators.helpers";
 import { useTranslate } from "../../../translations/useTranslate";
+
+type PaymentMethod = "credit_card" | "paypal";
+
+type PaymentFormState = {
+	cardNumber: string;
+	expiry: string;
+	cvv: string;
+	holder: string;
+	paypalEmail: string;
+};
+
+type PaymentModalProps = {
+	isOpen: boolean;
+	onClose: () => void;
+	onSuccess: () => void;
+	paymentMethod: PaymentMethod;
+};
 
 const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring-primary";
 const buttonClass = "px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary";
 
-export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSuccess, paymentMethod }) {
-	const { t } = useTranslate()
+export const PaymentModal = memo(function PaymentModal({
+	isOpen,
+	onClose,
+	onSuccess,
+	paymentMethod,
+}: PaymentModalProps) {
+	const { t } = useTranslate();
 	const [processing, setProcessing] = useState(false);
 	const [error, setError] = useState("");
-	const [form, setForm] = useState({
+	const [form, setForm] = useState<PaymentFormState>({
 		cardNumber: "",
 		expiry: "",
 		cvv: "",
@@ -68,7 +90,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 				<p className="text-gray-600">{t("orders.processing_payment")}</p>
 			</div>
 		),
-		[]
+		[],
 	);
 
 	const creditCardContent = useMemo(
@@ -123,7 +145,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 				</div>
 			</div>
 		),
-		[form, error, handleChange, handlePayment, onClose]
+		[form, error, handleChange, handlePayment, onClose],
 	);
 
 	const paypalContent = useMemo(
@@ -149,7 +171,7 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 				</div>
 			</div>
 		),
-		[form, error, handleChange, handlePayment, onClose]
+		[form, error, handleChange, handlePayment, onClose],
 	);
 
 	if (!isOpen) return null;
@@ -170,7 +192,8 @@ export const PaymentModal = memo(function PaymentModal({ isOpen, onClose, onSucc
 		<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
 			<div className="bg-white w-[350px] rounded-2xl shadow-lg p-4">
 				<h4 className="text-center font-semibold mb-6 text-gray-800">
-					{t("orders.payment_with")} {paymentMethod === "paypal" ? t("orders.paypal") : t("orders.credit_card")}
+					{t("orders.payment_with")}{" "}
+					{paymentMethod === "paypal" ? t("orders.paypal") : t("orders.credit_card")}
 				</h4>
 				{content}
 			</div>
