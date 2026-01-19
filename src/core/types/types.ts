@@ -41,6 +41,7 @@ export type UserRole = "admin" | "user";
 
 export interface Order {
     id: string;
+    _id?: string;
     total: number;
     status: OrderStatus;
     createdAt: string;
@@ -55,3 +56,6 @@ export type OrderItem = {
 
 export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 
+export type ProductWithBackendId = Product & {
+	_id?: string;
+}

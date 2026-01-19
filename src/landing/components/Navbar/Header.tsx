@@ -4,7 +4,7 @@ import { Container } from "../Container";
 import { Navbar } from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../../contexts/AuthContext.js";
+import { AuthContext } from "../../../contexts/AuthContext";
 import { LogoutButton } from "../Buttons/LogoutButton";
 import { LanguageSelector } from "../../../translations/LanguageSelector";
 

@@ -1,6 +1,10 @@
 import { memo } from "react";
 
-export const Loader = memo(({ text }) => {
+type LoaderProps = {
+	text: string;
+}
+
+export const Loader = memo(({ text }: LoaderProps) => {
 	return (
 		<div className="flex flex-col items-center justify-center m-20">
 			<svg

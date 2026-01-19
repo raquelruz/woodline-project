@@ -1,8 +1,15 @@
 import { memo, useCallback, useMemo } from "react";
 import { ProductCard } from "./ProductsCard";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { ProductWithBackendId } from "../../../core/types/types";
 
-export const ProductGrid = memo(({ products, onView, searchQuery }) => {
+type ProductGridProps = {
+	products: ProductWithBackendId[];
+	onView: (id: string) => void;
+	searchQuery?: string;
+}
+
+export const ProductGrid = memo(({ products, onView, searchQuery }: ProductGridProps) => {
 	const { t } = useTranslate();
 	if (products.length === 0) {
 		return (

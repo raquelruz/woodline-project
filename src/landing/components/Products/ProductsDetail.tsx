@@ -5,11 +5,20 @@ import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { FavButton } from "../Buttons/FavButton";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { ProductWithBackendId } from "../../../core/types/types";
 
-const ProductDetail = memo(() => {
+type ViewedProductSummary = {
+	id: string;
+	_id?: string;
+	name: string;
+	image: string;
+	price: number;
+}
+
+export const ProductDetail = memo(() => {
 	const { t } = useTranslate();
-	const { id } = useParams();
-	const [product, setProduct] = useState(null);
+	const { id } = useParams<{ id: string }>();
+	const [product, setProduct] = useState<ProductWithBackendId | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	const fetchProduct = useCallback(async () => {
@@ -37,7 +46,7 @@ const ProductDetail = memo(() => {
 
 		try {
 			const viewedRaw = localStorage.getItem("viewed");
-			const viewed = viewedRaw ? JSON.parse(viewedRaw) : [];
+			const viewed: ViewedProductSummary[] = viewedRaw ? JSON.parse(viewedRaw) : [];
 
 			const exists = viewed.some((p) => (p.id || p._id) === product.id);
 

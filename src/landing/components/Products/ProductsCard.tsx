@@ -1,7 +1,13 @@
 import { memo, useMemo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { Product } from "../../../core/types/types";
 
-export const ProductCard = memo(({ product, onView }) => {
+type ProductsCardProps = {
+	product: Product;
+	onView: (product: Product) => void;
+}
+
+export const ProductCard = memo(({ product, onView }: ProductsCardProps) => {
 	const { t } = useTranslate();
 	const mainImage = product.images?.[0] || "/fallback-product.jpg";
 

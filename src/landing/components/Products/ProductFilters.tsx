@@ -2,16 +2,26 @@ import { memo, forwardRef, useCallback, useMemo, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { useTranslate } from "../../../translations/useTranslate";
 
+type SortOrder = "" | "priceAsc" | "priceDesc";
+
+type ProductFiltersProps = {
+	categories: string[];
+	selectedCategory: string;
+	setSelectedCategory: (category: string) => void;
+	onFilterChange: (filters: { minPrice: number; maxPrice: number; sort: SortOrder}) => void;
+	onSearchChange: (searchTerm: string) => void;
+}
+
 export const ProductFilters = memo(
 	forwardRef(function ProductFilters(
-		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange },
+		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange }: ProductFiltersProps,
 		searchRef
 	) {
 		const { t } = useTranslate();
-		const [minPrice, setMinPrice] = useState("");
-		const [maxPrice, setMaxPrice] = useState("");
-		const [sortOrder, setSortOrder] = useState("");
-		const [searchTerm, setSearchTerm] = useState("");
+		const [minPrice, setMinPrice] = useState<string>("");
+		const [maxPrice, setMaxPrice] = useState<string>("");
+		const [sortOrder, setSortOrder] = useState<SortOrder>("");
+		const [searchTerm, setSearchTerm] = useState<string>("");
 
 		const handleApplyFilters = useCallback(() => {
 			onFilterChange({
@@ -23,7 +33,7 @@ export const ProductFilters = memo(
 		}, [minPrice, maxPrice, sortOrder, searchTerm, onFilterChange, onSearchChange]);
 
 		const handleSelectCategory = useCallback(
-			(category) => {
+			(category: string) => {
 				setSelectedCategory(category);
 			},
 			[setSelectedCategory]
