@@ -1,7 +1,13 @@
 import { memo } from "react";
 
 type LoaderProps = {
-	text: string;
+	text?: string;
+	message?: string;
+	size?: "sm" | "md" | "lg" | "xl" | string;
+	color?: string;
+	className?: string;
+	containerClassName?: string;
+	fullPage?: boolean;
 }
 
 export const Loader = memo(({ text }: LoaderProps) => {

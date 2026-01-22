@@ -1,7 +1,18 @@
 import { memo, useMemo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { OrderItem } from "../../../core/orders/orders.types";
 
-export const OrderProductList = memo(({ items }) => {
+type OrderItemWithMeta = OrderItem & {
+	id?: string;
+	_id?: string;
+	name?: string;
+};
+
+type OrderProductListProp = {
+	items: OrderItemWithMeta[];
+}
+
+export const OrderProductList = memo(({ items }: OrderProductListProp) => {
 	const { t } = useTranslate();
 	const productList = useMemo(() => {
 		if (!items || items.length === 0) {

@@ -5,7 +5,7 @@ import { Loader } from "../Loader";
 import { AddToCartButton } from "../Buttons/AddToCartButton";
 import { FavButton } from "../Buttons/FavButton";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { ProductWithBackendId } from "../../../core/types/types";
+import type { ProductWithBackendId } from "../../../core/products/products.types";
 
 type ViewedProductSummary = {
 	id: string;

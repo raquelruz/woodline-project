@@ -8,7 +8,7 @@ import { ErrorBoundary } from "./landing/components/ErrorBoundary";
 import { PageError } from "./landing/components/PageError";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { ViewedProvider } from "./contexts/ViewedContext";
-import "./translations/i18n"
+import "./translations/i18n.js"
 
 createRoot(document.getElementById("root")).render(
 	<ErrorBoundary

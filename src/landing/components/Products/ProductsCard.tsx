@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { Product } from "../../../core/types/types";
+import type { Product } from "../../../core/products/products.types";
 
 type ProductsCardProps = {
 	product: Product;

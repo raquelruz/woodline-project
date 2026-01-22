@@ -7,39 +7,57 @@ import { OrderProductList } from "./OrderProductList";
 import { OrderHeader } from "./OrderHeader";
 import { BackButton } from "../Buttons/BackButton";
 import { formatOrderId, translateStatus, getStatusClass, formatDate } from "../../../dashboard/utils/orderUtils";
-
 import { IoCalendarOutline, IoCashOutline, IoInformationCircleOutline, IoCubeOutline } from "react-icons/io5";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { Order } from "../../../core/orders/orders.types";
+import { useAuth } from "../../../core/auth/useAuth";
+
+type OrderWithBackenId = Order & {
+	_id?: string;
+};
 
 const OrderDetail = () => {
 	const { t } = useTranslate();
-	const { id } = useParams();
-	const [order, setOrder] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const { id } = useParams<{ id: string }>();
+	const { user } = useAuth();
+
+	const [order, setOrder] = useState<OrderWithBackenId | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchOrder = useCallback(async () => {
+		if (!id) return;
+
 		try {
-			const response = await getOrdersApi();
-			const pedidos = Array.isArray(response) ? response : response.data || [];
+			const response = await getOrdersApi(user.id);
+			const pedidos: OrderWithBackenId[] = Array.isArray(response) ? response : response.data || [];
+
 			const found = pedidos.find((pedido) => pedido._id === id || pedido.id === id);
-			setOrder(found || null);
+
+			setOrder(found ?? null);
 		} catch (error) {
 			console.error(t("orders.error_order"), error);
 		} finally {
 			setLoading(false);
 		}
-	}, [id]);
+	}, [id, t]);
 
 	useEffect(() => {
 		fetchOrder();
 	}, [fetchOrder]);
 
 	const loadingComponent = useMemo(() => <Loader text={t("orders.loading_order")} />, []);
-	const notFoundComponent = useMemo(() => <p className="text-error text-center mt-10">{t("orders.order_not_found")}</p>, []);
+
+	const notFoundComponent = useMemo(
+		() => <p className="text-error text-center mt-10">{t("orders.order_not_found")}</p>,
+		[],
+	);
 
 	const formattedDate = useMemo(() => (order ? formatDate(order.createdAt) : ""), [order]);
+
 	const orderId = useMemo(() => (order ? formatOrderId(order._id || order.id) : ""), [order]);
+
 	const statusLabel = useMemo(() => (order ? translateStatus(order.status) : ""), [order]);
+
 	const statusClass = useMemo(() => (order ? getStatusClass(order.status) : ""), [order]);
 
 	if (loading) return loadingComponent;

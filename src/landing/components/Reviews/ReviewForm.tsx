@@ -2,8 +2,14 @@ import { useState } from "react";
 import { ReviewStars } from "./ReviewStars";
 import { api } from "../../../core/http/axios";
 import { getTokenFromLocalStorage } from "../../../core/auth/auth.service"; 
+import type { Review } from "../../../core/types/reviews.types";
 
-export const ReviewForm = ({ productId, onNewReview }) => {
+type ReviewFormProps = {
+	productId: string,
+	onNewReview: (review: Review) => void,
+}
+
+export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 	const [name, setName] = useState("");
 	const [comment, setComment] = useState("");
 	const [rating, setRating] = useState(0);
@@ -75,7 +81,7 @@ export const ReviewForm = ({ productId, onNewReview }) => {
 				value={comment}
 				onChange={(event) => setComment(event.target.value)}
 				placeholder="Escribe tu comentario..."
-				rows="3"
+				rows={3}
 				className="w-full border border-gray-300 rounded-md px-3 py-2 mt-3 text-sm focus:ring-2 focus:ring-primary resize-none"
 			/>
 

@@ -13,10 +13,10 @@ type ProductFiltersProps = {
 }
 
 export const ProductFilters = memo(
-	forwardRef(function ProductFilters(
+	forwardRef((
 		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange }: ProductFiltersProps,
 		searchRef
-	) {
+	) => {
 		const { t } = useTranslate();
 		const [minPrice, setMinPrice] = useState<string>("");
 		const [maxPrice, setMaxPrice] = useState<string>("");

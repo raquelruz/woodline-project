@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { useCart } from "../../../core/cart/useCart";
 import { IoCartOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { Product } from "../../../core/types/types";
+import type { Product } from "../../../core/products/products.types";
 
 type AddToCartButtonProps = {
 	product: Product;

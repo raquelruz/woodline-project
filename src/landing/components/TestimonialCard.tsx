@@ -1,7 +1,18 @@
 import { memo } from "react";
 import { FaQuoteLeft } from "react-icons/fa";
 
-export const TestimonialCard = memo(({ testimonial }) => {
+type TestimonialCard = {
+	quote: string;
+	img: string;
+	name: string;
+	role: string;
+}
+
+type TestimonialCardProp = {
+	testimonial: TestimonialCard;
+}
+
+export const TestimonialCard = memo(({ testimonial }: TestimonialCardProp) => {
 	return (
 		<div className="min-w-full flex flex-col items-center justify-center text-center px-8 md:px-20">
 			<div className="relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-10 md:p-14 border border-primary/10 transition-transform duration-500 hover:-translate-y-2">

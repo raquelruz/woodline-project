@@ -28,12 +28,12 @@ type PaymentModalProps = {
 const inputClass = "w-full px-3 py-2 border rounded-lg focus:ring-primary";
 const buttonClass = "px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary";
 
-export const PaymentModal = memo(function PaymentModal({
+export const PaymentModal = memo(({
 	isOpen,
 	onClose,
 	onSuccess,
 	paymentMethod,
-}: PaymentModalProps) {
+}: PaymentModalProps) => {
 	const { t } = useTranslate();
 	const [processing, setProcessing] = useState(false);
 	const [error, setError] = useState("");

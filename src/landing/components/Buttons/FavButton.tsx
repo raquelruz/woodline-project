@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { FavoritesContext } from "../../../contexts/FavoritesContext.jsx"
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { Product } from "../../../core/types/types.js";
+import type { Product } from "../../../core/products/products.types";
 
 type FavButtonProps = {
 	product: Product;

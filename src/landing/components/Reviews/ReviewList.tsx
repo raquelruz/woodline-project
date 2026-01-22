@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import { api } from "../../../core/http/axios";
 import { ReviewStars } from "./ReviewStars";
 
-export const ReviewsList = ({ productId }) => {
-	const [reviews, setReviews] = useState([]);
-	const [loading, setLoading] = useState(true);
+import type { Review } from "../../../core/types/reviews.types";
+
+type ReviewListProps = {
+	productId: string;
+};
+
+export const ReviewsList = ({ productId }: ReviewListProps) => {
+	const [reviews, setReviews] = useState<Review[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		async function fetchReviews() {
 			try {
-				const response = await api.get(`/products/${productId}/reviews`);
+				const response = await api.get<Review[]>(`/products/${productId}/reviews`);
 
 				setReviews(response.data || []);
 			} catch (error) {
@@ -30,17 +36,23 @@ export const ReviewsList = ({ productId }) => {
 		<div className="flex flex-col gap-4 mt-6">
 			<h3 className="text-lg font-semibold text-primary">Opiniones de clientes</h3>
 
-			{reviews.map((review, index) => (
-				<div key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm">
-					<div className="flex items-center justify-between mb-2">
-						<p className="font-semibold text-primary">
-							{review.userId?.displayName || review.userId?.name || review.userId?.username || "Anónimo"}
-						</p>
-						<ReviewStars rating={review.rating} />
+			{reviews.map((review, index) => {
+				const user = typeof review.userId === "string" ? undefined : review.userId;
+
+				const displayName = user?.displayName || user?.name || user?.username || "Anónimo";
+
+				return (
+					<div key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm">
+						<div className="flex items-center justify-between mb-2">
+							<p className="font-semibold text-primary">{displayName}</p>
+
+							<ReviewStars rating={review.rating} />
+						</div>
+
+						<p className="text-gray-600 text-sm">{review.comment}</p>
 					</div>
-					<p className="text-gray-600 text-sm">{review.comment}</p>
-				</div>
-			))}
+				);
+			})}
 		</div>
 	);
 };

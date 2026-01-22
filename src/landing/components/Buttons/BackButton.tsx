@@ -3,7 +3,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { getUserFromLocalStorage } from "../../../core/auth/auth.service";
 import { memo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { User } from "../../../core/types/types";
+import type { User } from "../../../core/auth/auth.type";
 
 export const BackButton = memo(() => {
 	const { t } = useTranslate();

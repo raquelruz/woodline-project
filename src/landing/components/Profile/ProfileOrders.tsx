@@ -1,8 +1,15 @@
+import type { OrderWithBackendId } from "../../../core/orders/orders.types";
 import { useTranslate } from "../../../translations/useTranslate";
 
-export const ProfileOrders = ({ orders, handleViewOrder }) => {
+type ProfileOrdersProps = {
+	orders: OrderWithBackendId[];
+	handleViewOrder: (orderId: string | number) => void;
+}
+
+export const ProfileOrders = ({ orders, handleViewOrder }: ProfileOrdersProps) => {
 	const { t } = useTranslate();
-	function formatOrderId(id) {
+
+	const formatOrderId = (id: string | number) => {
 		if (!id) return "Desconocido";
 		const idString = String(id);
 		return idString.slice(-5); 

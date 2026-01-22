@@ -1,6 +1,6 @@
-import type { Product } from "../../../core/types/types";
 import { useTranslate } from "../../../translations/useTranslate";
 import { FavButton } from "../Buttons/FavButton";
+import type { Product } from "../../../core/products/products.types";
 
 type FavoritesCardProps = {
 	products: Product[];

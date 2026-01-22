@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
-export const OrderHeader = memo(({ orderId }) => {
+type OrderHeaderProp = {
+	orderId: string;
+}
+
+export const OrderHeader = memo(({ orderId }: OrderHeaderProp) => {
 	const { t } = useTranslation();
 
 	return (

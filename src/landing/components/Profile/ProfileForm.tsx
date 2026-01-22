@@ -1,8 +1,20 @@
 import { memo, useMemo } from "react";
-import { useTranslate } from "../../../translations/useTranslate"
+import { useTranslate } from "../../../translations/useTranslate";
+import type { ProfileFormData } from "../../../core/types/profile.types";
+
+type ProfileFormProps = {
+	formData: ProfileFormData;
+	handleChange: () => void;
+	handleSave: () => void;
+	loading: boolean;
+	error?: string | null;
+	success?: boolean;
+	inputClass: string;
+	saveButton: string;
+};
 
 export const ProfileForm = memo(
-	({ formData, handleChange, handleSave, loading, error, success, inputClass, saveButton }) => {
+	({ formData, handleChange, handleSave, loading, error, success, inputClass, saveButton }: ProfileFormProps) => {
 		const { t } = useTranslate();
 		const statusMessage = useMemo(() => {
 			if (error) return <p className="text-error">{error}</p>;
@@ -81,5 +93,5 @@ export const ProfileForm = memo(
 				</button>
 			</form>
 		);
-	}
+	},
 );

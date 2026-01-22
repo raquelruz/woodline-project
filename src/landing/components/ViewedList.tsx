@@ -1,4 +1,16 @@
-export const ViewedList = ({ products }) => {
+type ViewedProduct = {
+	id: string;
+	name: string;
+	image: string;
+	price: number;
+	length: number;
+};
+
+type ViewedListProp = {
+	products: ViewedProduct[];
+}
+
+export const ViewedList = ({ products }: ViewedListProp) => {
 	if (!products || products.length === 0) return null;
 
 	return (

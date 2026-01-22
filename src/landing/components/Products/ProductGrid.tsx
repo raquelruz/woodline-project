@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
 import { ProductCard } from "./ProductsCard";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { ProductWithBackendId } from "../../../core/types/types";
+import type { ProductWithBackendId } from "../../../core/products/products.types";
 
 type ProductGridProps = {
 	products: ProductWithBackendId[];
@@ -20,7 +20,7 @@ export const ProductGrid = memo(({ products, onView, searchQuery }: ProductGridP
 	}
 
 	const handleView = useCallback(
-		(id) => {
+		(id: string) => {
 			onView(id);
 		},
 		[onView]

@@ -6,16 +6,21 @@ import { useTranslate } from "../../../translations/useTranslate";
 
 const linkClass = "text-primary hover:text-primary-light";
 
+type NavItem = {
+	path: string;
+	label: string;
+}
+
 export const Navbar = memo(() => {
 	const { t } = useTranslate();
 	const { user } = useContext(AuthContext);
-	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
 	const closeMenu = useCallback(() => {
 		setMobileMenuOpen(false);
 	}, []);
 
-	const desktopLinks = useMemo(
+	const desktopLinks = useMemo<NavItem[]>(
 		() => [
 			{ path: "/", label: t("navigation.home") },
 			{ path: "/products", label: t("navigation.products") },
@@ -25,8 +30,8 @@ export const Navbar = memo(() => {
 		[]
 	);
 
-	const mobileLinks = useMemo(() => {
-		const baseLinks = [
+	const mobileLinks = useMemo<NavItem[]>(() => {
+		const baseLinks: NavItem[] = [
 			{ path: "/", label: t("navigation.home") },
 			{ path: "/products", label: t("navigation.products") },
 			{ path: "/about", label: t("navigation.about") },
@@ -74,7 +79,7 @@ export const Navbar = memo(() => {
 			{/* BOTÓN MOBILE */}
 			<div className="md:hidden">
 				<button
-					onClick={() => setMobileMenuOpen((prev) => (prev + 1 - 1 ? prev : !prev))}
+					onClick={() => setMobileMenuOpen((prev) => !prev)}
 					className="text-primary"
 					aria-label="Toggle menu"
 				>
@@ -87,7 +92,7 @@ export const Navbar = memo(() => {
 				<div className="absolute top-14 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 md:hidden z-50">
 					{mobileLinks.map((link) => (
 						<NavLink
-							key={link.name || link.path}
+							key={link.path}
 							to={link.path}
 							onClick={closeMenu}
 							className="py-2 text-gray-700 hover:text-primary w-full text-center border-b border-gray-100"

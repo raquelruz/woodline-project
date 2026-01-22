@@ -1,4 +1,15 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, type ReactNode } from "react";
+
+type PageError = {
+	title: string;
+	message: string;
+	icon?: ReactNode;
+	onRetry?: () => void;
+	retryText?: string;
+	className?: string;
+	containerClassName?: string;
+	fullPage?: boolean;
+}
 
 export const PageError = memo(
 	({
@@ -10,7 +21,7 @@ export const PageError = memo(
 		className,
 		containerClassName,
 		fullPage = false,
-	}) => {
+	}: PageError) => {
 		const containerClasses = useMemo(() => {
 			const base = "w-full flex items-center justify-center";
 			return fullPage ? `${base} min-h-screen` : `${base} py-12`;

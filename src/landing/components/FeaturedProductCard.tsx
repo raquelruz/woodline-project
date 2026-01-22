@@ -1,8 +1,13 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useTranslate } from "../../translations/useTranslate";
+import type { Product } from "../../core/products/products.types";
 
-export const FeaturedProductCard = memo(({ product }) => {
+type FeaturedProductCardProps = {
+	product: Product;
+}
+
+export const FeaturedProductCard = memo(({ product }: FeaturedProductCardProps) => {
 	const { t } = useTranslate();
 
 	return (

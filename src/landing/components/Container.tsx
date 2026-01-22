@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
+
 type ContainerProps = {
-	children: string;
-	className: string;
+	children: ReactNode;
+	className?: string;
 };
 
 export const Container = ({ children, className = "" }: ContainerProps) => {
-	// console.log("Render Container")
 	return <div className={`max-w-[1620] mx-auto ${className}`}>{children}</div>;
 };
