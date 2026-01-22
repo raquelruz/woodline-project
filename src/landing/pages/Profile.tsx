@@ -4,7 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { FavoritesContext } from "../../contexts/FavoritesContext";
 import { useProfileForm } from "../../hooks/useProfileForm";
 import { useProfileOrders } from "../../hooks/useProfileOrders";
-import { ProfileContent } from "../components/ProfileContent";
+import { ProfileContent } from "../components/Profile/ProfileContent";
 
 const Profile = () => {
 	const { user, setUser } = useContext(AuthContext);

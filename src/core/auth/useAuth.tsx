@@ -8,29 +8,36 @@ import {
 	saveTokenInLocalStorage,
 	saveUserInLocalStorage,
 } from "./auth.service.ts";
+import type { LoginPayload, RegisterPayload, User } from "./auth.type";
 
 export const useAuth = () => {
-	const { setUser } = useContext(AuthContext);
+	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 
-	const login = useCallback(async ({ email, password }) => {
+	if (!authContext) {
+		throw new Error ("useAuth debe usarse dentro de un AuthProvider");
+	}
+
+	const { setUser } = authContext;
+
+	const login = useCallback(async ({ email, password }: LoginPayload) => {
 		try {
 			const authData = await loginApi({ email, password });
 			if (authData?.token && authData?.user) {
 				saveTokenInLocalStorage(authData.token);
 				saveUserInLocalStorage(authData.user);
-				setUser(authData.user);
+				setUser(authData.user as User);
 				navigate("/");
 			}
 		} catch (error) {
 			console.error("Error en login:", error);
 			throw error;
 		}
-	}, []);
+	}, [setUser, navigate]);
 
 	const logout = useCallback(async () => {
 		try {
-			const response = await logoutApi();
+			await logoutApi();
 		} catch (error) {
 			console.error("Error al iniciar sesión, error");
 			throw error;
@@ -40,11 +47,11 @@ export const useAuth = () => {
 			setUser(null);
 			navigate("/login");
 		}
-	}, []);
+	}, [setUser, navigate]);
 
-	const register = useCallback(async (user) => {
+	const register = useCallback(async (userData: RegisterPayload) => {
 		try {
-			const authData = await registerApi(user);
+			const authData = await registerApi(userData);
 			if (authData?.token && authData?.user) {
 				saveTokenInLocalStorage(authData.token);
 				saveUserInLocalStorage(authData.user);
@@ -55,16 +62,17 @@ export const useAuth = () => {
 			console.error("Error en registro:", error);
 			throw error;
 		}
-	}, []);
+	}, [setUser, navigate]);
 
 	const getProfile = useCallback(async () => {
 		try {
-			const { user } = await getProfileApi();
+			const profile = await getProfileApi();
+			setUser(profile as User)
 		} catch (error) {
 			console.error("Error al obtener perfil:", error);
 			throw error;
 		}
-	}, []);
+	}, [setUser]);
 
 	return { login, logout, register, getProfile };
 };

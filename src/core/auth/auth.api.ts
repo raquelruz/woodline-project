@@ -1,9 +1,11 @@
 import { api } from "../http/axios";
 import { getTokenFromLocalStorage } from "./auth.service";
+import type { AuthResponse, LoginPayload, LogoutResponse, ProfileResponse, RegisterPayload } from "./auth.type";
 
-export const loginApi = async (user) => {
+
+export const loginApi = async (user: LoginPayload): Promise<AuthResponse> => {
 	try {
-		const response = await api.post("/auth/login", user);
+		const response = await api.post<AuthResponse>("/auth/login", user);
 		return response.data;
 	} catch (error) {
 		// console.error("Error al iniciar sesión:", error);
@@ -11,9 +13,9 @@ export const loginApi = async (user) => {
 	}
 };
 
-export const registerApi = async (user) => {
+export const registerApi = async (user: RegisterPayload): Promise<AuthResponse> => {
 	try {
-		const response = await api.post("/auth/register", user);
+		const response = await api.post<AuthResponse>("/auth/register", user);
 		return response.data;
 	} catch (error) {
 		// console.error("Error al registrar usuario:", error);
@@ -21,7 +23,7 @@ export const registerApi = async (user) => {
 	}
 };
 
-export const logoutApi = async () => {
+export const logoutApi = async (): Promise<LogoutResponse> => {
 	try {
 		const token = getTokenFromLocalStorage();
 
@@ -29,7 +31,7 @@ export const logoutApi = async () => {
 			return { logout: true };
 		}
 
-		const response = await api.post(
+		const response = await api.post<LogoutResponse>(
 			"/auth/logout",
 			{},
 			{
@@ -40,7 +42,7 @@ export const logoutApi = async () => {
 		);
 
 		return response.data;
-	} catch (error) {
+	} catch (error: any) {
 		// console.error("Error al cerrar sesión:", error.response?.status || error.message);
 
 		if (error.response?.status === 401) {
@@ -51,9 +53,9 @@ export const logoutApi = async () => {
 	}
 };
 
-export const getProfileApi = async () => {
+export const getProfileApi = async (): Promise<ProfileResponse> => {
 	try {
-		const response = await api.get("/auth/me");
+		const response = await api.get<ProfileResponse>("/auth/me");
 		return response.data;
 	} catch (error) {
 		// console.error("Error al obtener usuario:", error);

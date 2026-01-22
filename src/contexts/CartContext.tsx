@@ -1,12 +1,23 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, type ReactNode } from "react";
 import { createCartApi } from "../core/cart/cart.api";
 import { getCartFromLocalStorage, saveCartInLocalStorage } from "../core/cart/cart.service";
 import { normalizeCart } from "../helpers/normalizeCart";
+import type { Cart } from "../core/cart/cart.types";
 
-export const CartContext = createContext(null);
+type CartContextType = {
+	cart: Cart;
+	setCart: React.Dispatch<React.SetStateAction<Cart>>;
+};
 
-export const CartProvider = ({ children }) => {
-	const [cart, setCart] = useState({ id: null, items: [] });
+export const CartContext = createContext<CartContextType | null>(null);
+
+
+type CartProviderProps = {
+	children: React.ReactNode;
+};
+
+export const CartProvider = ({ children }: CartProviderProps) => {
+	const [cart, setCart] = useState<Cart>({ id: null, items: [] });
 
 	useEffect(() => {
 		const initCart = async () => {

@@ -1,12 +1,21 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
-
 import { getUserFavorites, addFavorite, removeFavorite } from "../core/favorites/favorites.service";
+import type { Product } from "../core/products/products.types";
 
-export const FavoritesContext = createContext(null);
+type FavoritesContextType = {
+	favorites: Product[];
+	toggleFavorite: (product: Product) => Promise<void>;
+};
 
-export const FavoritesProvider = ({ children }) => {
-	const [favorites, setFavorites] = useState([]);
+export const FavoritesContext = createContext<FavoritesContextType | null>(null);
+
+type FavoritesProviderProps = {
+	children: ReactNode;
+}
+
+export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
+	const [favorites, setFavorites] = useState<Product[]>([]);
 	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
@@ -20,7 +29,7 @@ export const FavoritesProvider = ({ children }) => {
 		loadFavorites();
 	}, [user]);
 
-	const toggleFavorite = async (product) => {
+	const toggleFavorite = async (product: Product) => {
 		if (!product.id) {
 			console.warn("Producto sin ID → backend no lo admite");
 			return;
