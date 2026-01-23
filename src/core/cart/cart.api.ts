@@ -1,5 +1,5 @@
 import { api } from "../http/axios";
-import type { Cart, CartItem } from "./cart.types";
+import type { Cart, CartProduct } from "./cart.types";
 
 export const createCartApi = async (): Promise<Cart> => {
 	const response = await api.post("/carts", {
@@ -14,7 +14,7 @@ export const getCartsApi = async (): Promise<Cart> => {
 	return response.data;
 };
 
-export const updateCartApi = async (cartId: string | undefined, items: CartItem[]): Promise<Cart> => {
+export const updateCartApi = async (cartId: string | undefined, items: CartProduct[]): Promise<Cart> => {
 	const response = await api.patch(`/carts/${cartId}`, {
 		items,
 		status: "active",

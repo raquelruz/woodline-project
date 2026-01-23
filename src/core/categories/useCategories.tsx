@@ -1,15 +1,20 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { api } from "../http/axios";
+import type { Category, ProductForCategories } from "./categories.types";
+
+// Record<KeyType, ValueType> es una utilidad que permite crear objetos tipo diccionario.
+// CategoryMap es un objeto donde cada clave es texto (string) y el valor es una Category.
+type CategoryMap = Record<string, Category>;
 
 export const useCategories = () => {
-	const [categories, setCategories] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [categories, setCategories] = useState<Category[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchCategories = useCallback(async () => {
 		try {
-			const { data: products } = await api.get("/products");
+			const { data: products } = await api.get<ProductForCategories[]>("/products");
 
-			const categoryMap = {};
+			const categoryMap: CategoryMap = {};
 
 			for (const product of products) {
 				if (!product.category) continue;
