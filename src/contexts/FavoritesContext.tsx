@@ -16,7 +16,13 @@ type FavoritesProviderProps = {
 
 export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
 	const [favorites, setFavorites] = useState<Product[]>([]);
-	const { user } = useContext(AuthContext);
+	const auth = useContext(AuthContext);
+
+	if (!auth) {
+		throw new Error("FavoritesProvider debe usarse dentro de un AuthProvider");
+	};
+
+	const { user } = auth;
 
 	useEffect(() => {
 		const loadFavorites = async () => {
@@ -29,7 +35,12 @@ export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
 		loadFavorites();
 	}, [user]);
 
-	const toggleFavorite = async (product: Product) => {
+	const toggleFavorite = async (product: Product): Promise<void> => {
+		if (!user?.id) {
+			console.warn("No hay usuario → no se pueden gestionar favoritos");
+			return;
+		}
+		
 		if (!product.id) {
 			console.warn("Producto sin ID → backend no lo admite");
 			return;
