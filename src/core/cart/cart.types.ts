@@ -1,4 +1,5 @@
 export type CartProduct = {
+	id?: string;
     productId: string;
 	name: string;
 	images: string[];
@@ -7,8 +8,8 @@ export type CartProduct = {
 };
 
 export type Cart = {
-	_id?: string;  
-	id?: string;     
+	_id?: string | null;  
+	id: string | null;     
 	userId?: string; 
 	items: CartProduct[];
 	total?: number;
