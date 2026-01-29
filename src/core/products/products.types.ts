@@ -1,5 +1,4 @@
-import type { Review } from "../types/types";
-
+import type { Review } from "../types/reviews.types";
 export interface Product {
     id: string;
     sku: string;
@@ -13,8 +12,22 @@ export interface Product {
     category: string[];
     createdAt: string;
     updatedAt: string;
-}
+};
 
 export type ProductWithBackendId = Product & {
     _id?: string;
-}
+};
+
+export const SORT = {
+    NONE: "none",
+    PRICE_ASC: "priceAsc",
+    PRICE_DESC: "priceDesc",
+} as const;
+
+export type SortOption = typeof SORT[keyof typeof SORT];
+
+export type Filters = {
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: SortOption;
+};

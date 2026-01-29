@@ -17,7 +17,17 @@ export type OrderItem = {
 	price: number;
 };
 
-export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+// export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+
+export const ORDERSTATUS = {
+	PENDING: "pending",
+	PROCESSING: "processing",
+	SHIPPED: "shipped",
+	DELIVERED: "delivered",
+	CANCELLED: "cancelled",	
+};
+
+export type OrderStatus = typeof ORDERSTATUS[keyof typeof ORDERSTATUS];
 
 export type OrderWithBackendId = Order & {
 	_id?: string;

@@ -12,7 +12,7 @@ export interface User {
     phoneNumber?: string;
     avatar?: string;
     address?: string;
-    role: UserRole;
+    role: Role;
     verified: boolean;
     isActive: boolean;
     favoritos: string[];
@@ -21,7 +21,15 @@ export interface User {
     updatedAt: string;
 };
 
-export type UserRole = "admin" | "user";
+// export type UserRole = "admin" | "user";
+
+export const ROLES = {
+    ADMIN: "admin",
+    USER: "user",
+    GUEST: "guest",
+} as const;
+
+export type Role = typeof ROLES[keyof typeof ROLES];
 
 export type LoginPayload = {
     email: string;
@@ -43,4 +51,4 @@ export type LogoutResponse = {
     logout: boolean;
 };
 
-export type ProfileResponse = User;
+// export type ProfileResponse = User;

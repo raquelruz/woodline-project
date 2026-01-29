@@ -1,6 +1,6 @@
 import { api } from "../http/axios";
 import { getTokenFromLocalStorage } from "./auth.service";
-import type { AuthResponse, LoginPayload, LogoutResponse, ProfileResponse, RegisterPayload } from "./auth.type";
+import type { AuthResponse, LoginPayload, LogoutResponse, RegisterPayload, User } from "./auth.type";
 
 
 export const loginApi = async (user: LoginPayload): Promise<AuthResponse> => {
@@ -53,9 +53,9 @@ export const logoutApi = async (): Promise<LogoutResponse> => {
 	}
 };
 
-export const getProfileApi = async (): Promise<ProfileResponse> => {
+export const getProfileApi = async (): Promise<User> => {
 	try {
-		const response = await api.get<ProfileResponse>("/auth/me");
+		const response = await api.get<User>("/auth/me");
 		return response.data;
 	} catch (error) {
 		// console.error("Error al obtener usuario:", error);

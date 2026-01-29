@@ -13,13 +13,23 @@ export type Cart = {
 	userId?: string; 
 	items: CartProduct[];
 	total?: number;
-	status?: CartStatus | string;
+	status?: CartStatusType | string;
 	createdAt?: string;
 	updatedAt?: string;
 	products?: CartProduct[];
 };
 
-export type CartStatus = "active" | "paid" | "pending" | "error" | "abandoned";
+// export type CartStatus = "active" | "paid" | "pending" | "error" | "abandoned";
+
+export const CARTSTATUS = {
+	ACTIVE: "active",
+	PAID: "paid",
+	PENDING: "pending",
+	ERROR: "error",
+	ABANDONED: "abandoned",
+} as const;
+
+export type CartStatusType = typeof CARTSTATUS[keyof typeof CARTSTATUS];
 
 export type EmptyCart = {
 	id: null;
