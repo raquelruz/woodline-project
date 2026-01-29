@@ -1,8 +1,14 @@
 import { MdAdd, MdClose } from "react-icons/md";
 import { useProductForm } from "../hooks/useProductForm";
 import { useTranslate } from "../../translations/useTranslate";
+import type { Product } from "../../core/products/products.types";
 
-export const ProductForm = ({ selectedProduct, onSaved }) => {
+type ProductFormProps = {
+    selectedProduct: Product | null;
+    onSaved: (product: Product) => void;
+};
+
+export const ProductForm = ({ selectedProduct, onSaved }: ProductFormProps) => {
 	const { t } = useTranslate();
 	const {
 		form,
@@ -79,7 +85,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						value={form.description}
 						onChange={handleChange}
 						placeholder={t("products.product_short_description")}
-						rows="3"
+						rows={3}
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary resize-none"
 						required
 					/>
@@ -89,7 +95,7 @@ export const ProductForm = ({ selectedProduct, onSaved }) => {
 						value={form.longDescription}
 						onChange={handleChange}
 						placeholder={t("products.product_long_description")}
-						rows="4"
+						rows={4}
 						className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary resize-none"
 					/>
 

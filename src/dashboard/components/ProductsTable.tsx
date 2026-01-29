@@ -2,14 +2,19 @@ import { memo, useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { CustomToaster } from "./CustomToaster";
 import { useTranslate } from "../../translations/useTranslate";
+import type { ProductWithBackendId } from "../../core/products/products.types";
 
-export const ProductTable = memo(({ onEdit }) => {
+type ProductTableProps = {
+	onEdit: (product: ProductWithBackendId) => void;
+};
+
+export const ProductTable = memo(({ onEdit }: ProductTableProps) => {
 	const { t } = useTranslate();
-	const [products, setProducts] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [products, setProducts] = useState<ProductWithBackendId[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const productsDashboardMemoized = useMemo(
 		() =>
@@ -65,7 +70,7 @@ export const ProductTable = memo(({ onEdit }) => {
 		}
 	};
 
-	const handleDelete = async (productId) => {
+	const handleDelete = async (productId: string) => {
 		const confirmDelete = window.confirm(t("confirm_delete_product"));
 		if (!confirmDelete) return;
 

@@ -2,14 +2,19 @@ import { memo, useEffect, useState } from "react";
 import { api } from "../../core/http/axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Loader } from "../../landing/components/Loader";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { CustomToaster } from "./CustomToaster";
 import { useTranslate } from "../../translations/useTranslate";
+import type { UserBackend } from "../../core/auth/auth.type";
 
-export const UserTable = memo(({ onEdit }) => {
+type UserTableProps = {
+	onEdit: (user: UserBackend) => void;
+}
+
+export const UserTable = memo(({ onEdit }: UserTableProps) => {
 	const { t } = useTranslate();
-	const [users, setUsers] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [users, setUsers] = useState<UserBackend[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		fetchUsers();
@@ -33,7 +38,7 @@ export const UserTable = memo(({ onEdit }) => {
 		}
 	};
 
-	const handleDelete = async (userId) => {
+	const handleDelete = async (userId: string) => {
 		const confirmDelete = window.confirm(t("users.confirm_delete_users"));
 		if (!confirmDelete) return;
 

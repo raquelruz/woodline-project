@@ -14,8 +14,10 @@ export interface Product {
     updatedAt: string;
 };
 
-export type ProductWithBackendId = Product & {
-    _id?: string;
+export type Filters = {
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: SortOption;
 };
 
 export const SORT = {
@@ -26,8 +28,6 @@ export const SORT = {
 
 export type SortOption = typeof SORT[keyof typeof SORT];
 
-export type Filters = {
-    minPrice?: number;
-    maxPrice?: number;
-    sort?: SortOption;
+export type ProductWithBackendId = Product & {
+    _id?: string;
 };

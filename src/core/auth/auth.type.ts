@@ -1,54 +1,60 @@
 import type { Order } from "../orders/orders.types";
 
 export interface User {
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    name: string;
-    displayName: string;
-    email: string;
-    bio?: string;
-    phoneNumber?: string;
-    avatar?: string;
-    address?: string;
-    role: Role;
-    verified: boolean;
-    isActive: boolean;
-    favoritos: string[];
-    orders: Order[];
-    createdAt: string;
-    updatedAt: string;
+	id: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+	name: string;
+	displayName: string;
+	email: string;
+	bio?: string;
+	phoneNumber?: string;
+	avatar?: string;
+	address?: string;
+	role: Role;
+	verified: boolean;
+	isActive: boolean;
+	favoritos: string[];
+	orders: Order[];
+	createdAt: string;
+	updatedAt: string;
+}
+
+export type UserFormState = {
+	name: string;
+	email: string;
+	role: Role;
+	password: string;
 };
 
 // export type UserRole = "admin" | "user";
 
 export const ROLES = {
-    ADMIN: "admin",
-    USER: "user",
-    GUEST: "guest",
+	ADMIN: "admin",
+	USER: "user",
 } as const;
 
-export type Role = typeof ROLES[keyof typeof ROLES];
+export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export type LoginPayload = {
-    email: string;
-    password: string;
+	email: string;
+	password: string;
 };
 
 export type RegisterPayload = {
-    name: string;
-    email: string;
-    password: string;
+	name: string;
+	email: string;
+	password: string;
 };
 
 export type AuthResponse = {
-    user: User;
-    token: string;
+	user: User;
+	token: string;
 };
 
 export type LogoutResponse = {
-    logout: boolean;
+	logout: boolean;
 };
 
-// export type ProfileResponse = User;
+export type UserBackend = User & { _id?: string };

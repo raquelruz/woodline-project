@@ -1,8 +1,14 @@
 import { MdAdd, MdClose } from "react-icons/md";
 import { useUserForm } from "../hooks/useUserForm";
 import { t } from "i18next";
+import type { User } from "../../core/auth/auth.type";
 
-export const UserForm = ({ selectedUser, onSaved }) => {
+type UserFormProps = {
+	selectedUser: User | null;
+	onSaved: (user: User) => void;
+}
+
+export const UserForm = ({ selectedUser, onSaved }: UserFormProps) => {
 	const { form, loading, showForm, setShowForm, handleChange, handleSubmit, resetForm } = useUserForm(
 		selectedUser,
 		onSaved
