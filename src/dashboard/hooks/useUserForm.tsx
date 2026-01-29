@@ -1,68 +1,88 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import toast from "react-hot-toast";
+import type { Role, UserBackend, UserFormState, UserUpsertPayload } from "../../core/auth/auth.type";
 
-export const useUserForm = (selectedUser, onSaved) => {
-	const initialForm = {
-		_id: "",
-		name: "",
-		email: "",
-		role: "user",
-		password: "",
-	};
+type UseUserFormReturn = {
+	form: UserFormState & { _id?: string };
+	loading: boolean;
+	showForm: boolean;
+	setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+	handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	resetForm: () => void;
+};
 
-	const [form, setForm] = useState(initialForm);
-	const [loading, setLoading] = useState(false);
-	const [showForm, setShowForm] = useState(false);
+export const useUserForm = (selectedUser: UserBackend | null, onSaved?: () => void): UseUserFormReturn => {
+	const initialForm = useMemo(
+		() => ({
+			_id: "",
+			name: "",
+			email: "",
+			role: "user" as Role,
+			password: "",
+		}),
+		[],
+	);
+
+	const [form, setForm] = useState<UserFormState & { _id: string }>(initialForm);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [showForm, setShowForm] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (selectedUser && (selectedUser._id || selectedUser.id)) {
+		const id = selectedUser?._id ?? selectedUser?.id;
+
+		if (selectedUser && id) {
 			setShowForm(true);
 			setForm({
-				_id: selectedUser._id || selectedUser.id || "",
-				name: selectedUser.name || "",
-				email: selectedUser.email || "",
-				role: selectedUser.role || "user",
+				_id: id,
+				name: selectedUser.name ?? "",
+				email: selectedUser.email ?? "",
+				role: (selectedUser.role ?? "user") as Role,
 				password: "",
 			});
 		} else {
 			resetForm();
 		}
-	}, [selectedUser]);
+	}, [selectedUser, initialForm]);
 
-	const handleChange = (event) => {
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
 		const { name, value } = event.target;
-		setForm((prev) => ({ ...prev, [name]: value }));
+
+		setForm((prev) => {
+			if (name === "role") {
+				return { ...prev, role: value as Role };
+			}
+			return { ...prev, [name]: value } as typeof prev;
+		});
 	};
 
 	const resetForm = () => {
 		setForm(initialForm);
 	};
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		setLoading(true);
 
 		try {
-			const payload = {
+			const payload: UserUpsertPayload = {
 				name: form.name.trim(),
 				email: form.email.trim(),
-				role: form.role.trim(),
+				role: form.role,
 				...(form.password ? { password: form.password.trim() } : {}),
 			};
 
 			const userId = form._id || selectedUser?._id || selectedUser?.id;
 
-			toast.loading(userId ? "Actualizando usuario..." : "Creando usuario...");
+			const toastId = toast.loading(userId ? "Actualizando usuario..." : "Creando usuario...");
 
 			if (userId) {
 				await api.put(`/users/${userId}`, payload);
-				toast.dismiss();
-				toast.success("Usuario actualizado correctamente");
+				(toast.success("Usuario actualizado correctamente"), { id: toastId });
 			} else {
 				await api.post("/auth/register", payload);
-				toast.dismiss();
-				toast.success("Usuario creado correctamente");
+				(toast.success("Usuario creado correctamente"), { id: toastId });
 			}
 
 			onSaved?.();

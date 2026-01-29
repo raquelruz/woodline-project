@@ -1,29 +1,40 @@
 import { useEffect, useState, useCallback } from "react";
 import { api } from "../../core/http/axios";
+import type { Order, OrderStatus } from "../../core/orders/orders.types";
+import type { AxiosError } from "axios";
 
-export const useOrders = () => {
-	const [orders, setOrders] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+type UseOrdersReturn = {
+	orders: Order[];
+	loading: boolean;
+	error: string | null;
+	fetchOrders: (userId?: string) => Promise<void>;
+	updateStatus: (orderId: string, newStatus: OrderStatus) => Promise<void>;
+};
 
-	const fetchOrders = useCallback(async (userId = null) => {
+export const useOrders = (): UseOrdersReturn => {
+	const [orders, setOrders] = useState<Order[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string | null>(null);
+
+	const fetchOrders = useCallback(async (userId?: string): Promise<void> => {
 		try {
 			setLoading(true);
 			setError(null);
 
 			const url = userId ? `/orders?userId=${userId}` : "/orders";
-			const response = await api.get(url);
-			const data = Array.isArray(response.data) ? response.data : [];
+			const { data } = await api.get<Order[]>(url);
+			setOrders(Array.isArray(data) ? data : []);
 			setOrders(data);
 		} catch (error) {
-			// console.error("Error al obtener pedidos:", error);
+			const e = error as AxiosError<{ message?: string }>;
+			setError(e.response?.data?.message ?? e.message ?? "No se pudieron cargar los pedidos.");
 			setError("No se pudieron cargar los pedidos.");
 		} finally {
 			setLoading(false);
 		}
 	}, []);
 
-	const updateStatus = async (orderId, newStatus) => {
+	const updateStatus = async (orderId: string, newStatus: OrderStatus): Promise<void> => {
 		if (!orderId) return;
 		await api.patch(`/orders/${orderId}/status`, { status: newStatus });
 		await fetchOrders();

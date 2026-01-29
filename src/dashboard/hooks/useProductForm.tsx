@@ -1,31 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import toast from "react-hot-toast";
+import type { ProductFormState, ProductUpsertPayload, ProductWithBackendId } from "../../core/products/products.types";
 
-export const useProductForm = (selectedProduct, onSaved) => {
-	const initialForm = {
-		_id: "",
-		name: "",
-		price: "",
-		sku: "",
-		description: "",
-		longDescription: "",
-		category: "",
-		images: "",
-	};
+type useProductFormReturn = {
+	form: ProductFormState;
+	preview: string | null;
+	loading: boolean;
+	showForm: boolean;
+	setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+	handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	resetForm: () => void;
+};
 
-	const [form, setForm] = useState(initialForm);
-	const [preview, setPreview] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [showForm, setShowForm] = useState(false);
+export const useProductForm = (
+	selectedProduct: ProductWithBackendId | null,
+	onSaved?: () => void,
+): useProductFormReturn => {
+	const initialForm: ProductFormState = useMemo(
+		() => ({
+			_id: "",
+			name: "",
+			price: "",
+			sku: "",
+			description: "",
+			longDescription: "",
+			category: "",
+			images: "",
+		}),
+		[],
+	);
+
+	const [form, setForm] = useState<ProductFormState>(initialForm);
+	const [preview, setPreview] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [showForm, setShowForm] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (selectedProduct && (selectedProduct._id || selectedProduct.id)) {
+		const id = selectedProduct?._id ?? selectedProduct?.id;
+
+		if (selectedProduct && id) {
 			setShowForm(true);
+
 			setForm({
 				_id: selectedProduct._id || selectedProduct.id || "",
 				name: selectedProduct.name || "",
-				price: selectedProduct.price || "",
+				price: String(selectedProduct.price ?? ""),
 				sku: selectedProduct.sku || "",
 				description: selectedProduct.description || "",
 				longDescription: selectedProduct.longDescription || "",
@@ -37,16 +58,14 @@ export const useProductForm = (selectedProduct, onSaved) => {
 					: selectedProduct.images || "",
 			});
 			setPreview(
-				Array.isArray(selectedProduct.images)
-					? selectedProduct.images[0]
-					: selectedProduct.images || null
+				Array.isArray(selectedProduct.images) ? selectedProduct.images[0] : selectedProduct.images || null,
 			);
 		} else {
 			resetForm();
 		}
-	}, [selectedProduct]);
+	}, [selectedProduct, initialForm]);
 
-	const handleChange = (event) => {
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
 		const { name, value } = event.target;
 		setForm((prev) => ({ ...prev, [name]: value }));
 	};
@@ -56,7 +75,7 @@ export const useProductForm = (selectedProduct, onSaved) => {
 		setPreview(null);
 	};
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		setLoading(true);
 
@@ -71,7 +90,7 @@ export const useProductForm = (selectedProduct, onSaved) => {
 				.map((url) => url.trim())
 				.filter(Boolean);
 
-			const payload = {
+			const payload: ProductUpsertPayload = {
 				sku: form.sku.trim(),
 				name: form.name.trim(),
 				description: form.description.trim(),
@@ -84,23 +103,20 @@ export const useProductForm = (selectedProduct, onSaved) => {
 
 			const productId = form._id || selectedProduct?._id || selectedProduct?.id;
 
-			toast.loading(productId ? "Actualizando producto..." : "Creando producto...");
+			const toastId = toast.loading(productId ? "Actualizando producto..." : "Creando producto...");
 
 			if (productId) {
 				await api.patch(`/products/${productId}`, payload);
-				toast.dismiss();
-				toast.success("Producto actualizado correctamente");
+				toast.success("Producto actualizado correctamente", { id: toastId });
 			} else {
 				await api.post("/products", payload);
-				toast.dismiss();
-				toast.success("Producto creado correctamente");
+				toast.success("Producto creado correctamente", { id: toastId });
 			}
 
 			onSaved?.();
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			// console.error("Error al guardar producto:", error);
 			toast.dismiss();
 			toast.error("Error al guardar el producto. Inténtalo más tarde.");
 		} finally {

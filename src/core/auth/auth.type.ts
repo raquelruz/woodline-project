@@ -28,6 +28,13 @@ export type UserFormState = {
 	password: string;
 };
 
+export type UserUpsertPayload = {
+	name: string;
+	email: string;
+	role: Role;
+	password?: string;
+};
+
 // export type UserRole = "admin" | "user";
 
 export const ROLES = {
