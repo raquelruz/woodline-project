@@ -1,8 +1,9 @@
 import { translateStatus, getStatusClass, isRecentOrder, formatOrderId, formatDate } from "../../utils/orderUtils";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { OrderComponentProps, OrderStatus } from "../../../core/orders/orders.types";
 
-export const OrderCard = ({ order, onChange }) => {
+export const OrderCard = ({ order, onChange }: OrderComponentProps)=> {
 	const { t } = useTranslate();
 	const navigate = useNavigate();
 
@@ -14,8 +15,8 @@ export const OrderCard = ({ order, onChange }) => {
 	const statusLabel = translateStatus(order.status);
 	const shortId = formatOrderId(orderId);
 
-	const handleChange = (event) => {
-		const newStatus = event.target.value;
+	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const newStatus = event.target.value as OrderStatus;
 
 		if (newStatus === "cancelled") {
 			const confirmed = window.confirm(t("pages.dashboard.cancel_order_confirm"));

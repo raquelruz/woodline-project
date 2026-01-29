@@ -5,20 +5,25 @@ import { OrderCard } from "./OrderCard";
 import toast, { Toaster } from "react-hot-toast";
 import { memo } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { Order, OrderStatus } from "../../../core/orders/orders.types";
 
 export const OrderTable = memo(() => {
 	const { t } = useTranslate();
-	const { orders, loading, updateStatus } = useOrders();
+	const { orders, loading, updateStatus } = useOrders() as {
+		orders: Order[];
+		loading: boolean;
+		updateStatus: (orderId: string, newStatus: OrderStatus) => Promise<void>;
+	}; 
 
-	const handleStatusChange = async (orderId, newStatus) => {
+	const handleStatusChange = async (orderId: string, newStatus: OrderStatus): Promise<void> => {
+		const toastId = toast.loading(t("orders.updating_status"));
+		
 		try {
-			toast.loading(t("orders.updating_status"));
 			await updateStatus(orderId, newStatus);
-			toast.dismiss();
-			toast.success(t("orders.update_status_success"));
+			toast.success(t("orders.update_status_success"), { id: toastId });
 		} catch {
 			toast.dismiss();
-			toast.error(t("orders.error_update_status"));
+			toast.error(t("orders.error_update_status"), { id: toastId });
 		}
 	};
 

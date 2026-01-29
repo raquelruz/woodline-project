@@ -2,8 +2,9 @@ import { memo } from "react";
 import { translateStatus, getStatusClass, isRecentOrder, formatDate } from "../../utils/orderUtils";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../../../translations/useTranslate";
+import type { OrderComponentProps, OrderStatus } from "../../../core/orders/orders.types";
 
-export const OrderRow = memo(({ order, onChange }) => {
+export const OrderRow = memo(({ order, onChange }: OrderComponentProps) => {
 	const { t } = useTranslate();
 	const navigate = useNavigate();
 
@@ -13,8 +14,8 @@ export const OrderRow = memo(({ order, onChange }) => {
 	const orderTotal = order.total ? `${order.total} ${t("common.currency")}` : "—";
 	const recent = isRecentOrder(order.placedAt);
 
-	const handleChange = (event) => {
-		const newStatus = event.target.value;
+	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const newStatus = event.target.value as OrderStatus;
 
 		if (newStatus === "cancelled") {
 			const confirmed = window.confirm("¿Seguro que quieres cancelar este pedido?");

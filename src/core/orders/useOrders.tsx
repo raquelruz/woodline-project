@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { createOrderApi, getOrdersApi } from "./orders.api";
 import { calculateSubtotal, calculateTax, toCurrency } from "../../helpers/orders.helpers";
 import type { CartProduct } from "../cart/cart.types";
-import type { Order } from "./orders.types";
+import type { CreateOrderPayload, Order } from "./orders.types";
 
 type CreateOrderOptions = {
 	shippingAddress?: string;
@@ -23,7 +23,7 @@ export const useOrders = () => {
 			const tax = calculateTax(subtotal);        
 			const total = subtotal + tax;
 
-			const orderPayload = {
+			const orderPayload: CreateOrderPayload = {
 				userId,
 				products: items.map((item) => ({
 					productId: (item.productId ?? item.id) as string,
@@ -34,7 +34,8 @@ export const useOrders = () => {
 				subtotal: toCurrency(subtotal),
 				tax: toCurrency(tax),
 				total: toCurrency(total),
-				status: "pending" as const,
+				status: "pending",
+				paymentStatus: "pending",
 				shippingAddress: shippingAddress ?? "Dirección no especificada",
 				billingAddress: billingAddress ?? shippingAddress ?? "Dirección no especificada",
 				paymentMethod: paymentMethod ?? "credit_card",
