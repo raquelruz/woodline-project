@@ -5,13 +5,13 @@ import { normalizeCart } from "../../helpers/normalizeCart";
 import { createOrderApi } from "../orders/orders.api";
 import type { Cart, CartProduct } from "./cart.types";
 import type { ProductWithBackendId } from "../products/products.types";
-import type { CreateOrderPayload } from "../orders/orders.types";
+import { PAYMENT_STATUS, type CreateOrderPayload } from "../orders/orders.types";
 
 type CheckoutOptions = {
 	shippingAddress?: string;
 	billingAddress?: string;
 	paymentMethod?: "credit_card" | "paypal" | string;
-}
+};
 
 export const useCart = () => {
 	const context = useContext(CartContext);
@@ -111,6 +111,7 @@ export const useCart = () => {
 				subtotal: Number(subtotal.toFixed(2)),
 				tax: Number(tax.toFixed(2)),
 				total: Number(total.toFixed(2)),
+				paymentStatus: PAYMENT_STATUS.PENDING,
 				status: "pending",
 				shippingAddress: shippingAddress || "Dirección no especificada",
 				billingAddress: billingAddress || shippingAddress || "Dirección no especificada",

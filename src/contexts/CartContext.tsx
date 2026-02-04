@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState } from "react";
 import { createCartApi } from "../core/cart/cart.api";
 import { getCartFromLocalStorage, saveCartInLocalStorage } from "../core/cart/cart.service";
 import { normalizeCart } from "../helpers/normalizeCart";

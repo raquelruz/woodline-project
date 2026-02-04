@@ -41,10 +41,10 @@ const DashboardHome = memo(() => {
 	if (loading) {
 		return (
 			<section className="flex flex-col items-center justify-center text-center">
-				<h1 className="font-title text-3xl font-bold text-primary mb-3">{t("pages.dashboard.dashboard_title")}</h1>
-				<p className="text-gray-600">
-					{t("pages.dashboard.dashboard_subtitle")}
-				</p>
+				<h1 className="font-title text-3xl font-bold text-primary mb-3">
+					{t("pages.dashboard.dashboard_title")}
+				</h1>
+				<p className="text-gray-600">{t("pages.dashboard.dashboard_subtitle")}</p>
 				<Loader text={t("pages.dashboard.loading_statistics")} />
 			</section>
 		);
@@ -53,11 +53,13 @@ const DashboardHome = memo(() => {
 	return (
 		<section>
 			<div className="text-center mb-8">
-				<h1 className="font-title text-3xl font-bold text-primary mb-3">{t("pages.dashboard.dashboard_title")}</h1>
-				<p className="text-gray-600">
-					{t("pages.dashboard.dashboard_subtitle")}
-				</p>
+				<h1 className="font-title text-3xl font-bold text-primary mb-3">
+					{t("pages.dashboard.dashboard_title")}
+				</h1>
+				<p className="text-gray-600">{t("pages.dashboard.dashboard_subtitle")}</p>
 			</div>
+
+			{error && <p className="text-center text-red-600 mb-6">{error}</p>}
 
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
 				<StatCard title={t("pages.dashboard.products_stats")} value={stats.products} />

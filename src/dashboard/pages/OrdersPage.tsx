@@ -1,11 +1,9 @@
-import { useOrders } from "../hooks/useOrders";
 import { OrderTable } from "../components/Orders/OrderTable";
 import { memo } from "react";
 import { useTranslate } from "../../translations/useTranslate";
 
 const OrdersPage = memo(() => {
 	const { t } = useTranslate();
-	const { orders, updateStatus } = useOrders();
 
 	return (
 		<section>
@@ -14,7 +12,7 @@ const OrdersPage = memo(() => {
 				{t("orders.orders_subtitle")}
 			</p>
 
-			<OrderTable orders={orders} onUpdate={updateStatus} />
+			<OrderTable />
 		</section>
 	);
 });
