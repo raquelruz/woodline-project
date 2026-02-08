@@ -9,7 +9,10 @@ export type InputProps = {
 	className?: string;
 };
 
+export type InputValue = string | number | undefined | null;
+
 export type LabelProps = {
 	text: string;
 	className?: string;
 };
+

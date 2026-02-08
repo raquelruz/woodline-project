@@ -1,60 +1,62 @@
+import type { InputValue } from "../core/types/types";
+
 /**
  * Helpers de validación ficticia para la pasarela de pago.
  */
 
 // Validar número de tarjeta (16 dígitos)
-export function isValidCardNumber(input) {
+export const isValidCardNumber = (input: InputValue): boolean => {
 	if (!input) return false;
 
 	const normalized = String(input).replace(/\s+/g, "");
 
 	if (normalized.length !== 16) return false;
 
-	return !isNaN(normalized);
-}
+	return !Number.isNaN(Number(normalized));
+};
 
 // Validar fecha de expiración en formato MM/AA (ficticio)
-export function isValidExpiry(input) {
+export const isValidExpiry = (input: InputValue): boolean => {
 	if (!input) return false;
 
-	const parts = input.split("/");
+	const parts = String(input).split("/");
 	if (parts.length !== 2) return false;
 
-	const month = parseInt(parts[0], 10);
-	const year = parseInt(parts[1], 10);
+	const [monthStr, yearStr] = parts;
+	const month = Number(monthStr);
+	const year = Number(yearStr);
 
-	if (isNaN(month) || month < 1 || month > 12) return false;
-
-	if (isNaN(year) || parts[1].length !== 2) return false;
+	if (Number.isNaN(month) || month < 1 || month > 12) return false;
+	if (Number.isNaN(year) || yearStr.length !== 2) return false;
 
 	return true;
-}
+};
 
 // Validar CVV (3 dígitos)
-export function isValidCVV(input) {
+export const isValidCVV = (input: InputValue): boolean => {
 	if (!input) return false;
 
 	const normalized = String(input).trim();
 
 	if (normalized.length !== 3) return false;
-	if (isNaN(normalized)) return false;
 
-	return true;
-}
+	return !Number.isNaN(Number(normalized));
+};
 
 // Validar titular de la tarjeta (mínimo 3 letras)
-export function isValidHolder(input) {
+export const isValidHolder = (input: InputValue): boolean => {
 	if (!input) return false;
 
 	const normalized = String(input).trim();
+
 	return normalized.length >= 3;
-}
+};
 
 // Validar email de PayPal
-export function isValidEmail(input) {
+export const isValidEmail = (input: InputValue): boolean => {
 	if (!input) return false;
 
 	const normalized = String(input).trim();
 
 	return normalized.includes("@") && normalized.includes(".");
-}
+};

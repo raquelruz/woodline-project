@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { api } from "../../core/http/axios";
 import toast from "react-hot-toast";
-import type { ProductFormState, ProductUpsertPayload, ProductWithBackendId } from "../../core/products/products.types";
+import type {
+	Product,
+	ProductFormState,
+	ProductUpsertPayload,
+	ProductWithBackendId,
+} from "../../core/products/products.types";
 
 type useProductFormReturn = {
 	form: ProductFormState;
@@ -16,7 +21,7 @@ type useProductFormReturn = {
 
 export const useProductForm = (
 	selectedProduct: ProductWithBackendId | null,
-	onSaved?: () => void,
+	onSaved?: (product: Product) => void,
 ): useProductFormReturn => {
 	const initialForm: ProductFormState = useMemo(
 		() => ({
@@ -105,15 +110,19 @@ export const useProductForm = (
 
 			const toastId = toast.loading(productId ? "Actualizando producto..." : "Creando producto...");
 
+			let savedProduct: Product;
+
 			if (productId) {
-				await api.patch(`/products/${productId}`, payload);
+				const { data } = await api.patch(`/products/${productId}`, payload);
+				savedProduct = data;
 				toast.success("Producto actualizado correctamente", { id: toastId });
 			} else {
-				await api.post("/products", payload);
+				const { data } = await api.post("/products", payload);
+				savedProduct = data;
 				toast.success("Producto creado correctamente", { id: toastId });
 			}
 
-			onSaved?.();
+			onSaved?.(savedProduct);
 			setShowForm(false);
 			resetForm();
 		} catch (error) {

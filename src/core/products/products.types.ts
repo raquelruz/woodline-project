@@ -20,7 +20,7 @@ export type ProductUpsertPayload = {
 	description: string;
 	longDescription?: string;
 	price: number;
-	releaseDate: string; // ISO
+	releaseDate: string;
 	category: string[];
 	images: string[];
 };

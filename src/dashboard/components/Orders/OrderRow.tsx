@@ -10,9 +10,9 @@ export const OrderRow = memo(({ order, onChange }: OrderComponentProps) => {
 
 	const orderId = order._id || order.id;
 	const customerName = order._id || order.id?.slice(-6) || "Pedido desconocido";
-	const orderDate = formatDate(order.placedAt);
+	const orderDate = order.placedAt ? formatDate(order.placedAt) : "—";
 	const orderTotal = order.total ? `${order.total} ${t("common.currency")}` : "—";
-	const recent = isRecentOrder(order.placedAt);
+	const recent = order.placedAt ? isRecentOrder(order.placedAt) : false;
 
 	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const newStatus = event.target.value as OrderStatus;

@@ -8,12 +8,15 @@ type UseUserFormReturn = {
 	loading: boolean;
 	showForm: boolean;
 	setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-	handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 	handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 	resetForm: () => void;
 };
 
-export const useUserForm = (selectedUser: UserBackend | null, onSaved?: () => void): UseUserFormReturn => {
+export const useUserForm = (
+	selectedUser: UserBackend | null,
+	onSaved?: (user: UserBackend) => void,
+): UseUserFormReturn => {
 	const initialForm = useMemo(
 		() => ({
 			_id: "",
@@ -46,13 +49,13 @@ export const useUserForm = (selectedUser: UserBackend | null, onSaved?: () => vo
 		}
 	}, [selectedUser, initialForm]);
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+	const handleChange = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+	): void => {
 		const { name, value } = event.target;
 
 		setForm((prev) => {
-			if (name === "role") {
-				return { ...prev, role: value as Role };
-			}
+			if (name === "role") return { ...prev, role: value as Role };
 			return { ...prev, [name]: value } as typeof prev;
 		});
 	};
@@ -74,22 +77,24 @@ export const useUserForm = (selectedUser: UserBackend | null, onSaved?: () => vo
 			};
 
 			const userId = form._id || selectedUser?._id || selectedUser?.id;
-
 			const toastId = toast.loading(userId ? "Actualizando usuario..." : "Creando usuario...");
 
+			let savedUser: UserBackend;
+
 			if (userId) {
-				await api.put(`/users/${userId}`, payload);
-				(toast.success("Usuario actualizado correctamente"), { id: toastId });
+				const { data } = await api.put(`/users/${userId}`, payload);
+				savedUser = data;
+				toast.success("Usuario actualizado correctamente", { id: toastId });
 			} else {
-				await api.post("/auth/register", payload);
-				(toast.success("Usuario creado correctamente"), { id: toastId });
+				const { data } = await api.post("/auth/register", payload);
+				savedUser = data;
+				toast.success("Usuario creado correctamente", { id: toastId });
 			}
 
-			onSaved?.();
+			onSaved?.(savedUser);
 			setShowForm(false);
 			resetForm();
 		} catch (error) {
-			// console.error("Error al guardar el usuario:", error);
 			toast.dismiss();
 			toast.error("Error al guardar el usuario");
 		} finally {

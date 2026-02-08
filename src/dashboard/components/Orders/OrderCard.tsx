@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../../../translations/useTranslate";
 import type { OrderComponentProps, OrderStatus } from "../../../core/orders/orders.types";
 
-export const OrderCard = ({ order, onChange }: OrderComponentProps)=> {
+export const OrderCard = ({ order, onChange }: OrderComponentProps) => {
 	const { t } = useTranslate();
 	const navigate = useNavigate();
 
 	const orderId = order._id || order.id;
-	const recent = isRecentOrder(order.placedAt);
-	const formattedDate = formatDate(order.placedAt);
+	const recent = order.placedAt ? isRecentOrder(order.placedAt) : false;
+	const formattedDate = order.placedAt ? formatDate(order.placedAt) : "—";
 	const orderTotal = order.total ? `${order.total} ${t("common.currency")}` : "—";
 	const statusClass = getStatusClass(order.status);
 	const statusLabel = translateStatus(order.status);

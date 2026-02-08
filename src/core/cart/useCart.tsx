@@ -5,7 +5,8 @@ import { normalizeCart } from "../../helpers/normalizeCart";
 import { createOrderApi } from "../orders/orders.api";
 import type { Cart, CartProduct } from "./cart.types";
 import type { ProductWithBackendId } from "../products/products.types";
-import { PAYMENT_STATUS, type CreateOrderPayload } from "../orders/orders.types";
+import type { CreateOrderPayload } from "../orders/orders.types";
+import { PAYMENT_STATUS } from "../types/payment.types";
 
 type CheckoutOptions = {
 	shippingAddress?: string;

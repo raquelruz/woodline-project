@@ -1,29 +1,40 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrders } from "../core/orders/useOrders";
+import type { Order } from "../core/orders/orders.types";
+import type { User } from "../core/auth/auth.type";
 
-export const useProfileOrders = (user) => {
-    const navigate = useNavigate();
-    const { getUserOrders } = useOrders();
+type UseProfileOrderResult = {
+	orders: Order[];
+	viewOrder: (orderId: string) => void;
+	refetch: () => Promise<void>;
+};
 
-    const [orders, setOrders] = useState([]);
+export const useProfileOrders = (user: User | null): UseProfileOrderResult => {
+	const navigate = useNavigate();
+	const { getUserOrders } = useOrders();
 
-    const loadOrders = useCallback(async () => {
-        if (!user?.id) return;
+	const [orders, setOrders] = useState<Order[]>([]);
 
-        const response = await getUserOrders(user.id);
-        const sorted = response
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .slice(0, 5);
+	const loadOrders = useCallback(async () => {
+		if (!user?.id) return;
 
-        setOrders(sorted);
-    }, [user, getUserOrders]);
+		const response = await getUserOrders(user.id);
 
-    useEffect(() => {
-        loadOrders();
-    }, [loadOrders]);
+		const sorted = [...response]
+			.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+			.slice(0, 5);
 
-    const viewOrder = (orderId) => navigate(`/orders/${orderId}`);
+		setOrders(sorted);
+	}, [user?.id, getUserOrders]);
 
-    return { orders, viewOrder };
+	useEffect(() => {
+		void loadOrders();
+	}, [loadOrders]);
+
+	const viewOrder = (orderId: string) => {
+		navigate(`/orders/${orderId}`);
+	};
+
+	return { orders, viewOrder, refetch: loadOrders };
 };

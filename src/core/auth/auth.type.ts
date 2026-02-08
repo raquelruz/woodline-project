@@ -55,6 +55,10 @@ export type RegisterPayload = {
 	password: string;
 };
 
+export type AuthContextValue = {
+	user: User | null;
+}
+
 export type AuthResponse = {
 	user: User;
 	token: string;

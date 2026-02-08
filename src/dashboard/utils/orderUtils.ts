@@ -1,38 +1,39 @@
+import type { OrderStatus } from "./../../core/orders/orders.types";
 import { t } from "i18next";
 
-export function formatOrderId(orderId) {
+export const formatOrderId = (orderId?: string | number) => {
 	if (!orderId) return "Desconocido";
 	return String(orderId).slice(-5);
-}
+};
 
-export function translateStatus(status) {
-	const map = {
+export const translateStatus = (status: OrderStatus) => {
+	if (!status) return t("common.unknown");
+
+	const map: Record<OrderStatus, string> = {
 		pending: t("orders.pending"),
 		cancelled: t("orders.canceled"),
-		preparing: t("orders.preparing"),
+		processing: t("orders.processing"),
 		delivered: t("orders.delivered"),
 	};
-	if (!status) return t("common.unknown");
-	return map[status] || t("common.unknown");
-}
+	return map[status] ?? t("common.unknown");
+};
 
-export function getStatusClass(status) {
+export const getStatusClass = (status: OrderStatus) => {
 	const base = "px-3 py-1 text-sm rounded-full font-medium";
 	if (!status) return `${base} bg-gray-100 text-gray-600`;
 
-	const statusMap = {
+	const statusMap: Record<OrderStatus, string> = {
 		pending: "bg-yellow-100 text-yellow-700",
-		completed: "bg-green-100 text-green-700",
 		cancelled: "bg-red-100 text-red-700",
-		preparing: "bg-blue-100 text-blue-700",
+		processing: "bg-blue-100 text-blue-700",
 		delivered: "bg-green-100 text-green-700",
 	};
 
 	const style = statusMap[status];
 	return style ? `${base} ${style}` : `${base} bg-gray-100 text-gray-600`;
-}
+};
 
-export function formatDate(date) {
+export const formatDate = (date: string | Date): string => {
 	if (!date) return t("common.unknown");
 
 	try {
@@ -43,16 +44,16 @@ export function formatDate(date) {
 	} catch {
 		return t("common.unknown");
 	}
-}
+};
 
-export function isRecentOrder(date) {
+export const isRecentOrder = (date: string | Date): boolean => {
 	if (!date) return false;
 
 	const now = new Date();
 	const orderDate = new Date(date);
 
-	const diffMs = now - orderDate;
+	const diffMs =  now.getTime() - orderDate.getTime();
 	const diffHours = diffMs / (1000 * 60 * 60);
 
 	return diffHours < 48;
-}
+};

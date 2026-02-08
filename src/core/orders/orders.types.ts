@@ -1,3 +1,5 @@
+import type { PaymentStatus } from "../types/payment.types";
+
 export const ORDER_STATUS = {
 	PENDING: "pending",
 	PROCESSING: "processing",
@@ -7,15 +9,8 @@ export const ORDER_STATUS = {
 
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
-export const PAYMENT_STATUS = {
-	PENDING: "pending",
-	PAID: "paid",
-	ERROR: "error",
-} as const;
-
-export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
-
 export type OrderItem = {
+	name: string;
 	productId: string;
 	quantity: number;
 	price: number;

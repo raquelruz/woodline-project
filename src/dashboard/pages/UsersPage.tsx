@@ -2,10 +2,12 @@ import { memo, useState } from "react";
 import { UserForm } from "../components/UserForm";
 import { UserTable } from "../components/UserTable";
 import { useTranslate } from "../../translations/useTranslate";
+import type { User } from "../../core/auth/auth.type";
 
 const UsersPage = memo(() => {
 	const { t } = useTranslate();
-    const [selectedUser, setSelectedUser] = useState(null);
+
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const handleUserSaved = () => {
         window.location.reload();
@@ -18,7 +20,7 @@ const UsersPage = memo(() => {
 
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 				<UserForm selectedUser={selectedUser} onSaved={handleUserSaved} />
-                <UserTable onEdit={setSelectedUser} />
+                <UserTable onEdit={(user) => setSelectedUser(user)} />
 			</div>
 		</section>
 	);

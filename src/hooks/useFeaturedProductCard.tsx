@@ -1,20 +1,33 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "../core/http/axios";
+import type { Product } from "../core/products/products.types";
 
-export const useFeaturedProducts = () => {
-	const [featured, setFeatured] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
+type useFeaturedProductsResult = {
+	featured: Product[];
+	loading: boolean;
+	error: string | null;
+	refetch: () => Promise<void>;
+};
+
+export const useFeaturedProducts = (): useFeaturedProductsResult => {
+	const [featured, setFeatured] = useState<Product[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string | null>("");
 
 	const fetchFeatured = useCallback(async () => {
+		setLoading(true);
+		setError(null);
+
 		try {
-			const { data } = await api.get("/products");
+			const { data } = await api.get<Product[]>("/products");
 
-			const sorted = data.sort(
-				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-			);
+			const sorted = [...data].sort((a, b) => {
+				const bTime = new Date(b.createdAt).getTime();
+				const aTime = new Date(a.createdAt).getTime();
+				return bTime - aTime;
+			});
 
-			setFeatured(sorted.slice(0, 9)); 
+			setFeatured(sorted.slice(0, 9));
 		} catch (error) {
 			setError("Error al mostrar productos");
 			console.error(error);
@@ -24,14 +37,13 @@ export const useFeaturedProducts = () => {
 	}, []);
 
 	useEffect(() => {
-		fetchFeatured();
+		void fetchFeatured();
 	}, [fetchFeatured]);
 
-	const memoFeatured = useMemo(() => featured, [featured]);
-
 	return {
-		featured: memoFeatured,
+		featured,
 		loading,
 		error,
+		refetch: fetchFeatured,
 	};
 };

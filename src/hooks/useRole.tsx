@@ -1,17 +1,24 @@
-import { useCallback, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useCallback } from "react";
+import type { Role } from "../core/auth/auth.type";
+import { useAuthContext } from "./useAuthContext";
 
-export function useRole() {
-    const { user } = useContext(AuthContext);
+type RoleInput = Role | Role[];
 
-    const hasRole = useCallback(
-        (roles) => {
-            if (!user || !user.role) return false;
-            if (Array.isArray(roles)) return roles.includes(user.role);
-            return user.role === roles;
-        },
-        [user]
-    );
+type UseRoleResult = {
+	hasRole: (roles: RoleInput) => boolean;
+};
 
-    return { hasRole };
-}
+export const useRole = (): UseRoleResult => {
+	const { user } = useAuthContext();
+
+	const hasRole = useCallback(
+		(roles: RoleInput) => {
+			if (!user?.role) return false;
+
+			return Array.isArray(roles) ? roles.includes(user.role) : user.role === roles;
+		},
+		[user?.role],
+	);
+
+	return { hasRole };
+};

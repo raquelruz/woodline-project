@@ -1,8 +1,22 @@
 import { useState, useEffect } from "react";
 import { api } from "../core/http/axios";
+import type { ProfileFormData } from "../core/types/profile.types";
+import type { User } from "../core/auth/auth.type";
 
-export const useProfileForm = (user, setUser) => {
-	const [formData, setFormData] = useState({
+type UseProfileFormResult = {
+	formData: ProfileFormData;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	handleSave: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+	loading: boolean;
+	error: string | null;
+	success: boolean;
+};
+
+export const useProfileForm = (
+	user: User | null,
+	setUser: React.Dispatch<React.SetStateAction<User | null>>,
+): UseProfileFormResult => {
+	const [formData, setFormData] = useState<ProfileFormData>({
 		firstName: "",
 		lastName: "",
 		email: "",
@@ -10,39 +24,46 @@ export const useProfileForm = (user, setUser) => {
 		address: "",
 	});
 
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
-	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
+	const [success, setSuccess] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (!user) return;
+
 		setFormData({
-			firstName: user.name ?? "",
+			firstName: user.firstName ?? "",
 			lastName: user.lastName ?? "",
 			email: user.email ?? "",
-			phone: user.phone ?? "",
+			phone: user.phoneNumber ?? "",
 			address: user.address ?? "",
 		});
 	}, [user]);
 
-	const handleChange = (event) => {
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+
 		setFormData((prev) => ({
 			...prev,
-			[event.target.name]: event.target.value,
+			[name]: value,
 		}));
 	};
 
-	const handleSave = async (event) => {
+	const handleSave = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		if (!user) return;
+
 		setLoading(true);
 		setError(null);
 		setSuccess(false);
 
 		try {
-			const { data } = await api.patch(`/users/${user.id}`, formData);
+			const { data } = await api.patch<User>(`/users/${user.id}`, formData);
 			setUser(data);
 			setSuccess(true);
 		} catch (error) {
+			console.error(error);
 			setError("Error al guardar cambios");
 		} finally {
 			setLoading(false);
