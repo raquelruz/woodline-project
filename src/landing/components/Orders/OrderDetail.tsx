@@ -10,36 +10,42 @@ import { formatOrderId, translateStatus, getStatusClass, formatDate } from "../.
 import { IoCalendarOutline, IoCashOutline, IoInformationCircleOutline, IoCubeOutline } from "react-icons/io5";
 import { useTranslate } from "../../../translations/useTranslate";
 import type { Order } from "../../../core/orders/orders.types";
-import { useAuth } from "../../../core/auth/useAuth";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
-type OrderWithBackenId = Order & {
+type OrderWithBackendId = Order & {
 	_id?: string;
 };
 
 const OrderDetail = () => {
 	const { t } = useTranslate();
 	const { id } = useParams<{ id: string }>();
-	const { user } = useAuth();
+	const { user } = useAuthContext();
 
-	const [order, setOrder] = useState<OrderWithBackenId | null>(null);
+	const [order, setOrder] = useState<OrderWithBackendId | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchOrder = useCallback(async () => {
-		if (!id) return;
+		if (!id || !user?.id) {
+			setOrder(null);
+			setLoading(false);
+			return;
+		}
+
+		setLoading(true);
 
 		try {
-			const response = await getOrdersApi(user.id);
-			const pedidos: OrderWithBackenId[] = Array.isArray(response) ? response : response.data || [];
+			const pedidos: OrderWithBackendId[] = await getOrdersApi(user.id);
 
 			const found = pedidos.find((pedido) => pedido._id === id || pedido.id === id);
 
 			setOrder(found ?? null);
 		} catch (error) {
 			console.error(t("orders.error_order"), error);
+			setOrder(null);
 		} finally {
 			setLoading(false);
 		}
-	}, [id, t]);
+	}, [id, user?.id, t]);
 
 	useEffect(() => {
 		fetchOrder();
@@ -93,7 +99,7 @@ const OrderDetail = () => {
 					{t("orders.order_summary")}
 				</h2>
 
-				<OrderProductList items={order.items} />
+				<OrderProductList items={order.items ?? []} />
 			</div>
 
 			<BackButton />
