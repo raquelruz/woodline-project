@@ -7,22 +7,31 @@ import { Loader } from "../components/Loader";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { PageError } from "../components/PageError";
 import { useTranslate } from "../../translations/useTranslate";
+import type { Product } from "../../core/products/products.types";
+
+type Filters = {
+	minPrice: number;
+	maxPrice: number;
+	sort: "" | "priceAsc" | "priceDesc";
+};
 
 const Products = memo(() => {
-	const { t } = useTranslate()
-	const [products, setProducts] = useState([]);
-	const [categories, setCategories] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const { t } = useTranslate();
 
-	const [selectedCategory, setSelectedCategory] = useState("all");
-	const [filters, setFilters] = useState({
+	const [products, setProducts] = useState<Product[]>([]);
+	const [categories, setCategories] = useState<string[]>([]);
+
+	const [loading, setLoading] = useState<boolean>(true);
+
+	const [selectedCategory, setSelectedCategory] = useState<string>("all");
+	const [filters, setFilters] = useState<Filters>({
 		minPrice: 0,
 		maxPrice: Infinity,
 		sort: "",
 	});
-	const [searchTerm, setSearchTerm] = useState("");
+	const [searchTerm, setSearchTerm] = useState<string>("");
 
-	const searchInputRef = useRef(null);
+	const searchInputRef = useRef<HTMLInputElement | null>(null);
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -35,10 +44,13 @@ const Products = memo(() => {
 	const fetchProducts = useCallback(async () => {
 		setLoading(true);
 		try {
-			const { data } = await api.get("/products");
+			const { data } = await api.get<Product[]>("/products");
 			setProducts(data);
 
-			const unique = [...new Set(data.flatMap((p) => p.category || []))];
+			const unique = Array.from(
+				new Set(data.flatMap((product) => (Array.isArray(product.category) ? product.category : product.category ? [product.category] : []))),
+			);
+
 			setCategories(unique);
 
 			if (categoryQuery !== "all") {
@@ -49,7 +61,7 @@ const Products = memo(() => {
 		} finally {
 			setLoading(false);
 		}
-	}, [categoryQuery]);
+	}, [categoryQuery, t]);
 
 	useEffect(() => {
 		fetchProducts();
@@ -60,7 +72,7 @@ const Products = memo(() => {
 	}, []);
 
 	const handleCategoryChange = useCallback(
-		(category) => {
+		(category: string) => {
 			setSelectedCategory(category);
 			if (category === "all") {
 				navigate("/products");
@@ -68,38 +80,42 @@ const Products = memo(() => {
 				navigate(`/products?category=${encodeURIComponent(category)}`);
 			}
 		},
-		[navigate]
+		[navigate],
 	);
 
-	const handleFilterChange = useCallback((newFilters) => {
+	const handleFilterChange = useCallback((newFilters: Filters) => {
 		setFilters(newFilters);
 	}, []);
 
-	const handleSearchChange = useCallback((term) => {
+	const handleSearchChange = useCallback((term: string) => {
 		setSearchTerm(term);
 	}, []);
 
 	const handleViewProduct = useCallback(
-		(productId) => {
+		(productId: string) => {
 			navigate(`/products/${productId}`);
 		},
-		[navigate]
+		[navigate],
 	);
 
 	const filteredProducts = useMemo(() => {
 		let result = products;
 
 		if (selectedCategory !== "all") {
-			result = result.filter((p) => p.category?.includes(selectedCategory));
+			result = result.filter((product) => product.category?.includes(selectedCategory));
 		}
 
 		if (searchTerm) {
 			const q = searchTerm.toLowerCase();
-			result = result.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+			result = result.filter((product) => {
+				const name = (product.name ?? "").toLowerCase();
+				const desc = (product.description ?? "").toLowerCase();
+				return name.includes(q) || desc.includes(q);
+			});
 		}
 
-		result = result.filter((p) => {
-			const price = p.price ?? 0;
+		result = result.filter((product) => {
+			const price = product.price ?? 0;
 			return price >= filters.minPrice && price <= filters.maxPrice;
 		});
 
@@ -125,16 +141,12 @@ const Products = memo(() => {
 				setSelectedCategory={handleCategoryChange}
 				onFilterChange={handleFilterChange}
 				onSearchChange={handleSearchChange}
-				searchRef={searchInputRef}
 			/>
 
 			<div className="mt-10">
 				<ErrorBoundary
 					fallback={
-						<PageError
-							title={t("products.error_display")}
-							message={t("products.error_display_message")}
-						/>
+						<PageError title={t("products.error_display")} message={t("products.error_display_message")} />
 					}
 				>
 					{filteredProducts.length === 0 && (
