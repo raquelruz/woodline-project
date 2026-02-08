@@ -1,3 +1,5 @@
+import type { Product } from "../products/products.types";
+
 export type InputProps = {
 	name: string;
     displayName?: string;
@@ -16,3 +18,6 @@ export type LabelProps = {
 	className?: string;
 };
 
+export type ViewedListProps = {
+	products: Product[];
+};

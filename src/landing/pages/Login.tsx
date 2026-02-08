@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { FormInput } from "../components/FormInput";
 import { useAuth } from "../../core/auth/useAuth";
 import { useTranslate } from "../../translations/useTranslate";
 
-const INITIAL_FORM = {
+type LoginForm = {
+	email: string;
+	password: string;
+};
+
+const INITIAL_FORM: LoginForm = {
 	email: "",
 	password: "",
 };
@@ -14,18 +19,23 @@ const Login = () => {
 	const { login } = useAuth();
 	const [form, setForm] = useState(INITIAL_FORM);
 
-	const handleInputChange = (event) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		setForm((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		await login(form);
 		setForm(INITIAL_FORM);
 	};
 
-	const LOGIN_FIELDS = [
+	const LOGIN_FIELDS: Array<{
+		name: keyof LoginForm;
+		type: string;
+		placeholder: string;
+		label: string;
+	}> = [
 		{
 			name: "email",
 			type: "email",
@@ -61,7 +71,6 @@ const Login = () => {
 							label={{ text: label }}
 						/>
 					))}
-
 					<button
 						type="submit"
 						className="mt-4 bg-primary-light text-white font-semibold py-2 rounded-md shadow hover:bg-primary transition-all"

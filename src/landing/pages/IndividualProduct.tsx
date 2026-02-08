@@ -1,8 +1,13 @@
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../../translations/useTranslate";
+import type { ReactNode } from "react";
 
-const IndividualProduct = ({ children }) => {
+type IndividualProductProps = {
+	children: ReactNode;
+};
+
+const IndividualProduct = ({ children }: IndividualProductProps) => {
 	const { t } = useTranslate();
 	const navigate = useNavigate();
 

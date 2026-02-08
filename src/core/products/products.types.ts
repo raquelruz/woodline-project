@@ -8,6 +8,7 @@ export interface Product {
 	price: number;
 	releaseDate: Date;
 	images: string[];
+	image: string;
 	reviews: Review[];
 	category: string[];
 	createdAt: string;

@@ -1,13 +1,7 @@
-type ViewedProduct = {
-	id: string;
-	name: string;
-	image: string;
-	price: number;
-	length: number;
-};
+import type { Product } from "../../core/products/products.types";
 
 type ViewedListProp = {
-	products: ViewedProduct[];
+	products: Product[];
 }
 
 export const ViewedList = ({ products }: ViewedListProp) => {
