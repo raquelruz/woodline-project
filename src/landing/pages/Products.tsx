@@ -48,7 +48,11 @@ const Products = memo(() => {
 			setProducts(data);
 
 			const unique = Array.from(
-				new Set(data.flatMap((product) => (Array.isArray(product.category) ? product.category : product.category ? [product.category] : []))),
+				new Set(
+					data.flatMap((product) =>
+						Array.isArray(product.category) ? product.category : product.category ? [product.category] : [],
+					),
+				),
 			);
 
 			setCategories(unique);

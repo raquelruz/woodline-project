@@ -1,12 +1,6 @@
 import { createContext, useState, useEffect, type ReactNode } from "react";
 import { getUserFromLocalStorage, getTokenFromLocalStorage } from "../core/auth/auth.service";
-import type { User } from "../core/auth/auth.type";
-
-type AuthContextType = {
-	user: User | null;
-	setUser: (value: User | null) => void;
-	loading: boolean;
-}
+import type { AuthContextType, User } from "../core/auth/auth.type";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

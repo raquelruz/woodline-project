@@ -4,8 +4,8 @@ import { ProfileOrders } from "./ProfileOrders"
 import { FavoritesSection } from "../../sections/FavoritesSection";
 import { useTranslate } from "../../../translations/useTranslate";
 import type { User } from "../../../core/auth/auth.type";
-import type { Product } from "../../../core/products/products.types";
-import type { Order } from "../../../core/orders/orders.types";
+import type { FavoritesContextType } from "../../../core/favorites/favorites.types";
+import type { UseProfileFormResult, UseProfileOrderResult } from "../../../core/types/profile.types";
 
 const inputClass =
     "w-full p-2 rounded border border-primary-light text-primary-light focus:ring-primary";
@@ -13,13 +13,10 @@ const saveButton =
     "bg-primary px-6 py-2 rounded text-white font-medium hover:bg-primary-light transition";
 
 type ProfileContentProps = {
-    user: User | null,
-    favorites: Product[],
-    profileForm: React.ComponentProps<typeof ProfileForm>,
-    orders: {
-        orders: Order[];
-        viewOrder: (orderId: string | number) => void;
-    }
+    user: User,
+    favorites: FavoritesContextType["favorites"],
+    profileForm: UseProfileFormResult;
+    orders: UseProfileOrderResult;
 }
 
 export const ProfileContent = ({ user, favorites, profileForm, orders }: ProfileContentProps) => {
@@ -40,10 +37,7 @@ export const ProfileContent = ({ user, favorites, profileForm, orders }: Profile
                     saveButton={saveButton}
                 />
 
-                <ProfileOrders
-                    orders={orders.orders}
-                    handleViewOrder={orders.viewOrder}
-                />
+                <ProfileOrders orders={orders.orders} handleViewOrder={orders.viewOrder} />
 
                 <FavoritesSection favorites={favorites} />
             </div>

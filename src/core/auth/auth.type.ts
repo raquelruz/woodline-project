@@ -44,6 +44,12 @@ export const ROLES = {
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
+export type AuthContextType = {
+	user: User | null;
+	setUser: (value: User | null) => void;
+	loading: boolean;
+}
+
 export type LoginPayload = {
 	email: string;
 	password: string;

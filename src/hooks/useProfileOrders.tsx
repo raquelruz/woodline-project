@@ -3,12 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useOrders } from "../core/orders/useOrders";
 import type { Order } from "../core/orders/orders.types";
 import type { User } from "../core/auth/auth.type";
+import type { UseProfileOrderResult } from "../core/types/profile.types";
 
-type UseProfileOrderResult = {
-	orders: Order[];
-	viewOrder: (orderId: string) => void;
-	refetch: () => Promise<void>;
-};
 
 export const useProfileOrders = (user: User | null): UseProfileOrderResult => {
 	const navigate = useNavigate();

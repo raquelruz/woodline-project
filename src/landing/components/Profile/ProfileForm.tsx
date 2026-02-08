@@ -1,16 +1,16 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, type ChangeEvent, type FormEvent } from "react";
 import { useTranslate } from "../../../translations/useTranslate";
 import type { ProfileFormData } from "../../../core/types/profile.types";
 
 type ProfileFormProps = {
-	formData: ProfileFormData;
-	handleChange: () => void;
-	handleSave: () => void;
-	loading: boolean;
-	error?: string | null;
-	success?: boolean;
 	inputClass: string;
 	saveButton: string;
+	formData: ProfileFormData;
+	handleChange: (event: ChangeEvent<HTMLInputElement>) => void; 
+	handleSave: (event: FormEvent<HTMLFormElement>) => Promise<void>; 
+	loading: boolean;
+	error: string | null;
+	success: boolean;
 };
 
 export const ProfileForm = memo(

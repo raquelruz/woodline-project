@@ -1,16 +1,8 @@
 import { useState, useEffect } from "react";
 import { api } from "../core/http/axios";
-import type { ProfileFormData } from "../core/types/profile.types";
+import type { ProfileFormData, UseProfileFormResult } from "../core/types/profile.types";
 import type { User } from "../core/auth/auth.type";
 
-type UseProfileFormResult = {
-	formData: ProfileFormData;
-	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	handleSave: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
-	loading: boolean;
-	error: string | null;
-	success: boolean;
-};
 
 export const useProfileForm = (
 	user: User | null,

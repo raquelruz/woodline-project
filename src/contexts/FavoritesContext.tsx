@@ -2,11 +2,7 @@ import { createContext, useState, useEffect, useContext, type ReactNode } from "
 import { AuthContext } from "./AuthContext";
 import { getUserFavorites, addFavorite, removeFavorite } from "../core/favorites/favorites.service";
 import type { Product } from "../core/products/products.types";
-
-type FavoritesContextType = {
-	favorites: Product[];
-	toggleFavorite: (product: Product) => Promise<void>;
-};
+import type { FavoritesContextType } from "../core/favorites/favorites.types";
 
 export const FavoritesContext = createContext<FavoritesContextType | null>(null);
 

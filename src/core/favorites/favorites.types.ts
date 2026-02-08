@@ -4,7 +4,7 @@ export type FavoritesResponse = {
     favoritos: Product[];
 };
 
-export type FavoritesContextValue = {
+export type FavoritesContextType = {
     favorites: Product[];
     toggleFavorite: (product: Product) => void;
 }
