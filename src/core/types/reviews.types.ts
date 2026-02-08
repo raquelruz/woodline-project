@@ -10,3 +10,9 @@ export interface Review {
 	createdAt: string;
 	updatedAt: string;
 };
+
+export type ReviewCreatePayload = {
+	name: string;
+	comment: string;
+	rating: number;
+};

@@ -57,3 +57,7 @@ export type OrderComponentProps = {
 	order: Order;
 	onChange: OrderStatusChangeHandler;
 };
+
+export type OrderWithBackendId = Order & {
+	_id?: string;
+};

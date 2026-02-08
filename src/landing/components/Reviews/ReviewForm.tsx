@@ -1,24 +1,24 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ReviewStars } from "./ReviewStars";
 import { api } from "../../../core/http/axios";
-import { getTokenFromLocalStorage } from "../../../core/auth/auth.service"; 
-import type { Review } from "../../../core/types/reviews.types";
+import { getTokenFromLocalStorage } from "../../../core/auth/auth.service";
+import type { Review, ReviewCreatePayload } from "../../../core/types/reviews.types";
 
 type ReviewFormProps = {
-	productId: string,
-	onNewReview: (review: Review) => void,
-}
+	productId: string;
+	onNewReview: (review: Review) => void;
+};
 
 export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
-	const [name, setName] = useState("");
-	const [comment, setComment] = useState("");
-	const [rating, setRating] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
+	const [name, setName] = useState<string>("");
+	const [comment, setComment] = useState<string>("");
+	const [rating, setRating] = useState<number>(0);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
 
-	async function handleSubmit(event) {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setError("");
+		setError(null);
 
 		if (!name || !comment || rating === 0) {
 			setError("Por favor completa todos los campos y selecciona una valoración.");
@@ -34,18 +34,17 @@ export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 		try {
 			setLoading(true);
 
-			const response = await api.post(
-				`/products/${productId}/reviews`,
-				{ name, comment, rating },
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
+			const payload: ReviewCreatePayload = { name, comment, rating };
 
-			if (response.data) {
-				onNewReview(response.data);
+			const response = await api.post<Review>(`/products/${productId}/reviews`, payload, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			const createdReview = response.data;
+			if (createdReview) {
+				onNewReview(createdReview);
 				setName("");
 				setComment("");
 				setRating(0);
@@ -56,13 +55,10 @@ export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className="bg-white border border-gray-200 shadow-sm rounded-xl p-5 mt-6 w-full"
-		>
+		<form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-sm rounded-xl p-5 mt-6 w-full">
 			<h3 className="font-semibold text-lg text-primary mb-3">Deja tu reseña</h3>
 
 			{error && <p className="text-error text-sm mb-3">{error}</p>}
@@ -70,7 +66,7 @@ export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 			<input
 				type="text"
 				value={name}
-				onChange={(event) => setName(event.target.value)}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
 				placeholder="Tu nombre"
 				className="w-full border border-gray-300 rounded-md px-3 py-2 mb-3 text-sm focus:ring-2 focus:ring-primary"
 			/>
@@ -79,7 +75,7 @@ export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 
 			<textarea
 				value={comment}
-				onChange={(event) => setComment(event.target.value)}
+				onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setComment(event.target.value)}
 				placeholder="Escribe tu comentario..."
 				rows={3}
 				className="w-full border border-gray-300 rounded-md px-3 py-2 mt-3 text-sm focus:ring-2 focus:ring-primary resize-none"
@@ -88,7 +84,7 @@ export const ReviewForm = ({ productId, onNewReview }: ReviewFormProps) => {
 			<button
 				type="submit"
 				disabled={loading}
-				className="mt-4 w-full bg-primary text-white py-2 rounded-md hover:bg-primary-light transition-all"
+				className="mt-4 w-full bg-primary text-white py-2 rounded-md hover:bg-primary-light transition-all disabled:opacity-60 disabled:cursor-not-allowed"
 			>
 				{loading ? "Enviando..." : "Enviar reseña"}
 			</button>
