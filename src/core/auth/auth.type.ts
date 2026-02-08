@@ -59,6 +59,10 @@ export type AuthContextValue = {
 	user: User | null;
 }
 
+export type AuthContextShape = {
+	user: { id: string } | null;
+};
+
 export type AuthResponse = {
 	user: User;
 	token: string;

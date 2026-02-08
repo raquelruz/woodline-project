@@ -9,10 +9,7 @@ import { PaymentModal } from "../components/Modals/PaymentModal";
 import { useTranslate } from "../../translations/useTranslate";
 import type { CartProduct } from "../../core/cart/cart.types";
 import type { PaymentMethod } from "../../core/types/payment.types";
-
-type AuthContextShape = {
-	user: { id: string } | null;
-};
+import type { AuthContextShape } from "../../core/auth/auth.type";
 
 type CreateOrderOptions = {
 	shippingAddress: string;

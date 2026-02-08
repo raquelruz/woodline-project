@@ -1,10 +1,25 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { useTranslate } from "../../translations/useTranslate";
 
+type ContactReason = "" | "consulta" | "soporte" | "colaboracion" | "otro";
+
+type ContactFormData = {
+	name: string;
+	email: string;
+	reason: ContactReason;
+	message: string;
+	privacy: boolean;
+};
+
+type ChangeEvt =
+	| React.ChangeEvent<HTMLInputElement>
+	| React.ChangeEvent<HTMLTextAreaElement>
+	| React.ChangeEvent<HTMLSelectElement>;
+
 const Contact = () => {
 	const { t } = useTranslate();
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<ContactFormData>({
 		name: "",
 		email: "",
 		reason: "",
@@ -12,22 +27,24 @@ const Contact = () => {
 		privacy: false,
 	});
 
-	const [submitted, setSubmitted] = useState(false);
-	const [error, setError] = useState("");
+	const [submitted, setSubmitted] = useState<boolean>(false);
+	const [error, setError] = useState<string>("");
 
-	const handleChange = useCallback((event) => {
-		const { name, value, type, checked } = event.target;
+	const handleChange = useCallback((event: ChangeEvt) => {
+		const { name, value, type } = event.target;
+
+		const checked =
+			type === "checkbox" && event.target instanceof HTMLInputElement ? event.target.checked : undefined;
 
 		setFormData((prev) => ({
 			...prev,
-			[name]: type === "checkbox" ? checked : value,
+			[name]: type === "checkbox" ? (checked ?? false) : value,
 		}));
 
 		setError("");
 	}, []);
-
 	// VALIDACIONES
-	const validateForm = useCallback((data) => {
+	const validateForm = useCallback((data: ContactFormData): string | null => {
 		if (!data.name.trim()) return "Rellena el campo 'Nombre'";
 		if (!data.email.trim()) return "Rellena el campo 'Email'";
 		if (!data.reason) return "Selecciona un motivo de contacto";
@@ -37,7 +54,7 @@ const Contact = () => {
 	}, []);
 
 	// ENVÍO MAIL
-	const sendMailto = useCallback((data) => {
+	const sendMailto = useCallback((data: ContactFormData): void => {
 		const recipientEmail = "woodline@info.com";
 		const subject = `${data.name} (${data.email}) - [${data.reason}]`;
 		const body = data.message;
@@ -53,7 +70,7 @@ const Contact = () => {
 	}, []);
 
 	const handleSubmit = useCallback(
-		(event) => {
+		(event: React.FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
 
 			const validationError = validateForm(formData);
@@ -74,11 +91,11 @@ const Contact = () => {
 
 			setSubmitted(true);
 		},
-		[formData, validateForm, sendMailto]
+		[formData, validateForm, sendMailto],
 	);
 
 	// RENDER
-	let formContent;
+	let formContent: React.ReactNode;
 
 	// Si NO envía -> Muestra el formulario
 	if (!submitted) {
@@ -122,7 +139,7 @@ const Contact = () => {
 					value={formData.message}
 					onChange={handleChange}
 					placeholder={t("pages.contact.message_placeholder")}
-					rows="4"
+					rows={4}
 					className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
 				/>
 
@@ -165,9 +182,7 @@ const Contact = () => {
 			<div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 				<div className="flex flex-col justify-center px-4">
 					<h2 className="text-4xl font-title font-bold text-primary mb-4">{t("pages.contact.title")}</h2>
-					<p className="text-gray-700 mb-6 leading-relaxed">
-						{t("pages.contact.description")}
-					</p>
+					<p className="text-gray-700 mb-6 leading-relaxed">{t("pages.contact.description")}</p>
 
 					<div className="flex flex-col gap-4 text-gray-600">
 						<p className="flex items-center gap-3">
@@ -183,7 +198,9 @@ const Contact = () => {
 				</div>
 
 				<div className="bg-white shadow-lg rounded-3xl p-8 md:p-10 border border-gray-200">
-					<h3 className="text-2xl font-title text-primary mb-6 text-center">{t("pages.contact.contactform_title")}</h3>
+					<h3 className="text-2xl font-title text-primary mb-6 text-center">
+						{t("pages.contact.contactform_title")}
+					</h3>
 
 					{error && <p className="mb-4 text-error text-center font-medium">{error}</p>}
 
