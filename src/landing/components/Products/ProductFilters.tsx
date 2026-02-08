@@ -1,4 +1,4 @@
-import { memo, forwardRef, useCallback, useMemo, useState } from "react";
+import { memo, forwardRef, useCallback, useMemo, useState, type ForwardedRef } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { useTranslate } from "../../../translations/useTranslate";
 
@@ -8,15 +8,15 @@ type ProductFiltersProps = {
 	categories: string[];
 	selectedCategory: string;
 	setSelectedCategory: (category: string) => void;
-	onFilterChange: (filters: { minPrice: number; maxPrice: number; sort: SortOrder}) => void;
+	onFilterChange: (filters: { minPrice: number; maxPrice: number; sort: SortOrder }) => void;
 	onSearchChange: (searchTerm: string) => void;
-}
+};
 
 export const ProductFilters = memo(
-	forwardRef((
-		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange }: ProductFiltersProps,
-		searchRef
-	) => {
+	forwardRef<HTMLInputElement, ProductFiltersProps>(function ProductFilters(
+		{ categories, selectedCategory, setSelectedCategory, onFilterChange, onSearchChange },
+		searchRef: ForwardedRef<HTMLInputElement>,
+	) {
 		const { t } = useTranslate();
 		const [minPrice, setMinPrice] = useState<string>("");
 		const [maxPrice, setMaxPrice] = useState<string>("");
@@ -36,7 +36,7 @@ export const ProductFilters = memo(
 			(category: string) => {
 				setSelectedCategory(category);
 			},
-			[setSelectedCategory]
+			[setSelectedCategory],
 		);
 
 		const memoizedCategoryButtons = useMemo(() => {
@@ -55,6 +55,10 @@ export const ProductFilters = memo(
 			));
 		}, [categories, selectedCategory, handleSelectCategory]);
 
+		const handleSortChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+			setSortOrder(event.target.value as SortOrder);
+		}, []);
+
 		return (
 			<div className="w-full max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-5 mb-10">
 				<div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
@@ -65,7 +69,7 @@ export const ProductFilters = memo(
 							type="text"
 							placeholder={t("products.search_placeholder")}
 							value={searchTerm}
-							onChange={(event) => setSearchTerm(event.target.value)}
+							onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value)}
 							className="w-full bg-transparent outline-none text-sm text-gray-700"
 						/>
 					</div>
@@ -73,7 +77,7 @@ export const ProductFilters = memo(
 					<div className="flex flex-wrap justify-center md:justify-end items-center gap-3">
 						<select
 							value={sortOrder}
-							onChange={(event) => setSortOrder(event.target.value)}
+							onChange={handleSortChange}
 							className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:ring-2 focus:ring-primary"
 						>
 							<option value="">{t("common.sort")}</option>
@@ -86,7 +90,9 @@ export const ProductFilters = memo(
 							<input
 								type="number"
 								value={minPrice}
-								onChange={(event) => setMinPrice(event.target.value)}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									setMinPrice(event.target.value)
+								}
 								placeholder={t("products.price_placeholder")}
 								className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 							/>
@@ -94,13 +100,16 @@ export const ProductFilters = memo(
 							<input
 								type="number"
 								value={maxPrice}
-								onChange={(event) => setMaxPrice(event.target.value)}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									setMaxPrice(event.target.value)
+								}
 								placeholder={t("products.price_placeholder")}
 								className="w-20 border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-primary"
 							/>
 						</div>
 
 						<button
+							type="button"
 							onClick={handleApplyFilters}
 							className="flex items-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-primary-light transition-all"
 						>
@@ -113,5 +122,5 @@ export const ProductFilters = memo(
 				<div className="flex flex-wrap justify-center gap-2">{memoizedCategoryButtons}</div>
 			</div>
 		);
-	})
+	}),
 );
