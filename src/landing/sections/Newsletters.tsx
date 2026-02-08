@@ -4,12 +4,12 @@ import { useTranslate } from "../../translations/useTranslate";
 
 export const Newsletters = () => {
 	const { t } = useTranslate();
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState<string>("");
 
-	const handleSubmit = (event) => {
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (!email) {
+		if (!email.trim()) {
 			alert("Por favor, introduce un correo electrónico válido.");
 			return;
 		}
@@ -19,6 +19,10 @@ export const Newsletters = () => {
 
 		window.location.href = `mailto:info@woodlineliving.com?subject=${subject}&body=${body}`;
 		setEmail("");
+	};
+
+	const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setEmail(event.target.value);
 	};
 
 	return (
@@ -42,11 +46,12 @@ export const Newsletters = () => {
 						<input
 							type="email"
 							value={email}
-							onChange={(event) => setEmail(event.target.value)}
+							onChange={handleEmailChange}
 							placeholder={t("pages.home.newsletters_placeholder")}
 							className="w-full py-2.5 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none text-sm md:text-base"
 						/>
 					</div>
+
 					<button
 						type="submit"
 						className="bg-primary text-white text-sm md:text-base font-semibold px-6 md:px-8 py-2.5 hover:bg-primary-light transition-all duration-300 rounded-r-full"

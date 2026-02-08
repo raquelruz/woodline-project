@@ -2,17 +2,21 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { useFeaturedProducts } from "../../hooks/useFeaturedProductCard";
-import { useTranslate } from "../../translations/useTranslate"
+import { useTranslate } from "../../translations/useTranslate";
+import type { Product } from "../../core/products/products.types";
 
 export const FeaturedProducts = () => {
-	const { t } = useTranslate()
-	const { featured, loading } = useFeaturedProducts();
+	const { t } = useTranslate();
+	const { featured, loading } = useFeaturedProducts() as {
+		featured: Product[];
+		loading: boolean;
+	};
 
 	const memoizedList = useMemo(() => {
 		return featured.map((product) => (
 			<Link
 				to={`/products?search=${encodeURIComponent(product.name)}`}
-				key={product._id || product.id}
+				key={product.id}
 				className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group"
 			>
 				<div className="relative overflow-hidden">
@@ -42,14 +46,10 @@ export const FeaturedProducts = () => {
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
 					{t("pages.home.newproducts_title")}
 				</h2>
-				<p className="text-gray-500 mt-2">
-					{t("pages.home.newproducts_description")}
-				</p>
+				<p className="text-gray-500 mt-2">{t("pages.home.newproducts_description")}</p>
 			</div>
 
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">
-				{memoizedList}
-			</div>
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">{memoizedList}</div>
 		</section>
 	);
 };

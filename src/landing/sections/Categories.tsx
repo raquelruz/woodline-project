@@ -3,17 +3,21 @@ import { useCategories } from "../../core/categories/useCategories";
 import { Loader } from "../components/Loader";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslate } from "../../translations/useTranslate";
+import type { Category } from "../../core/categories/categories.types";
 
 export const Categories = memo(() => {
 	const { t } = useTranslate();
-	const { categories, loading } = useCategories();
+	const { categories, loading } = useCategories() as {
+		categories: Category[];
+		loading: boolean;
+	};
 	const navigate = useNavigate();
 
 	const handleCategoryClick = useCallback(
-		(slug) => {
+		(slug: string) => {
 			navigate(`/products?category=${encodeURIComponent(slug)}`);
 		},
-		[navigate]
+		[navigate],
 	);
 
 	const memoizedCategories = useMemo(() => {
@@ -47,7 +51,8 @@ export const Categories = memo(() => {
 		<section className="py-12 bg-bg-light text-center">
 			<div className="mb-16">
 				<h2 className="text-4xl font-title font-extrabold text-gray-800">
-					{t("pages.home.categories_title")} <span className="text-primary">{t("pages.home.categories_span")}</span>
+					{t("pages.home.categories_title")}{" "}
+					<span className="text-primary">{t("pages.home.categories_span")}</span>
 				</h2>
 				<p className="text-gray-500 mt-3">{t("pages.home.categories_description")}</p>
 			</div>

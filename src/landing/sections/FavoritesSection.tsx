@@ -1,8 +1,13 @@
+import type { Product } from "../../core/products/products.types";
 import { useTranslate } from "../../translations/useTranslate";
 import { EmptyFavorites } from "../components/Favorites/EmptyFavorites";
 import { FavoritesCard } from "../components/Favorites/FavoritesCard";
 
-export const FavoritesSection = ({ favorites }) => {
+interface FavoritesSectionProps {
+	favorites: Product[];
+}
+
+export const FavoritesSection = ({ favorites }: FavoritesSectionProps) => {
 	const { t } = useTranslate();
 	const hasFavorites = favorites.length > 0;
 

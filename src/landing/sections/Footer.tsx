@@ -3,56 +3,80 @@ import logo from "../../assets/images/woodline-logo.png";
 import { FaInstagram, FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 import { useMemo } from "react";
 import { useTranslate } from "../../translations/useTranslate";
+import type { IconType } from "react-icons";
+
+type FooterLink = {
+	name: string;
+	to: string;
+};
+
+type FooterSection = {
+	title: string;
+	links: FooterLink[];
+};
+
+type SocialLink = {
+	Icon: IconType;
+	url: string;
+	label: string;
+};
 
 export const Footer = () => {
 	const { t } = useTranslate();
-	const sections = useMemo(() => [
-		{
-			title: t("pages.home.my_account"),
-			links: [
-				{ name: t("auth.login"), to: "/login" },
-				{ name: t("auth.register"), to: "/register" },
-				{ name: t("auth.my_profile"), to: "/profile" },
-			],
-		},
-		{
-			title: t("pages.home.help"),
-			links: [
-				{ name: t("pages.home.shipments"), to: "/shipping" },
-				{ name: t("pages.home.returns"), to: "/returns" },
-				{ name: t("orders.orders"), to: "/delivery-time" },
-			],
-		},
-		{
-			title: t("pages.home.shop"),
-			links: [
-				{ name: t("products.all_products"), to: "/products" },
-				{ name: t("products.bedroom"), to: "/products?category=dormitorio" },
-				{ name: t("products.living_room"), to: "/products?category=salon" },
-			],
-		},
-		{
-			title: t("pages.home.legal"),
-			links: [
-				{ name: t("pages.home.terms"), to: "/terms" },
-				{ name: t("pages.home.privacy_policy"), to: "/privacy" },
-				{ name: t("pages.home.cookies"), to: "/cookies" },
-			],
-		},
-	]);
 
-	const socialLinks = useMemo(() => [
-		{ Icon: FaFacebook, url: "https://facebook.com", label: "Facebook" },
-		{ Icon: FaInstagram, url: "https://instagram.com", label: "Instagram" },
-		{ Icon: FaLinkedin, url: "https://linkedin.com", label: "LinkedIn" },
-		{ Icon: FaTwitter, url: "https://twitter.com", label: "Twitter" },
-	]);
+	const sections = useMemo<FooterSection[]>(
+		() => [
+			{
+				title: t("pages.home.my_account"),
+				links: [
+					{ name: t("auth.login"), to: "/login" },
+					{ name: t("auth.register"), to: "/register" },
+					{ name: t("auth.my_profile"), to: "/profile" },
+				],
+			},
+			{
+				title: t("pages.home.help"),
+				links: [
+					{ name: t("pages.home.shipments"), to: "/shipping" },
+					{ name: t("pages.home.returns"), to: "/returns" },
+					{ name: t("orders.orders"), to: "/delivery-time" },
+				],
+			},
+			{
+				title: t("pages.home.shop"),
+				links: [
+					{ name: t("products.all_products"), to: "/products" },
+					{ name: t("products.bedroom"), to: "/products?category=dormitorio" },
+					{ name: t("products.living_room"), to: "/products?category=salon" },
+				],
+			},
+			{
+				title: t("pages.home.legal"),
+				links: [
+					{ name: t("pages.home.terms"), to: "/terms" },
+					{ name: t("pages.home.privacy_policy"), to: "/privacy" },
+					{ name: t("pages.home.cookies"), to: "/cookies" },
+				],
+			},
+		],
+		[t],
+	);
+
+	const socialLinks = useMemo<SocialLink[]>(
+		() => [
+			{ Icon: FaFacebook, url: "https://facebook.com", label: "Facebook" },
+			{ Icon: FaInstagram, url: "https://instagram.com", label: "Instagram" },
+			{ Icon: FaLinkedin, url: "https://linkedin.com", label: "LinkedIn" },
+			{ Icon: FaTwitter, url: "https://twitter.com", label: "Twitter" },
+		],
+		[],
+	);
 
 	const socialLinksMemoized = useMemo(
 		() =>
-			socialLinks.map(({ Icon, url, label }, idx) => (
+			socialLinks.map(({ Icon, url, label }) => (
 				<a
-					key={idx}
+					key={label}
 					href={url}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -62,17 +86,17 @@ export const Footer = () => {
 					<Icon className="text-xl" />
 				</a>
 			)),
-		[socialLinks]
+		[socialLinks],
 	);
 
 	const sectionsMemoized = useMemo(
 		() =>
-			sections.map((section, idx) => (
-				<div key={idx}>
+			sections.map((section) => (
+				<div key={section.title}>
 					<p className="font-semibold mb-2 text-primary-pressed">{section.title}</p>
-					{section.links.map((link, linkIdx) => (
+					{section.links.map((link) => (
 						<Link
-							key={linkIdx}
+							key={link.to}
 							to={link.to}
 							className="block text-xs text-primary-pressed hover:text-primary transition-colors mb-1"
 						>
@@ -81,10 +105,8 @@ export const Footer = () => {
 					))}
 				</div>
 			)),
-		[sections]
+		[sections],
 	);
-
-	// console.log("Render Footer");
 
 	return (
 		<footer className="bg-gray-100 py-12 px-6 border-t border-gray-200">

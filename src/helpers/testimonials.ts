@@ -29,4 +29,6 @@ export const TESTIMONIALS = [
 		role: "Decoradora",
 		img: "https://i.pinimg.com/736x/a8/e9/d2/a8e9d2b3d136df556dffbe579cbb7.jpg",
 	},
-];
+] as const;
+
+export type Testimonial = (typeof TESTIMONIALS)[number];

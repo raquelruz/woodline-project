@@ -9,10 +9,16 @@ import { ViewedList } from "../components/ViewedList";
 import { useContext } from "react";
 import { ViewedContext } from "../../contexts/ViewedContext";
 import { useTranslate } from "../../translations/useTranslate"
+import type { Product } from "../../core/products/products.types";
+
+type ViewedContextShape = {
+	viewed: Product[];
+};
 
 const Home = () => {
 	const { t } = useTranslate()
-	const { viewed } = useContext(ViewedContext);
+	const viewedCtx = useContext(ViewedContext) as ViewedContextShape | null;
+	const viewed = viewedCtx?.viewed ?? [];
 
 	return (
 		<>
