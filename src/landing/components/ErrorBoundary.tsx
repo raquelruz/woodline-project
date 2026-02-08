@@ -1,37 +1,45 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 
-export class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { hasError: false };
-    }
+type ErrorBoundaryProps = {
+	children: ReactNode;
+	fallback?: ReactNode;
+};
 
-    // Se llama cuando un componente hijo lanza un error
-    static getDerivedStateFromError(error) {
-        console.log("Error Boundary:", error);
-        return { hasError: true };
-    }
+type ErrorBoundaryState = {
+	hasError: boolean;
+};
 
-    // Opcional: loggear el error a un servicio externo
-    componentDidCatch(error, info) {
-        // Aquí hacemos lo que queramos con el error. Como enviarlo a herramientas como Sentry, Datadog etc.
-        // Estas herramientas son plataformas de pago para trackear los errores de nuestra app en producción.
-        console.error("Error capturado por ErrorBoundary:", error, info);
-    }
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+	constructor(props: ErrorBoundaryProps) {
+		super(props);
+		this.state = { hasError: false };
+	}
 
-    render() {
-        const { hasError } = this.state;
-        const { fallback, children } = this.props;
+	// Se llama cuando un componente hijo lanza un error
+	static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+		return { hasError: true };
+	}
 
-        if (hasError) {
-            // Fallback UI configurable
-            if (fallback) {
-                return fallback;
-            }
+	// Opcional: loggear el error a un servicio externo
+	componentDidCatch(error: Error, info: React.ErrorInfo) {
+		// Aquí hacemos lo que queramos con el error. Como enviarlo a herramientas como Sentry, Datadog etc.
+		// Estas herramientas son plataformas de pago para trackear los errores de nuestra app en producción.
+		console.error("Error capturado por ErrorBoundary:", error, info);
+	}
 
-            return <p>Ha ocurrido un error en esta sección.</p>;
-        }
+	render() {
+		const { hasError } = this.state;
+		const { fallback, children } = this.props;
 
-        return children;
-    }
+		if (hasError) {
+			// Fallback UI configurable
+			if (fallback) {
+				return fallback;
+			}
+
+			return <p>Ha ocurrido un error en esta sección.</p>;
+		}
+
+		return children;
+	}
 }
