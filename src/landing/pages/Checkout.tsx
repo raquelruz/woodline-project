@@ -89,7 +89,7 @@ const Checkout = () => {
 
 			clearCart();
 			navigate("/order-success");
-		} catch (error: unknown) {
+		} catch (error) {
 			alert(t("product.error_confirmation_order"));
 		} finally {
 			setLoading(false);
