@@ -1,18 +1,16 @@
-import { useContext } from "react";
-import { FavoritesContext } from "../../../contexts/FavoritesContext.jsx"
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useTranslate } from "../../../translations/useTranslate";
 import type { Product } from "../../../core/products/products.types";
+import { useFavoritesContext } from "../../../hooks/useFavoritesContext.js";
 
 type FavButtonProps = {
 	product: Product;
 	size?: number;
 };
 
-
 export const FavButton = ({ product, size = 24 }: FavButtonProps) => {
 	const { t } = useTranslate();
-	const { favorites, toggleFavorite } = useContext(FavoritesContext);
+	const { favorites, toggleFavorite } = useFavoritesContext();
 	const favs = Array.isArray(favorites) ? favorites : [];
 	const isFav = !!product?.sku && favs.some((favorite) => favorite?.sku === product.sku);
 	const disabled = !product?.id;
