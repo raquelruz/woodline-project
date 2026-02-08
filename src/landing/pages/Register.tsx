@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/Container";
 import { FormInput } from "../components/FormInput";
 import { useAuth } from "../../core/auth/useAuth";
 import { useTranslate } from "../../translations/useTranslate";
 
-const INITIAL_FORM = {
+type RegisterForm = {
+	name: string;
+	email: string;
+	address: string;
+	password: string;
+	role: string;
+};
+
+
+const INITIAL_FORM: RegisterForm = {
 	name: "",
 	email: "",
 	address: "",
@@ -16,20 +25,25 @@ const INITIAL_FORM = {
 const Register = () => {
 	const { t } = useTranslate();
 	const { register } = useAuth();
-	const [form, setForm] = useState(INITIAL_FORM);
+	const [form, setForm] = useState<RegisterForm>(INITIAL_FORM);
 
-	const handleInputChange = (event) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		setForm((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		register(form);
 		setForm(INITIAL_FORM);
 	};
 
-	const REGISTER_FORM_FIELDS = [
+	const REGISTER_FORM_FIELDS: Array<{
+		name: keyof RegisterForm;
+		type: string;
+		placeholder: string;
+		label: string;
+	}> = [
 		{
 			name: "name",
 			type: "text",
