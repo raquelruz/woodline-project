@@ -9,12 +9,9 @@ import { BackButton } from "../Buttons/BackButton";
 import { formatOrderId, translateStatus, getStatusClass, formatDate } from "../../../dashboard/utils/orderUtils";
 import { IoCalendarOutline, IoCashOutline, IoInformationCircleOutline, IoCubeOutline } from "react-icons/io5";
 import { useTranslate } from "../../../translations/useTranslate";
-import type { Order } from "../../../core/orders/orders.types";
+import type { OrderWithBackendId } from "../../../core/orders/orders.types";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
-type OrderWithBackendId = Order & {
-	_id?: string;
-};
 
 const OrderDetail = () => {
 	const { t } = useTranslate();

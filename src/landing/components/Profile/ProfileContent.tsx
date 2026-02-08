@@ -12,12 +12,6 @@ const inputClass =
 const saveButton =
     "bg-primary px-6 py-2 rounded text-white font-medium hover:bg-primary-light transition";
 
-// React.ComponentProps → obtiene el tipo de las props de un componente React
-// typeof ProfileForm → apunta al componente
-// Resultado → genera automáticamente el tipo completo de las props del componente.
-
-// Obtiene las props del componente dado sin duplicar tipos (????)
-
 type ProfileContentProps = {
     user: User | null,
     favorites: Product[],
