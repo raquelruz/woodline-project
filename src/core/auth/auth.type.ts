@@ -63,6 +63,7 @@ export type RegisterPayload = {
 
 export type AuthContextValue = {
 	user: User | null;
+	loading: boolean;
 }
 
 export type AuthContextShape = {
