@@ -45,7 +45,7 @@ export const PaymentModal = memo(({
 		paypalEmail: "",
 	});
 
-	const handleChange = useCallback((event) => {
+	const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		setForm((prev) => ({ ...prev, [name]: value }));
 		setError("");
