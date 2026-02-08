@@ -11,8 +11,10 @@ import { LanguageSelector } from "../../../translations/LanguageSelector";
 const linkBg = "text-primary hover:text-primary-light cursor-pointer transition-all p-1 rounded-full hover:bg-primary-ultralight"
 
 export const Header = () => {
-	const { user } = useContext(AuthContext);
+	const auth = useContext(AuthContext);
 	const navigate = useNavigate();
+
+	const user = auth?.user ?? null;
 
 	return (
 		<header className="shadow-md relative bg-white">

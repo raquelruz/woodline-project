@@ -13,7 +13,10 @@ type NavItem = {
 
 export const Navbar = memo(() => {
 	const { t } = useTranslate();
-	const { user } = useContext(AuthContext);
+
+	const auth = useContext(AuthContext);
+	const user = auth?.user ?? null;
+
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
 	const closeMenu = useCallback(() => {
