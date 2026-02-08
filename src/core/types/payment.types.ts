@@ -1,10 +1,9 @@
 export const PAYMENT_METHOD = {
-	BIZUM: "bizum",
 	CREDIT_CARD: "credit_card",
 	PAYPAL: "paypal",
 } as const;
 
-export type PaymentMethod = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD] | (string & {});
+export type PaymentMethod = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD];
 
 export const PAYMENT_STATUS = {
 	ERROR: "error",
