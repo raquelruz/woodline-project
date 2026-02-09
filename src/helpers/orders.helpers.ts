@@ -1,0 +1,47 @@
+import { ORDER_STATUS } from "./../core/orders/orders.types";
+import { PAYMENT_STATUS } from "../core/types/payment.types";
+import type { OrderItem } from "../core/orders/orders.types";
+import type { PaymentMethod } from "../core/types/payment.types";
+
+export const calculateSubtotal = (items: OrderItem[]): number =>
+	items.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
+
+export const calculateTax = (subtotal: number, rate = 0.21): number => subtotal * rate;
+
+// Normalizar número a 2 decimales
+export const toCurrency = (num: number) => Number(num.toFixed(2));
+
+type BuildOrderOptions = {
+	shippingAddress?: string;
+	billingAddress?: string;
+	paymentMethod?: PaymentMethod;
+};
+
+// Construir payload de pedido
+export const buildOrderPayload = (
+	userId: string,
+	items: OrderItem[],
+	{ shippingAddress, billingAddress, paymentMethod }: BuildOrderOptions,
+) => {
+	const subtotal = calculateSubtotal(items);
+	const tax = calculateTax(subtotal);
+	const total = subtotal + tax;
+
+	return {
+		userId,
+		products: items.map((item) => ({
+			productId: item.productId,
+			quantity: item.quantity,
+			price: toCurrency(item.price),
+			name: item.name,
+		})),
+		subtotal: toCurrency(subtotal),
+		tax: toCurrency(tax),
+		total: toCurrency(total),
+		status: ORDER_STATUS.PENDING,
+		paymentStatus: PAYMENT_STATUS.PENDING,
+		shippingAddress: shippingAddress ?? "Dirección no especificada",
+		billingAddress: billingAddress ?? shippingAddress ?? "Dirección no especificada",
+		paymentMethod: paymentMethod ?? "credit_card",
+	};
+};

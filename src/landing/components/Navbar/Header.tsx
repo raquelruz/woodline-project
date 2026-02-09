@@ -1,0 +1,49 @@
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+import logo from "../../../assets/images/woodline-logo.png";
+import { Container } from "../Container";
+import { Navbar } from "./Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { LogoutButton } from "../Buttons/LogoutButton";
+import { LanguageSelector } from "../../../translations/LanguageSelector";
+
+const linkBg = "text-primary hover:text-primary-light cursor-pointer transition-all p-1 rounded-full hover:bg-primary-ultralight"
+
+export const Header = () => {
+	const auth = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	const user = auth?.user ?? null;
+
+	return (
+		<header className="shadow-md relative bg-white">
+			<Container>
+				<div className="h-16 px-4 flex items-center justify-between">
+					<img
+						src={logo}
+						alt="logo"
+						className="h-12 cursor-pointer"
+						onClick={() => navigate("/")}
+					/>
+
+					<Navbar />
+
+					<div className="flex items-center gap-6 text-gray-700 text-lg">
+						<Link to={user ? "/profile" : "/login"} title="Mi cuenta" className={linkBg}>
+							<FaUser className="text-xl" />
+						</Link>
+
+						<Link to="/cart" title="Mi carrito" className={linkBg}>
+							<FaShoppingCart className="text-xl" />
+						</Link>
+
+						{user && <LogoutButton variant="icon" />}
+
+						<LanguageSelector />
+					</div>
+				</div>
+			</Container>
+		</header>
+	);
+};

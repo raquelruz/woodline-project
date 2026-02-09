@@ -1,0 +1,25 @@
+import { Link } from "react-router-dom";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { getUserFromLocalStorage } from "../../../core/auth/auth.service";
+import { memo } from "react";
+import { useTranslate } from "../../../translations/useTranslate";
+import type { User } from "../../../core/auth/auth.type";
+
+export const BackButton = memo(() => {
+	const { t } = useTranslate();
+	const user: User | null = getUserFromLocalStorage();
+
+	if (!user || user.role !== "admin") return null;
+	
+	return (
+	<div className="text-center">
+		<Link
+			to="/dashboard/orders"
+			className="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-primary-light transition"
+		>
+			<IoArrowBackCircleOutline className="text-xl" />
+			{t("products.back_to_orders")}
+		</Link>
+	</div>
+	);
+});

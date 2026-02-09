@@ -1,0 +1,67 @@
+import type { OrderWithBackendId } from "../../../core/orders/orders.types";
+import { useTranslate } from "../../../translations/useTranslate";
+
+type ProfileOrdersProps = {
+	orders: OrderWithBackendId[];
+	handleViewOrder: (orderId: string) => void;
+};
+
+export const ProfileOrders = ({ orders, handleViewOrder }: ProfileOrdersProps) => {
+	const { t } = useTranslate();
+
+	const formatOrderId = (id: string | number) => {
+		if (!id) return "Desconocido";
+		const idString = String(id);
+		return idString.slice(-5);
+	};
+
+	if (orders.length === 0) {
+		return (
+			<div className="mt-10">
+				<h2 className="text-2xl font-semibold mb-4">{t("orders.last_orders")}</h2>
+				<p className="text-gray-500">{t("orders.no_orders_registered")}</p>
+			</div>
+		);
+	} else {
+		return (
+			<div className="mt-10">
+				<h2 className="text-2xl font-semibold mb-4">{t("orders.last_orders")}</h2>
+				<ul className="space-y-4">
+					{orders.map((order, index) => {
+						const orderId = order._id || order.id || index;
+						const shortId = formatOrderId(orderId);
+						const orderDate = order.createdAt
+							? new Date(order.createdAt).toLocaleDateString()
+							: t("common.unknown");
+
+						return (
+							<li
+								key={orderId}
+								className="border rounded p-4 shadow-sm flex justify-between items-center"
+							>
+								<div>
+									<p className="font-medium">
+										{t("orders.order")} #{shortId}
+									</p>
+									<p className="text-sm text-gray-500">{orderDate}</p>
+								</div>
+
+								<div className="text-right flex flex-col gap-2">
+									<p className="font-semibold text-primary">
+										{order.total} {t("common.currency")}
+									</p>
+									<button
+										onClick={() => handleViewOrder(String(orderId))}
+										className="text-sm bg-primary py-2 px-4 text-white rounded-md hover:bg-primary-light transition-all"
+									>
+										{t("common.view_details")}
+									</button>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			</div>
+		);
+	}
+};

@@ -17,7 +17,7 @@ const Register = lazy(() => import("./landing/pages/Register"));
 const Profile = lazy(() => import("./landing/pages/Profile"));
 
 const ShippingPage = lazy(() => import("./landing/pages/Help/ShippingPage"));
-const ReturnsPage = lazy(() => import ("./landing/pages/Help/ReturnsPage"));
+const ReturnsPage = lazy(() => import("./landing/pages/Help/ReturnsPage"));
 const DeliveryTimePage = lazy(() => import("./landing/pages/Help/DeliveryTimePage"));
 const CookiesPolicyPage = lazy(() => import("./landing/pages/Legal/CookiesPolicyPage"));
 const PrivacyPolicyPage = lazy(() => import("./landing/pages/Legal/PrivacyPolicyPage"));
@@ -38,10 +38,10 @@ const ProductsPage = lazy(() => import("./dashboard/pages/ProductsPage"));
 const UsersPage = lazy(() => import("./dashboard/pages/UsersPage"));
 
 export const App = () => {
-	const { isLoading } = useAuthContext();
+	const { loading } = useAuthContext();
 
-	if (isLoading) {
-		return <PageSpinner message="Cargando aplicación..." fullpage />;
+	if (loading) {
+		return <PageSpinner message="Cargando aplicación..." fullPage />;
 	}
 
 	return (
@@ -59,7 +59,7 @@ export const App = () => {
 						/>
 					}
 				>
-					<Suspense fallback={<PageSpinner message="Cargando página..." fullpage />}>
+					<Suspense fallback={<PageSpinner message="Cargando página..." fullPage />}>
 						<Routes>
 							{/* Rutas públicas */}
 							<Route path="/" element={<Home />} />
