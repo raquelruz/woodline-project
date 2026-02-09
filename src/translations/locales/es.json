@@ -188,7 +188,8 @@
     "title_placeholder": "Introduce el nombre del producto",
     "until": "Hasta",
     "update_product": "Actualizar producto",
-    "updating": "Actualizando..."
+    "updating": "Actualizando...",
+    "loading_categories": "Cargando categorías"
   },
   "orders": {
     "actual_status": "Estado actual",
@@ -346,6 +347,36 @@
       "design_description": "Creamos piezas que combinan funcionalidad, estética y comodidad para tu día a día.",
       "commitment_title": "Compromiso humano",
       "commitment_description": "Cuidamos cada relación: desde nuestro equipo hasta cada cliente que confía en nosotros."
+    },
+    "dashboard": {
+      "orders_stats": "Total de pedidos",
+      "users_stats": "Usuarios registrados",
+      "products_stats": "Productos activos",
+      "dashboard_title": "Panel de control",
+      "dashboard_subtitle": "Bienvenido al panel de administración de Woodline Living. \nAquí podrás gestionar productos, pedidos y usuarios.",
+      "create_product": "Crear nuevo producto",
+      "products_title": "Gestión de productos",
+      "products_description": "Desde aquí puedes agregar, editar o eliminar productos de tu tienda.",
+      "users_title": "Gestión de usuarios",
+      "users_description": "Desde aquí puede agregar, editar o eliminar usuarios de su sitio.",
+      "loading_statistics": "Cargando estadísticas..."
+    },
+    "contact": {
+      "name": "Su nombre",
+      "select": "Selecciona un motivo",
+      "consult": "Consulta general",
+      "support": "Apoyo técnico",
+      "collaboration": "Colaboración",
+      "other": "Otro",
+      "message_placeholder": "Escribe tu mensaje aquí",
+      "contact_accept": "Acepto la política de privacidad",
+      "contactform_submit": "enviar mensaje",
+      "success_message": "¡🎉 Mensaje Preparado!",
+      "mail_open": "Su aplicación de correo electrónico se ha abierto.",
+      "check_message": "Revisa y envía el mensaje para completar el contacto.",
+      "contactform_title": "Envíanos un mensaje",
+      "description": "En Woodline Living queremos ayudarte a crear el hogar perfecto.",
+      "title": "¿Hablamos?"
     }
   },
   "contact": {
@@ -379,5 +410,7 @@
     "user_full_name": "Nombre completo",
     "loading_statistics": "Cargando estadísticas...",
     "cancel_order_confirm": "¿Seguro que quieres cancelar este pedido?"
-  }
+  },
+  "confirm_delete_product": "¿Estás seguro de que quieres eliminar el producto?",
+  "deleting_product": "Eliminando producto..."
 }
